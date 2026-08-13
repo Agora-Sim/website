@@ -33,9 +33,8 @@ export const HERO = {
     'soluções aos muitos problemas do país.',
   actions: {
     primary: { label: 'Ver os projetos', href: '#projetos' },
-    /* Points at Vision, the section directly below — the fresh-load view
-       fills the viewport, so this doubles as the page's only hint that
-       there's more to scroll to. */
+    /* Points at Vision, the section directly below, rather than the
+       not-yet-built #sobre. */
     secondary: { label: 'Como calculamos', href: '#visao' },
   },
 };

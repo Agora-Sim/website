@@ -9,13 +9,15 @@
   z-index: 1;
 }
 
+/* Sized to its content, not the viewport — Vision's panel border shows in
+   the fold on most screens, which is the page's real hint that there's
+   more below, rather than a fixed 100svh min-height forcing a scroll. */
 .hero__inner {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.24fr);
   gap: clamp(var(--space-5), 5vw, var(--space-8));
   align-items: center;
-  min-height: calc(100svh - var(--navbar-height));
-  padding-block: var(--space-7) var(--space-8);
+  padding-block: var(--space-6) var(--space-5);
 }
 
 /* --- 2. Copy --- */

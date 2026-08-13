@@ -25,7 +25,10 @@ export default function Vision() {
 
   return (
     <section className="vision" id="visao">
-      <div className="vision__wrap wrap">
+      {/* `wrap` alone, on a plain frame: the panel inside it spans the full
+          content width, so its border lines up with the hero's own `wrap`
+          edges instead of insetting further. */}
+      <div className="wrap">
         <div className="vision__panel">
           <div className="vision__rings" aria-hidden="true">
             <span className="vision__ring vision__ring--outer" />

@@ -88,8 +88,7 @@
   --breakpoint-md: 768px;
   --breakpoint-lg: 1024px;
 
-  /* Navbar sets its own height from this, and the hero subtracts the same
-     value to fill the rest of the viewport. Nothing else may hardcode it. */
+  /* Navbar sets its own height from this. Nothing else may hardcode it. */
   --navbar-height: 102px;
 
   /* --- 12. Motion --- */
