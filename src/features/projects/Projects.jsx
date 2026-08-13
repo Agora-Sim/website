@@ -2,48 +2,15 @@
    0. IMPORTS
    ============================================================ */
 
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 
-import { PROJECTS, PROJECT_STATUSES } from '../content/site.js';
+import { useRevealed } from '@/hooks';
+
+import { PROJECTS, PROJECT_STATUSES } from './content.js';
 import './Projects.css';
 
 /* ============================================================
-   1. HOOKS
-   ============================================================ */
-
-/**
- * True once the referenced element has entered the viewport, and true from
- * then on. Projects sits far below the fold, so a load-time animation would
- * have finished before anyone reached it — the reveal has to be tied to the
- * scroll instead. Fires once; the section is not meant to re-animate.
- */
-function useRevealed(ref) {
-  const [revealed, setRevealed] = useState(false);
-
-  useEffect(() => {
-    const node = ref.current;
-    if (!node) return undefined;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return;
-        setRevealed(true);
-        observer.disconnect();
-      },
-      /* Enough of the section on screen that the stagger reads as a
-         sequence rather than starting while it is still a sliver. */
-      { threshold: 0.15 },
-    );
-
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, [ref]);
-
-  return revealed;
-}
-
-/* ============================================================
-   2. COMPONENT
+   1. COMPONENT
    ============================================================ */
 
 /**

@@ -2,8 +2,8 @@
    0. IMPORTS
    ============================================================ */
 
-import { BRAND, FOOTER, NAV_LINKS } from '../content/site.js';
-import logo from '../assets/logo-fullmark-white.svg';
+import { BRAND, FOOTER, NAV_LINKS } from '@/content/site.js';
+import logo from '@/assets/images/logo-fullmark-white.svg';
 import './Footer.css';
 
 /* ============================================================

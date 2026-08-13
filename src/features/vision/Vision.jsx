@@ -2,7 +2,7 @@
    0. IMPORTS
    ============================================================ */
 
-import { VISION } from '../content/site.js';
+import { VISION } from './content.js';
 import './Vision.css';
 
 /* ============================================================

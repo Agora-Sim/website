@@ -2,8 +2,8 @@
    0. IMPORTS
    ============================================================ */
 
-import { HERO } from '../content/site.js';
-import PropagationGraph from './PropagationGraph.jsx';
+import { HERO } from './content.js';
+import { PropagationGraph } from './components/PropagationGraph';
 import './Hero.css';
 
 /* ============================================================

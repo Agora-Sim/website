@@ -4,7 +4,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-import { GRAPH } from '../content/site.js';
+import { GRAPH } from '../../content.js';
 import './PropagationGraph.css';
 
 /* ============================================================

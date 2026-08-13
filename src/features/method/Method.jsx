@@ -2,7 +2,7 @@
    0. IMPORTS
    ============================================================ */
 
-import { METHOD } from '../content/site.js';
+import { METHOD } from './content.js';
 import './Method.css';
 
 /* ============================================================

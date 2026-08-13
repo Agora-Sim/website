@@ -4,8 +4,8 @@
 
 import { useEffect, useState } from 'react';
 
-import { BRAND, NAV_LINKS } from '../content/site.js';
-import logo from '../assets/logo-fullmark-white.svg';
+import { BRAND, NAV_LINKS } from '@/content/site.js';
+import logo from '@/assets/images/logo-fullmark-white.svg';
 import './Navbar.css';
 
 /* ============================================================
