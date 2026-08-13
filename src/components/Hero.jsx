@@ -3,7 +3,7 @@
    ============================================================ */
 
 import { HERO } from '../content/site.js';
-import AzulejoPlate from './AzulejoPlate.jsx';
+import PropagationGraph from './PropagationGraph.jsx';
 import './Hero.css';
 
 /* ============================================================
@@ -11,10 +11,10 @@ import './Hero.css';
    ============================================================ */
 
 /**
- * Opening section: the thesis on the left, the drawn azulejo on the right.
+ * Opening section: the thesis on the left, the drawn network on the right.
  *
  * The headline breaks on fixed lines from `HERO.headline` rather than wrapping
- * on its own — the three-line stack against the plate is the composition.
+ * on its own — the three-line stack against the figure is the composition.
  */
 export default function Hero() {
   const { eyebrow, headline, headlineAccent, lede, actions } = HERO;
@@ -51,8 +51,8 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="hero__plate">
-          <AzulejoPlate />
+        <div className="hero__figure">
+          <PropagationGraph />
         </div>
       </div>
     </section>

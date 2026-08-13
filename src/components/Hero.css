@@ -63,17 +63,17 @@
   margin-bottom: var(--space-6);
 }
 
-/* --- 3. Plate --- */
+/* --- 3. Figure --- */
 
-/* A pool of deeper blue so the drawn tile reads as figure against the
+/* A pool of deeper blue so the drawn network reads as figure against the
    patterned field rather than merging with it. */
-.hero__plate {
+.hero__figure {
   position: relative;
   display: grid;
   place-items: center;
 }
 
-.hero__plate::before {
+.hero__figure::before {
   content: '';
   position: absolute;
   inset: -12%;
@@ -85,7 +85,7 @@
   );
 }
 
-.hero__plate > * {
+.hero__figure > * {
   position: relative;
 }
 
@@ -190,8 +190,8 @@
     padding-block: var(--space-6) var(--space-7);
   }
 
-  /* Drawing first would push the thesis below the fold on a phone. */
-  .hero__plate {
+  /* Figure first would push the thesis below the fold on a phone. */
+  .hero__figure {
     order: 1;
     max-width: 420px;
     margin-inline: auto;

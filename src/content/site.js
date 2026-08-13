@@ -38,11 +38,13 @@ export const HERO = {
   },
 };
 
-/* --- 3. Signature plate annotations --- */
+/* --- 3. Signature graph annotations --- */
 
 /* Drawing metadata, not claims about the work. Keep it that way. */
-export const PLATE = {
-  top: 'Modelo base — painel 01',
+export const GRAPH = {
+  alt: 'Rede de nós desenhada como peça técnica',
+  top: 'Modelo base — diagrama 02',
   side: 'Esc. 1 : 1',
-  bottom: 'AgoraSim · des. 001 · rev 00',
+  primary: 'nó de origem',
+  bottom: 'AgoraSim · des. 002 · rev 00',
 };
