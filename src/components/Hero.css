@@ -19,22 +19,6 @@
 }
 
 /* --- 2. Copy --- */
-
-.hero__eyebrow {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  margin-bottom: var(--space-4);
-}
-
-.hero__eyebrow::after {
-  content: '';
-  flex: 1;
-  max-width: 120px;
-  height: 1px;
-  background: var(--color-line-soft);
-}
-
 .hero__headline {
   font-family: var(--font-display);
   font-size: clamp(40px, 5vw, 68px);
@@ -147,7 +131,6 @@
 
 /* --- 5. Load-in --- */
 
-.hero__eyebrow,
 .hero__headline,
 .hero__lede,
 .hero__actions {
@@ -155,7 +138,6 @@
   animation: hero-rise var(--dur-slow) var(--ease-out) forwards;
 }
 
-.hero__eyebrow { animation-delay: 0.05s; }
 .hero__headline { animation-delay: 0.15s; }
 .hero__lede { animation-delay: 0.3s; }
 .hero__actions { animation-delay: 0.42s; }
@@ -172,7 +154,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero__eyebrow,
   .hero__headline,
   .hero__lede,
   .hero__actions {

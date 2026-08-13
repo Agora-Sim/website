@@ -17,14 +17,12 @@ import './Hero.css';
  * on its own — the three-line stack against the figure is the composition.
  */
 export default function Hero() {
-  const { eyebrow, headline, headlineAccent, lede, actions } = HERO;
+  const { headline, headlineAccent, lede, actions } = HERO;
 
   return (
     <section className="hero" id="topo">
       <div className="hero__inner wrap">
         <div className="hero__copy">
-          <p className="hero__eyebrow overline">{eyebrow}</p>
-
           <h1 className="hero__headline">
             {headline.map((line) => (
               <span className="hero__line" key={line}>

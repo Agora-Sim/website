@@ -24,7 +24,6 @@ export const BRAND = {
 /* --- 2. Hero --- */
 
 export const HERO = {
-  eyebrow: 'Investigação independente · Portugal',
   /* Split so the accent word can be set in Anzac without a nested parser. */
   headline: ['A política', 'também se'],
   headlineAccent: 'calcula',
