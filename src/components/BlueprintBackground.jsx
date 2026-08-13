@@ -15,8 +15,9 @@ import './BlueprintBackground.css';
  * corners (top-right and, point-mirrored through the page centre, bottom-
  * left), a minor graph-paper grid, the major millimetre grid on top of it.
  * Ink, drawn on that texture: two sparse construction lines and an Anzac
- * registration mark at three of the page's four true corners (top-left is
- * bare — the navbar logo already owns that spot). Post-process, over the
+ * registration mark at two of the page's four true corners (top-left is
+ * bare — the navbar logo owns that spot; top-right is bare too — the
+ * hero's drawn network figure owns that one). Post-process, over the
  * assembled image: a depth vignette, then paper grain. Purely decorative —
  * it is fixed, non-interactive, and hidden from assistive tech.
  */

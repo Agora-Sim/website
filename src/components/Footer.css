@@ -1,0 +1,95 @@
+/* ============================================================
+   0. FOOTER
+   ============================================================ */
+
+/* --- 1. Bar --- */
+
+.footer {
+  position: relative;
+  z-index: 1;
+  padding-block: var(--space-7) var(--space-5);
+  border-top: 1px solid var(--color-line-soft);
+}
+
+.footer__inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: var(--space-6);
+  padding-bottom: var(--space-5);
+}
+
+/* --- 2. Brand --- */
+
+.footer__brand {
+  max-width: 360px;
+}
+
+.footer__logo-link {
+  display: block;
+  line-height: 0;
+  margin-bottom: var(--space-3);
+}
+
+.footer__logo {
+  height: 32px;
+  width: auto;
+}
+
+.footer__tagline {
+  font-size: var(--size-body-sm);
+  line-height: var(--leading-body-sm);
+  color: var(--color-text-body);
+}
+
+/* --- 3. Links --- */
+
+.footer__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5);
+}
+
+.footer__link {
+  font-family: var(--font-ui);
+  font-size: var(--size-body-base);
+  color: var(--color-text-body);
+  text-decoration: none;
+  padding-block: var(--space-1);
+  border-bottom: 1px solid transparent;
+  transition:
+    color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
+}
+
+.footer__link:hover,
+.footer__link:focus-visible {
+  color: var(--color-white);
+  border-bottom-color: var(--color-anzac);
+}
+
+/* --- 4. Copyright --- */
+
+.footer__bar {
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-line-soft);
+}
+
+.footer__copyright {
+  font-size: var(--size-caption);
+  color: var(--color-text-muted);
+}
+
+/* --- 5. Small screens --- */
+
+@media (max-width: 600px) {
+  .footer__inner {
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .footer__nav {
+    gap: var(--space-4);
+  }
+}

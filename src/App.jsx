@@ -3,6 +3,7 @@
    ============================================================ */
 
 import BlueprintBackground from './components/BlueprintBackground.jsx';
+import Footer from './components/Footer.jsx';
 import Hero from './components/Hero.jsx';
 import Navbar from './components/Navbar.jsx';
 import Vision from './components/Vision.jsx';
@@ -21,6 +22,7 @@ export default function App() {
         <Hero />
         <Vision />
       </main>
+      <Footer />
     </>
   );
 }

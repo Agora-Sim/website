@@ -7,9 +7,27 @@
 .vision {
   position: relative;
   z-index: 1;
-  overflow: hidden;
   padding-block: var(--space-8);
 }
+
+/* --- 2. Panel --- */
+
+/* A detail view cut from the blueprint sheet: a bordered card, not the
+   full-bleed field the rest of the page uses, so the claim inside reads as
+   a callout rather than another stretch of the same texture. */
+.vision__panel {
+  position: relative;
+  overflow: hidden;
+  max-width: 920px;
+  margin-inline: auto;
+  padding: clamp(48px, 8vw, 88px) clamp(24px, 6vw, 64px);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background-color: rgba(13, 53, 118, 0.4);
+  box-shadow: inset 0 1px 0 var(--color-line-soft);
+}
+
+/* --- 3. Copy --- */
 
 .vision__inner {
   position: relative;
@@ -18,10 +36,7 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  max-width: 760px;
 }
-
-/* --- 2. Copy --- */
 
 .vision__eyebrow {
   margin-bottom: var(--space-3);
@@ -43,21 +58,22 @@
 }
 
 /* Left-aligned inside a centred block: 03_Fonts rules out centring more
-   than two lines, and this paragraph runs to four. */
+   than two lines, and this paragraph runs to several. */
 .vision__body {
   font-size: var(--size-body-lg);
   line-height: var(--leading-body-lg);
-  max-width: 58ch;
+  max-width: 56ch;
   text-align: left;
   color: var(--color-text-body);
   margin-bottom: var(--space-5);
 }
 
-/* --- 3. Rings --- */
+/* --- 4. Rings --- */
 
 /* A compass circle, not land-book's ring pattern — the same drafting
    vocabulary the background's registration marks already carry, at a
-   scale that reads as this section's own mark. */
+   scale that reads as this panel's own mark. Sized against the panel
+   itself (not the viewport), so they stay proportionate at any width. */
 .vision__rings {
   position: absolute;
   inset: 0;
@@ -76,13 +92,13 @@
 }
 
 .vision__ring--outer {
-  width: min(60vw, 720px);
+  width: min(85%, 620px);
   border: 1px dashed var(--color-line-soft);
   animation-delay: 0.1s;
 }
 
 .vision__ring--inner {
-  width: min(36vw, 440px);
+  width: min(52%, 380px);
   border: 1px solid var(--color-line-soft);
   animation-delay: 0.24s;
 }
@@ -98,7 +114,7 @@
   }
 }
 
-/* --- 4. Load-in --- */
+/* --- 5. Load-in --- */
 
 .vision__eyebrow,
 .vision__headline,
@@ -136,7 +152,7 @@
   }
 }
 
-/* --- 5. Small screens --- */
+/* --- 6. Small screens --- */
 
 @media (max-width: 900px) {
   .vision {
@@ -146,7 +162,7 @@
 
 @media (max-width: 480px) {
   /* Tight against wrapped copy, the rings read as clutter rather than a
-     mark — the section relies on type alone at this width. */
+     mark — the panel relies on type and its own border at this width. */
   .vision__rings {
     display: none;
   }

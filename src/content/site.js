@@ -33,7 +33,10 @@ export const HERO = {
     'soluções aos muitos problemas do país.',
   actions: {
     primary: { label: 'Ver os projetos', href: '#projetos' },
-    secondary: { label: 'Como calculamos', href: '#sobre' },
+    /* Points at Vision, the section directly below — the fresh-load view
+       fills the viewport, so this doubles as the page's only hint that
+       there's more to scroll to. */
+    secondary: { label: 'Como calculamos', href: '#visao' },
   },
 };
 
@@ -56,4 +59,12 @@ export const VISION = {
     'de engenharia, direito, finanças e design a políticas concretas, com o rigor ' +
     'de uma tese e sem tomar partido.',
   cta: { label: 'Como analisamos', href: '#sobre' },
+};
+
+/* --- 5. Footer --- */
+
+export const FOOTER = {
+  tagline:
+    'Projeto open-source de análise de políticas públicas, sem filiação partidária.',
+  repo: { label: 'GitHub', href: 'https://github.com/Agora-Sim/Website' },
 };
