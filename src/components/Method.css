@@ -51,10 +51,32 @@
 
 /* --- 3. Card grid --- */
 
+/* Two columns, a hairline spine between them, one card staged lower than
+   the other — the reference's own composition, not a uniform grid. */
 .method__grid {
+  position: relative;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-4);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: var(--space-5);
+}
+
+.method__card--staged {
+  margin-top: clamp(32px, 5vw, 64px);
+}
+
+/* Taller than either card, centred on the gap — a spec-sheet split rather
+   than a gutter. Hidden below the point where the grid itself stacks.
+   translateX corrects for `left: 50%` placing the box's edge, not its
+   centre, at the midpoint — off by half a pixel otherwise. */
+.method__divider {
+  position: absolute;
+  top: calc(var(--space-4) * -1);
+  bottom: calc(var(--space-4) * -1);
+  left: 50%;
+  width: 1px;
+  transform: translateX(-50%);
+  background-color: var(--color-line-soft);
 }
 
 /* --- 4. Card --- */
@@ -79,67 +101,47 @@
   transform: translateY(-3px);
 }
 
-/* A rubber-stamp tag, not a rounded pill — the same "rev 00 / esc. 1:1"
-   annotation register the hero plate already uses, poking through the
-   card's own top edge like a stamp on a drawing sheet rather than a
-   floating UI badge. Monza is fill-only, white text: the one pairing
-   02_Colors approves. */
-.method__badge {
-  position: absolute;
-  top: -12px;
-  right: var(--space-4);
-  padding: 4px 10px;
-  border-radius: var(--radius-sm);
-  background-color: var(--color-monza);
-  color: var(--color-white);
-  font-family: var(--font-technical);
-  font-size: var(--size-caption);
-  letter-spacing: var(--tracking-technical);
-  text-transform: uppercase;
-  transform: rotate(-3deg);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
-}
-
 /* --- 5. Card header --- */
 
+/* Icon inline before the title, one line — the reference sets a tool's own
+   mark this way; AgoraSim has no third-party logo to borrow, so a small
+   line-icon takes that slot instead. */
 .method__card-header {
   display: flex;
-  align-items: flex-start;
-  gap: var(--space-3);
-  padding-bottom: var(--space-3);
-  margin-bottom: var(--space-3);
-  border-bottom: 1px solid var(--color-line-soft);
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: 4px;
 }
 
 .method__icon {
   display: grid;
   place-items: center;
   flex-shrink: 0;
-  width: 44px;
-  height: 44px;
-  border: 1px solid var(--color-line-soft);
-  border-radius: var(--radius-sm);
   color: var(--color-text-muted);
 }
 
 .method__icon svg {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
 }
 
 .method__card-title {
-  font-family: var(--font-display);
-  font-size: var(--size-heading-sm);
-  line-height: var(--leading-heading-sm);
+  font-family: var(--font-technical);
+  font-size: var(--size-body-lg);
+  letter-spacing: var(--tracking-technical);
   font-weight: var(--weight-semibold);
   color: var(--color-text-primary);
-  margin-bottom: 2px;
 }
 
 .method__card-subtitle {
+  font-family: var(--font-technical);
   font-size: var(--size-body-sm);
+  letter-spacing: var(--tracking-technical);
   line-height: var(--leading-body-sm);
   color: var(--color-text-muted);
+  padding-bottom: var(--space-3);
+  margin-bottom: var(--space-3);
+  border-bottom: 1px solid var(--color-line-soft);
 }
 
 /* --- 6. Readout --- */
@@ -220,14 +222,6 @@
 
 /* --- 8. Small screens --- */
 
-/* Three columns crowd before the intro itself needs to stack — an
-   intermediate step keeps a card from squeezing under 3 digits wide. */
-@media (max-width: 1080px) {
-  .method__grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
 @media (max-width: 900px) {
   .method {
     padding-block: var(--space-5) var(--space-6);
@@ -243,5 +237,15 @@
 @media (max-width: 640px) {
   .method__grid {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* The offset and the divider only read as rhythm sitting next to another
+     card — stacked single-column, they're just a gap and a stray line. */
+  .method__card:nth-child(3) {
+    margin-top: 0;
+  }
+
+  .method__divider {
+    display: none;
   }
 }

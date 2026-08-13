@@ -73,13 +73,15 @@ export const METHOD = {
     'testaria um gargalo numa autarquia, ou qualquer outro problema de gestão pública. ' +
     'Onde os dados não existem, uma investigação vai buscá-los — para que a ' +
     'transparência não dependa de quem já os tem.',
+  /* Two cards, not three — the reference stages exactly two, and a third
+     diluted the "one engine, staggered" composition. The investigation
+     angle stays in `body` above rather than getting its own card. */
   cards: [
     {
       id: 'simulacao',
       icon: 'network',
       title: 'Impacto de uma política',
       subtitle: 'Simulação sobre dados abertos',
-      badge: 'Simulador',
       lines: [
         'Testa o cenário antes da decisão',
         'Milhares de agentes sintéticos',
@@ -97,17 +99,6 @@ export const METHOD = {
         'Identifica onde o processo trava',
         'Compara alternativas de desenho',
         'Modelo aberto e auditável',
-      ],
-    },
-    {
-      id: 'investigacao',
-      icon: 'search',
-      title: 'Investigação aberta',
-      subtitle: 'Quando os dados não existem',
-      lines: [
-        'Cruza fontes públicas dispersas',
-        'Metodologia publicada',
-        'Código e dados no GitHub',
       ],
     },
   ],

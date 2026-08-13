@@ -19,7 +19,7 @@ function NetworkIcon() {
       <path
         d="M9.3 18.4 12 10.4M15.8 9.8 20.4 14.6"
         stroke="currentColor"
-        strokeWidth="1.4"
+        strokeWidth="1.7"
         strokeLinecap="round"
       />
       <circle cx="7" cy="20" r="2.4" fill="currentColor" />
@@ -35,18 +35,9 @@ function FlowIcon() {
       <path
         d="M4 6h20l-8 8v8h-4v-8L4 6Z"
         stroke="currentColor"
-        strokeWidth="1.4"
+        strokeWidth="1.7"
         strokeLinejoin="round"
       />
-    </svg>
-  );
-}
-
-function SearchIcon() {
-  return (
-    <svg viewBox="0 0 28 28" fill="none" aria-hidden="true">
-      <circle cx="12" cy="12" r="7" stroke="currentColor" strokeWidth="1.4" />
-      <path d="M17.5 17.5 24 24" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
     </svg>
   );
 }
@@ -54,7 +45,6 @@ function SearchIcon() {
 const ICONS = {
   network: NetworkIcon,
   flow: FlowIcon,
-  search: SearchIcon,
 };
 
 /* ============================================================
@@ -62,14 +52,12 @@ const ICONS = {
    ============================================================ */
 
 /**
- * How we work: the simulator (and the tools that follow it) read as
- * instrument panels rather than product screenshots — a card per problem
- * shape the same engine takes on, each a small technical drawing in its
- * own right instead of a numbered step in a sequence.
- *
- * Only the first card carries the stamp. It marks the tool named in the
- * brief; the other two are the same engine turned on a different problem,
- * not separate products each needing their own seal.
+ * How we work: two instrument-panel cards, staged like the reference this
+ * section adapts — a plain card and a staggered one, split by a single
+ * vertical rule rather than lined up flush in a uniform grid. Each card is
+ * the same engine (the simulator) turned on a different kind of problem;
+ * the investigation angle stays in the intro paragraph rather than earning
+ * a third card, so the two-card staging survives intact.
  */
 export default function Method() {
   const { eyebrow, headline, body, cards } = METHOD;
@@ -93,26 +81,28 @@ export default function Method() {
         </div>
 
         <div className="method__grid">
+          <span className="method__divider" aria-hidden="true" />
+
           {cards.map((card, index) => {
             const Icon = ICONS[card.icon];
+            /* The second card carries the stagger — the reference's own
+               offset rhythm — independent of any per-card content flag. */
+            const cardClass =
+              index === 1 ? 'method__card method__card--staged' : 'method__card';
 
             return (
               <article
-                className="method__card"
+                className={cardClass}
                 key={card.id}
                 style={{ animationDelay: `${0.1 + index * 0.12}s` }}
               >
-                {card.badge && <span className="method__badge">{card.badge}</span>}
-
                 <div className="method__card-header">
                   <span className="method__icon">
                     <Icon />
                   </span>
-                  <div>
-                    <h3 className="method__card-title">{card.title}</h3>
-                    <p className="method__card-subtitle">{card.subtitle}</p>
-                  </div>
+                  <h3 className="method__card-title">{card.title}</h3>
                 </div>
+                <p className="method__card-subtitle">{card.subtitle}</p>
 
                 <ul className="method__readout">
                   {card.lines.map((line) => (
