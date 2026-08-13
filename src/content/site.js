@@ -25,12 +25,12 @@ export const BRAND = {
 
 export const HERO = {
   /* Split so the accent word can be set in Anzac without a nested parser. */
-  headline: ['A política', 'também se'],
-  headlineAccent: 'calcula',
+  headline: ['AgoraSim:', 'Engineering'],
+  headlineAccent: 'Portugal',
   lede:
-    'Modelamos o impacto de medidas de política pública antes de o país as viver. ' +
-    'Dados abertos, métodos revistos por pares e todos os pressupostos à vista. ' +
-    'Sem partido e sem opinião.',
+    'Projeto open-source com o objectivo de trazer o método científico ao discurso ' +
+    'político. Para que não dependamos mais do discurso político para avaliarmos as ' +
+    'soluções aos muitos problemas do país.',
   actions: {
     primary: { label: 'Ver os projetos', href: '#projetos' },
     secondary: { label: 'Como calculamos', href: '#sobre' },
