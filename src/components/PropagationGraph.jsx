@@ -2,77 +2,133 @@
    0. IMPORTS
    ============================================================ */
 
+import { useState } from 'react';
+
 import { GRAPH } from '../content/site.js';
 import './PropagationGraph.css';
 
 /* ============================================================
-   1. COMPONENT
+   1. GRAPH DATA
+   ============================================================ */
+
+/* Radius falls monotonically with x: magnitude attenuating as it propagates
+   outward from the origin node. Positions are hand-placed, not solved. */
+const NODES = [
+  { id: 'n1', x: 86, y: 180, r: 52 },
+  { id: 'n2', x: 196, y: 62, r: 34 },
+  { id: 'n3', x: 214, y: 296, r: 27 },
+  { id: 'n4', x: 322, y: 166, r: 19 },
+  { id: 'n5', x: 340, y: 316, r: 14 },
+  { id: 'n6', x: 440, y: 84, r: 10 },
+  { id: 'n7', x: 466, y: 242, r: 7 },
+];
+
+/* Ten of the twenty-one possible pairs. A complete graph would say nothing
+   about dependency, which is the whole point of drawing one. */
+const EDGES = [
+  ['n1', 'n2'],
+  ['n1', 'n3'],
+  ['n1', 'n4'],
+  ['n2', 'n4'],
+  ['n3', 'n4'],
+  ['n3', 'n5'],
+  ['n2', 'n6'],
+  ['n4', 'n6'],
+  ['n4', 'n7'],
+  ['n5', 'n7'],
+];
+
+const NODE_BY_ID = Object.fromEntries(NODES.map((node) => [node.id, node]));
+
+/* ============================================================
+   2. HELPERS
+   ============================================================ */
+
+/** Ids of every node one edge away from `id`, plus `id` itself. */
+function neighbourhoodOf(id) {
+  const ids = new Set([id]);
+
+  for (const [from, to] of EDGES) {
+    if (from === id) ids.add(to);
+    if (to === id) ids.add(from);
+  }
+
+  return ids;
+}
+
+/* ============================================================
+   3. COMPONENT
    ============================================================ */
 
 /**
- * The hero's signature: a node-link network drawn as an engineering diagram —
- * one primary node on the left, magnitude attenuating to the right, edges that
- * skip most pairs so it reads as a dependency graph and not a constellation.
+ * The hero's signature: a node-link network with one large origin node on the
+ * left and magnitude attenuating to the right, edges skipping most pairs so it
+ * reads as a dependency graph rather than a constellation.
  *
- * Every stroke carries `pathLength="1"`, which lets one CSS rule animate the
- * plotter draw-in regardless of each path's real length.
+ * Hovering a node lifts it and its incident edges and dims the rest, so the
+ * figure answers a question — what does this one touch — instead of just
+ * decorating. Edges carry `pathLength="1"` so a single CSS rule can draw every
+ * one of them in regardless of its real length.
  */
 export default function PropagationGraph() {
+  const [hovered, setHovered] = useState(null);
+
+  const lit = hovered ? neighbourhoodOf(hovered) : null;
+
   return (
-    <svg className="graph" viewBox="0 0 460 410" role="img" aria-label={GRAPH.alt}>
-      {/* --- Sheet frame --- */}
-      <g className="graph__dims" fill="none">
-        <path d="M40 72 H420 M40 344 H420 M40 72 V344 M420 72 V344" />
-      </g>
-
-      {/* --- Edges: sparse on purpose, ten of the twenty-one pairs --- */}
+    <svg
+      className={`graph${hovered ? ' graph--hovering' : ''}`}
+      viewBox="0 0 520 360"
+      role="img"
+      aria-label={GRAPH.alt}
+    >
       <g className="graph__edges" fill="none">
-        <path pathLength="1" d="M96 200 L186 112" />
-        <path pathLength="1" d="M96 200 L198 296" />
-        <path pathLength="1" d="M96 200 L290 186" />
-        <path pathLength="1" d="M186 112 L290 186" />
-        <path pathLength="1" d="M198 296 L290 186" />
-        <path pathLength="1" d="M198 296 L300 316" />
-        <path pathLength="1" d="M186 112 L388 122" />
-        <path pathLength="1" d="M290 186 L388 122" />
-        <path pathLength="1" d="M290 186 L398 252" />
-        <path pathLength="1" d="M300 316 L398 252" />
+        {EDGES.map(([from, to], index) => {
+          const a = NODE_BY_ID[from];
+          const b = NODE_BY_ID[to];
+          const isLit = hovered === from || hovered === to;
+
+          return (
+            <path
+              className={`graph__edge${isLit ? ' is-lit' : ''}`}
+              key={`${from}-${to}`}
+              pathLength="1"
+              d={`M${a.x} ${a.y} L${b.x} ${b.y}`}
+              style={{ animationDelay: `${0.3 + index * 0.07}s` }}
+            />
+          );
+        })}
       </g>
 
-      {/* --- Nodes: filled so they occlude the edges running beneath --- */}
       <g className="graph__nodes">
-        <circle className="graph__node graph__node--primary" cx="96" cy="200" r="42" />
-        <circle className="graph__core" cx="96" cy="200" r="8" />
-        <circle className="graph__node" cx="186" cy="112" r="27" />
-        <circle className="graph__node" cx="198" cy="296" r="21" />
-        <circle className="graph__node" cx="290" cy="186" r="15" />
-        <circle className="graph__node" cx="300" cy="316" r="11" />
-        <circle className="graph__node" cx="388" cy="122" r="8" />
-        <circle className="graph__node" cx="398" cy="252" r="5.5" />
-      </g>
-
-      {/* --- Datum points --- */}
-      <g className="graph__datum">
-        <circle cx="40" cy="72" r="3.5" />
-        <circle cx="420" cy="72" r="3.5" />
-        <circle cx="40" cy="344" r="3.5" />
-        <circle cx="420" cy="344" r="3.5" />
-      </g>
-
-      {/* --- Annotations --- */}
-      <g className="graph__label">
-        <text x="230" y="50" textAnchor="middle">
-          {GRAPH.top}
-        </text>
-        <text x="18" y="208" textAnchor="middle" transform="rotate(-90 18 208)">
-          {GRAPH.side}
-        </text>
-        <text x="96" y="270" textAnchor="middle">
-          {GRAPH.primary}
-        </text>
-        <text x="230" y="398" textAnchor="middle">
-          {GRAPH.bottom}
-        </text>
+        {NODES.map((node, index) => (
+          /* The wrapper owns the draw-in so hover is free to drive the
+             circle's own opacity and scale without the two colliding. */
+          <g
+            className="graph__pop"
+            key={node.id}
+            style={{ animationDelay: `${0.45 + index * 0.09}s` }}
+          >
+            <circle
+              className={[
+                'graph__node',
+                node.id === 'n1' ? 'graph__node--origin' : '',
+                lit && !lit.has(node.id) ? 'is-dim' : '',
+                hovered === node.id ? 'is-lit' : '',
+              ]
+                .filter(Boolean)
+                .join(' ')}
+              cx={node.x}
+              cy={node.y}
+              r={node.r}
+              onMouseEnter={() => setHovered(node.id)}
+              onMouseLeave={() => setHovered(null)}
+            />
+            {node.id === 'n1' && (
+              <circle className="graph__core" cx={node.x} cy={node.y} r="9" />
+            )}
+          </g>
+        ))}
       </g>
     </svg>
   );

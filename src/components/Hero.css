@@ -11,7 +11,7 @@
 
 .hero__inner {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
   gap: clamp(var(--space-5), 5vw, var(--space-8));
   align-items: center;
   min-height: calc(100svh - 96px);
@@ -193,7 +193,7 @@
   /* Figure first would push the thesis below the fold on a phone. */
   .hero__figure {
     order: 1;
-    max-width: 420px;
+    max-width: 460px;
     margin-inline: auto;
   }
 }

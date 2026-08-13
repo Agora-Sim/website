@@ -38,13 +38,9 @@ export const HERO = {
   },
 };
 
-/* --- 3. Signature graph annotations --- */
+/* --- 3. Signature graph --- */
 
-/* Drawing metadata, not claims about the work. Keep it that way. */
+/* The figure carries no visible copy, so this is all screen readers get. */
 export const GRAPH = {
-  alt: 'Rede de nós desenhada como peça técnica',
-  top: 'Modelo base — diagrama 02',
-  side: 'Esc. 1 : 1',
-  primary: 'nó de origem',
-  bottom: 'AgoraSim · des. 002 · rev 00',
+  alt: 'Rede de nós, com o nó de origem à esquerda e a magnitude a diminuir para a direita',
 };

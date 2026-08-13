@@ -7,93 +7,83 @@
 .graph {
   width: 100%;
   height: auto;
-  max-width: 460px;
+  max-width: 560px;
   margin-inline: auto;
+  overflow: visible;
 }
 
-/* --- 2. Strokes --- */
+/* --- 2. Edges --- */
 
-.graph__dims {
-  stroke: rgba(255, 255, 255, 0.28);
-  stroke-width: 1;
-}
-
-.graph__edges {
-  stroke: var(--color-white);
+.graph__edge {
+  stroke: rgba(255, 255, 255, 0.55);
   stroke-width: 1.2;
+  transition:
+    stroke var(--dur-fast) var(--ease-out),
+    stroke-width var(--dur-fast) var(--ease-out);
 }
 
-/* The deep fill is what makes an edge stop at a node instead of crossing it. */
+.graph--hovering .graph__edge {
+  stroke: rgba(255, 255, 255, 0.16);
+}
+
+.graph--hovering .graph__edge.is-lit {
+  stroke: var(--color-anzac);
+  stroke-width: 1.8;
+}
+
+/* --- 3. Nodes --- */
+
+/* Filled so edges terminate at the node instead of crossing it. The fill
+   matches the pool behind the figure, so it reads as a hole, not a disc. */
 .graph__node {
   fill: var(--color-blueprint-deep);
   stroke: var(--color-white);
   stroke-width: 1.6;
+  cursor: pointer;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition:
+    stroke var(--dur-fast) var(--ease-out),
+    stroke-width var(--dur-fast) var(--ease-out),
+    opacity var(--dur-fast) var(--ease-out),
+    transform var(--dur-base) var(--ease-out);
 }
 
-/* Anzac marks the primary and nothing else — it is the data accent. */
-.graph__node--primary {
+.graph__node--origin {
   stroke: var(--color-anzac);
   stroke-width: 2;
 }
 
 .graph__core {
   fill: var(--color-anzac);
+  pointer-events: none;
 }
 
-.graph__datum {
-  fill: var(--color-anzac);
+.graph__node.is-dim {
+  opacity: 0.28;
 }
 
-.graph__label {
-  font-family: var(--font-technical);
-  font-size: 11px;
-  letter-spacing: var(--tracking-technical);
-  text-transform: uppercase;
-  fill: rgba(255, 255, 255, 0.66);
+.graph__node.is-lit {
+  stroke: var(--color-anzac);
+  stroke-width: 2.4;
+  transform: scale(1.09);
 }
 
-/* --- 3. Draw-in --- */
+/* --- 4. Draw-in --- */
 
 /* pathLength="1" on every edge means one dash value covers them all. */
-.graph__edges > * {
+.graph__edge {
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
-  animation: graph-draw 1.1s var(--ease-out) forwards;
+  animation: graph-draw 0.9s var(--ease-out) forwards;
 }
 
-/* Nodes pop from their own centre, so the box must follow the shape. */
-.graph__nodes > * {
+.graph__pop {
   opacity: 0;
   transform-box: fill-box;
   transform-origin: center;
   animation: graph-pop var(--dur-base) var(--ease-out) forwards;
 }
-
-.graph__dims,
-.graph__datum,
-.graph__label {
-  opacity: 0;
-  animation: graph-ink var(--dur-base) var(--ease-out) forwards;
-}
-
-/* Edges leave the primary first, then propagate outward hop by hop. */
-.graph__edges > *:nth-child(-n + 3) { animation-delay: 0.3s; }
-.graph__edges > *:nth-child(n + 4):nth-child(-n + 6) { animation-delay: 0.55s; }
-.graph__edges > *:nth-child(n + 7):nth-child(-n + 8) { animation-delay: 0.75s; }
-.graph__edges > *:nth-child(n + 9) { animation-delay: 0.95s; }
-
-/* Nodes land in the same order the edges reach them. */
-.graph__nodes > *:nth-child(-n + 2) { animation-delay: 0.15s; }
-.graph__nodes > *:nth-child(3) { animation-delay: 0.6s; }
-.graph__nodes > *:nth-child(4) { animation-delay: 0.65s; }
-.graph__nodes > *:nth-child(5) { animation-delay: 0.8s; }
-.graph__nodes > *:nth-child(6) { animation-delay: 0.9s; }
-.graph__nodes > *:nth-child(7) { animation-delay: 1.05s; }
-.graph__nodes > *:nth-child(8) { animation-delay: 1.15s; }
-
-.graph__dims { animation-delay: 1.3s; }
-.graph__datum { animation-delay: 1.45s; }
-.graph__label { animation-delay: 1.6s; }
 
 @keyframes graph-draw {
   to {
@@ -112,24 +102,20 @@
   }
 }
 
-@keyframes graph-ink {
-  to {
-    opacity: 1;
-  }
-}
-
-/* --- 4. Reduced motion --- */
+/* --- 5. Reduced motion --- */
 
 @media (prefers-reduced-motion: reduce) {
-  .graph__edges > * {
+  .graph__edge {
     stroke-dashoffset: 0;
   }
 
-  .graph__nodes > *,
-  .graph__dims,
-  .graph__datum,
-  .graph__label {
+  .graph__pop {
     opacity: 1;
+    transform: none;
+  }
+
+  /* Hover still recolours; it just stops moving. */
+  .graph__node.is-lit {
     transform: none;
   }
 }
