@@ -4,7 +4,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { BRAND, NAV_LINKS } from '@/content/site.js';
+import { BRAND, NAV_CTA, NAV_LINKS } from '@/content/site.js';
 import logo from '@/assets/images/logo-fullmark-white.svg';
 import './Navbar.css';
 
@@ -20,11 +20,12 @@ const SCROLL_THRESHOLD_PX = 24;
    ============================================================ */
 
 /**
- * Sticky page header: wordmark on the left, section links on the right.
+ * Sticky page header: wordmark on the left, section links and the join
+ * action on the right.
  *
  * Past the first scroll the bar gains a backdrop and a firmer rule, so it
  * stays readable once the hero's drawing scrolls up behind it. Two links
- * fit on a phone, so there is no menu to open.
+ * and one stamp fit on a phone, so there is no menu to open.
  */
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -50,6 +51,15 @@ export default function Navbar() {
               {link.label}
             </a>
           ))}
+
+          <a
+            className="navbar__cta"
+            href={NAV_CTA.href}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {NAV_CTA.label}
+          </a>
         </nav>
       </div>
     </header>

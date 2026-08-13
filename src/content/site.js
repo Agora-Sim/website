@@ -15,6 +15,13 @@ export const NAV_LINKS = [
   { id: 'sobre', label: 'Sobre', href: '#sobre' },
 ];
 
+/* The bar's one action, kept apart from NAV_LINKS: those jump within the
+   page, this one leaves it. Off-site, so it opens in a new tab. */
+export const NAV_CTA = {
+  label: 'Participar',
+  href: 'https://github.com/Agora-Sim',
+};
+
 /* --- 2. Brand --- */
 
 export const BRAND = {
