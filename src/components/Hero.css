@@ -11,7 +11,7 @@
 
 .hero__inner {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.24fr);
   gap: clamp(var(--space-5), 5vw, var(--space-8));
   align-items: center;
   min-height: calc(100svh - 96px);

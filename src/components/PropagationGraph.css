@@ -7,7 +7,7 @@
 .graph {
   width: 100%;
   height: auto;
-  max-width: 560px;
+  max-width: 680px;
   margin-inline: auto;
   overflow: visible;
 }
@@ -17,13 +17,14 @@
 .graph__edge {
   stroke: rgba(255, 255, 255, 0.55);
   stroke-width: 1.2;
+  pointer-events: none;
   transition:
     stroke var(--dur-fast) var(--ease-out),
     stroke-width var(--dur-fast) var(--ease-out);
 }
 
 .graph--hovering .graph__edge {
-  stroke: rgba(255, 255, 255, 0.16);
+  stroke: rgba(255, 255, 255, 0.14);
 }
 
 .graph--hovering .graph__edge.is-lit {
@@ -31,7 +32,28 @@
   stroke-width: 1.8;
 }
 
-/* --- 3. Nodes --- */
+/* --- 3. Pulse --- */
+
+/* A short dash riding each edge, released one beat per hop so the wave
+   spreads outward from the origin instead of firing all at once. */
+.graph__pulse {
+  stroke: var(--color-anzac);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  fill: none;
+  pointer-events: none;
+  stroke-dasharray: 0.07 0.93;
+  stroke-dashoffset: 1;
+  opacity: 0;
+  animation: graph-pulse 3.6s linear infinite;
+}
+
+/* Engaging with the graph replaces the ambient wave with your own reading. */
+.graph--hovering .graph__pulse {
+  display: none;
+}
+
+/* --- 4. Nodes --- */
 
 /* Filled so edges terminate at the node instead of crossing it. The fill
    matches the pool behind the figure, so it reads as a hole, not a disc. */
@@ -60,16 +82,25 @@
 }
 
 .graph__node.is-dim {
-  opacity: 0.28;
+  opacity: 0.26;
 }
 
 .graph__node.is-lit {
   stroke: var(--color-anzac);
   stroke-width: 2.4;
-  transform: scale(1.09);
+  transform: scale(1.1);
 }
 
-/* --- 4. Draw-in --- */
+/* On touch, mouseenter fires on tap with nothing to clear it, so the graph
+   would latch into a highlight the reader cannot undo. Keep it ambient. */
+@media (hover: none) {
+  .graph__node {
+    cursor: default;
+    pointer-events: none;
+  }
+}
+
+/* --- 5. Draw-in --- */
 
 /* pathLength="1" on every edge means one dash value covers them all. */
 .graph__edge {
@@ -102,7 +133,29 @@
   }
 }
 
-/* --- 5. Reduced motion --- */
+/* Holds dark after arrival so the wave has a rest beat before repeating. */
+@keyframes graph-pulse {
+  0% {
+    stroke-dashoffset: 1;
+    opacity: 0;
+  }
+  8% {
+    opacity: 0.9;
+  }
+  56% {
+    opacity: 0.9;
+  }
+  66% {
+    stroke-dashoffset: 0.1;
+    opacity: 0;
+  }
+  100% {
+    stroke-dashoffset: 0.1;
+    opacity: 0;
+  }
+}
+
+/* --- 6. Reduced motion --- */
 
 @media (prefers-reduced-motion: reduce) {
   .graph__edge {
@@ -112,6 +165,11 @@
   .graph__pop {
     opacity: 1;
     transform: none;
+  }
+
+  /* The drift loop never starts, so the pulse would be the only motion left. */
+  .graph__pulse {
+    display: none;
   }
 
   /* Hover still recolours; it just stops moving. */

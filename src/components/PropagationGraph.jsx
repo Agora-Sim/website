@@ -2,7 +2,7 @@
    0. IMPORTS
    ============================================================ */
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { GRAPH } from '../content/site.js';
 import './PropagationGraph.css';
@@ -12,19 +12,21 @@ import './PropagationGraph.css';
    ============================================================ */
 
 /* Radius falls monotonically with x: magnitude attenuating as it propagates
-   outward from the origin node. Positions are hand-placed, not solved. */
+   outward from the origin node. Positions are hand-placed, not solved.
+   `drift` and `phase` set each node's idle wander (see section 2). */
 const NODES = [
-  { id: 'n1', x: 86, y: 180, r: 52 },
-  { id: 'n2', x: 196, y: 62, r: 34 },
-  { id: 'n3', x: 214, y: 296, r: 27 },
-  { id: 'n4', x: 322, y: 166, r: 19 },
-  { id: 'n5', x: 340, y: 316, r: 14 },
-  { id: 'n6', x: 440, y: 84, r: 10 },
-  { id: 'n7', x: 466, y: 242, r: 7 },
+  { id: 'n1', x: 92, y: 184, r: 54, drift: 2.4, phase: 0.0 },
+  { id: 'n2', x: 208, y: 64, r: 35, drift: 3.6, phase: 1.7 },
+  { id: 'n3', x: 226, y: 302, r: 28, drift: 4.1, phase: 3.2 },
+  { id: 'n4', x: 338, y: 170, r: 20, drift: 5.2, phase: 0.8 },
+  { id: 'n5', x: 356, y: 322, r: 14, drift: 6.0, phase: 4.6 },
+  { id: 'n6', x: 462, y: 86, r: 10, drift: 6.8, phase: 2.4 },
+  { id: 'n7', x: 490, y: 248, r: 7, drift: 7.4, phase: 5.5 },
 ];
 
 /* Ten of the twenty-one possible pairs. A complete graph would say nothing
-   about dependency, which is the whole point of drawing one. */
+   about dependency, which is the whole point of drawing one. Each pair is
+   ordered origin-ward first, so pulses travel outward along it. */
 const EDGES = [
   ['n1', 'n2'],
   ['n1', 'n3'],
@@ -38,11 +40,20 @@ const EDGES = [
   ['n5', 'n7'],
 ];
 
-const NODE_BY_ID = Object.fromEntries(NODES.map((node) => [node.id, node]));
+/* Edges from a node one hop out start their pulse one beat later, so the
+   wave reads as spreading rather than firing everywhere at once. */
+const HOP = { n1: 0, n2: 1, n3: 1, n4: 1, n5: 2, n6: 2, n7: 2 };
+
+const INDEX_BY_ID = Object.fromEntries(NODES.map((node, i) => [node.id, i]));
 
 /* ============================================================
-   2. HELPERS
+   2. MOTION
    ============================================================ */
+
+const PULSE_BEAT_S = 0.5;
+
+/* Slow enough that no node ever appears to be travelling somewhere. */
+const DRIFT_RATE = 0.24;
 
 /** Ids of every node one edge away from `id`, plus `id` itself. */
 function neighbourhoodOf(id) {
@@ -56,6 +67,14 @@ function neighbourhoodOf(id) {
   return ids;
 }
 
+/** Each node's position at time `t` seconds, on its own Lissajous loop. */
+function positionsAt(t) {
+  return NODES.map((node) => ({
+    x: node.x + Math.sin(t * DRIFT_RATE + node.phase) * node.drift,
+    y: node.y + Math.cos(t * DRIFT_RATE * 0.78 + node.phase) * node.drift,
+  }));
+}
+
 /* ============================================================
    3. COMPONENT
    ============================================================ */
@@ -65,37 +84,94 @@ function neighbourhoodOf(id) {
  * left and magnitude attenuating to the right, edges skipping most pairs so it
  * reads as a dependency graph rather than a constellation.
  *
- * Hovering a node lifts it and its incident edges and dims the rest, so the
- * figure answers a question — what does this one touch — instead of just
- * decorating. Edges carry `pathLength="1"` so a single CSS rule can draw every
- * one of them in regardless of its real length.
+ * Three things make it move. The nodes drift continuously on slow independent
+ * loops, so it reads as a model being run rather than a diagram. A pulse
+ * travels outward from the origin along each edge, one beat per hop. Hovering
+ * a node takes over: the ambient pulse stops, that node and its incident edges
+ * light, and the rest of the graph drops back.
+ *
+ * The drift is driven from a rAF loop writing SVG attributes directly, because
+ * edge endpoints have to track their nodes every frame and CSS cannot express
+ * that relationship.
  */
 export default function PropagationGraph() {
   const [hovered, setHovered] = useState(null);
+
+  const nodeRefs = useRef([]);
+  const edgeRefs = useRef([]);
+  const pulseRefs = useRef([]);
+  const coreRef = useRef(null);
+
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    let frame = 0;
+    const started = performance.now();
+
+    const step = (now) => {
+      const at = positionsAt((now - started) / 1000);
+
+      at.forEach((point, i) => {
+        nodeRefs.current[i]?.setAttribute('cx', point.x.toFixed(2));
+        nodeRefs.current[i]?.setAttribute('cy', point.y.toFixed(2));
+      });
+
+      coreRef.current?.setAttribute('cx', at[0].x.toFixed(2));
+      coreRef.current?.setAttribute('cy', at[0].y.toFixed(2));
+
+      EDGES.forEach(([from, to], j) => {
+        const a = at[INDEX_BY_ID[from]];
+        const b = at[INDEX_BY_ID[to]];
+        const d = `M${a.x.toFixed(2)} ${a.y.toFixed(2)} L${b.x.toFixed(2)} ${b.y.toFixed(2)}`;
+
+        edgeRefs.current[j]?.setAttribute('d', d);
+        pulseRefs.current[j]?.setAttribute('d', d);
+      });
+
+      frame = requestAnimationFrame(step);
+    };
+
+    frame = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(frame);
+  }, []);
 
   const lit = hovered ? neighbourhoodOf(hovered) : null;
 
   return (
     <svg
       className={`graph${hovered ? ' graph--hovering' : ''}`}
-      viewBox="0 0 520 360"
+      viewBox="0 0 540 380"
       role="img"
       aria-label={GRAPH.alt}
     >
       <g className="graph__edges" fill="none">
         {EDGES.map(([from, to], index) => {
-          const a = NODE_BY_ID[from];
-          const b = NODE_BY_ID[to];
+          const a = NODES[INDEX_BY_ID[from]];
+          const b = NODES[INDEX_BY_ID[to]];
+          const d = `M${a.x} ${a.y} L${b.x} ${b.y}`;
           const isLit = hovered === from || hovered === to;
 
           return (
-            <path
-              className={`graph__edge${isLit ? ' is-lit' : ''}`}
-              key={`${from}-${to}`}
-              pathLength="1"
-              d={`M${a.x} ${a.y} L${b.x} ${b.y}`}
-              style={{ animationDelay: `${0.3 + index * 0.07}s` }}
-            />
+            <g key={`${from}-${to}`}>
+              <path
+                className={`graph__edge${isLit ? ' is-lit' : ''}`}
+                ref={(el) => {
+                  edgeRefs.current[index] = el;
+                }}
+                pathLength="1"
+                d={d}
+                style={{ animationDelay: `${0.3 + index * 0.07}s` }}
+              />
+              <path
+                className="graph__pulse"
+                ref={(el) => {
+                  pulseRefs.current[index] = el;
+                }}
+                pathLength="1"
+                d={d}
+                style={{ animationDelay: `${1.6 + HOP[from] * PULSE_BEAT_S}s` }}
+              />
+            </g>
           );
         })}
       </g>
@@ -118,6 +194,9 @@ export default function PropagationGraph() {
               ]
                 .filter(Boolean)
                 .join(' ')}
+              ref={(el) => {
+                nodeRefs.current[index] = el;
+              }}
               cx={node.x}
               cy={node.y}
               r={node.r}
@@ -125,7 +204,7 @@ export default function PropagationGraph() {
               onMouseLeave={() => setHovered(null)}
             />
             {node.id === 'n1' && (
-              <circle className="graph__core" cx={node.x} cy={node.y} r="9" />
+              <circle className="graph__core" ref={coreRef} cx={node.x} cy={node.y} r="9" />
             )}
           </g>
         ))}
