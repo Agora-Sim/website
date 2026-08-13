@@ -1,0 +1,278 @@
+/* ============================================================
+   0. PROPAGATION GRAPH
+   ============================================================ */
+
+/* --- 1. Sheet --- */
+
+/* Capped narrower than before: at its old 600px this was the tallest thing
+   in the hero row, which is what pushed the section close to a full-viewport
+   height even after the min-height was dropped. */
+.graph {
+  width: 100%;
+  height: auto;
+  max-width: 520px;
+  margin-inline: auto;
+  overflow: visible;
+}
+
+/* --- 2. Planes --- */
+
+/* The base plane carries the model, so it reads first. The result plane
+   above it stays faint enough to sit behind without competing. */
+.graph__plane path {
+  stroke-width: 1;
+}
+
+.graph__plane--base path {
+  stroke: rgba(255, 255, 255, 0.13);
+}
+
+.graph__plane--upper path {
+  stroke: rgba(255, 255, 255, 0.085);
+}
+
+/* The boundary is what separates one plate from the other; without it the
+   two grids project onto the same rhombus and read as a single haze. */
+.graph__plane--base .graph__plane-edge {
+  stroke: rgba(255, 255, 255, 0.34);
+}
+
+.graph__plane--upper .graph__plane-edge {
+  stroke: rgba(255, 255, 255, 0.2);
+}
+
+.graph__plane {
+  opacity: 0;
+  animation: graph-ink 0.7s var(--ease-out) forwards;
+}
+
+.graph__plane--base {
+  animation-delay: 0.15s;
+}
+
+.graph__plane--upper {
+  animation-delay: 0.9s;
+}
+
+/* --- 3. Edges --- */
+
+.graph__edge {
+  stroke: rgba(255, 255, 255, 0.55);
+  stroke-width: 1.2;
+  pointer-events: none;
+  transition:
+    stroke var(--dur-fast) var(--ease-out),
+    stroke-width var(--dur-fast) var(--ease-out);
+}
+
+.graph--hovering .graph__edge {
+  stroke: rgba(255, 255, 255, 0.14);
+}
+
+.graph--hovering .graph__edge.is-lit {
+  stroke: var(--color-anzac);
+  stroke-width: 1.8;
+}
+
+/* --- 4. Risers and cells --- */
+
+.graph__riser {
+  stroke: rgba(255, 255, 255, 0.22);
+  stroke-width: 1;
+  pointer-events: none;
+  transition:
+    stroke var(--dur-fast) var(--ease-out),
+    opacity var(--dur-fast) var(--ease-out);
+}
+
+.graph__riser.is-lit {
+  stroke: var(--color-anzac);
+}
+
+/* Each node's magnitude, read off the plane above the model. */
+.graph__cell {
+  fill: rgba(13, 53, 118, 0.7);
+  stroke: rgba(255, 255, 255, 0.62);
+  stroke-width: 1.2;
+  pointer-events: none;
+  transition:
+    stroke var(--dur-fast) var(--ease-out),
+    opacity var(--dur-fast) var(--ease-out);
+}
+
+.graph__cell.is-lit {
+  stroke: var(--color-anzac);
+  stroke-width: 1.8;
+}
+
+/* --- 5. Pulse --- */
+
+/* A short dash riding each edge, released one beat per hop so the wave
+   spreads outward from the origin, then up the risers once it arrives. */
+.graph__pulse {
+  stroke: var(--color-anzac);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  fill: none;
+  pointer-events: none;
+  stroke-dasharray: 0.07 0.93;
+  stroke-dashoffset: 1;
+  opacity: 0;
+  animation: graph-pulse 3.6s linear infinite;
+}
+
+.graph__pulse--riser {
+  stroke-width: 2;
+  stroke-dasharray: 0.1 0.9;
+}
+
+/* Engaging with the graph replaces the ambient wave with your own reading. */
+.graph--hovering .graph__pulse {
+  display: none;
+}
+
+/* --- 6. Nodes --- */
+
+/* Filled so edges terminate at the node instead of crossing it. The fill
+   matches the pool behind the figure, so it reads as a hole, not a disc. */
+/* Flattening into the plane costs a node most of its area, so the stroke
+   carries more of the weight here than it would on an upright circle. */
+.graph__node {
+  fill: var(--color-blueprint-deep);
+  stroke: var(--color-white);
+  stroke-width: 1.9;
+  cursor: pointer;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition:
+    stroke var(--dur-fast) var(--ease-out),
+    stroke-width var(--dur-fast) var(--ease-out),
+    opacity var(--dur-fast) var(--ease-out),
+    transform var(--dur-base) var(--ease-out);
+}
+
+.graph__node--origin {
+  stroke: var(--color-anzac);
+  stroke-width: 2;
+}
+
+.graph__core {
+  fill: var(--color-anzac);
+  pointer-events: none;
+}
+
+.graph__node.is-lit {
+  stroke: var(--color-anzac);
+  stroke-width: 2.4;
+  transform: scale(1.1);
+}
+
+/* --- 7. Dimming --- */
+
+.graph__node.is-dim,
+.graph__riser.is-dim,
+.graph__cell.is-dim {
+  opacity: 0.22;
+}
+
+/* On touch, mouseenter fires on tap with nothing to clear it, so the graph
+   would latch into a highlight the reader cannot undo. Keep it ambient. */
+@media (hover: none) {
+  .graph__node {
+    cursor: default;
+    pointer-events: none;
+  }
+}
+
+/* --- 8. Draw-in --- */
+
+/* pathLength="1" on every stroke means one dash value covers them all. */
+.graph__edge,
+.graph__riser {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: graph-draw 0.9s var(--ease-out) forwards;
+}
+
+.graph__pop {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: graph-pop var(--dur-base) var(--ease-out) forwards;
+}
+
+.graph__cell {
+  opacity: 0;
+  animation: graph-ink var(--dur-base) var(--ease-out) forwards;
+}
+
+@keyframes graph-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes graph-ink {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes graph-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Holds dark after arrival so the wave has a rest beat before repeating. */
+@keyframes graph-pulse {
+  0% {
+    stroke-dashoffset: 1;
+    opacity: 0;
+  }
+  8% {
+    opacity: 0.9;
+  }
+  56% {
+    opacity: 0.9;
+  }
+  66% {
+    stroke-dashoffset: 0.1;
+    opacity: 0;
+  }
+  100% {
+    stroke-dashoffset: 0.1;
+    opacity: 0;
+  }
+}
+
+/* --- 9. Reduced motion --- */
+
+@media (prefers-reduced-motion: reduce) {
+  .graph__edge,
+  .graph__riser {
+    stroke-dashoffset: 0;
+  }
+
+  .graph__pop,
+  .graph__plane,
+  .graph__cell {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* The drift loop never starts, so the pulse would be the only motion left. */
+  .graph__pulse {
+    display: none;
+  }
+
+  /* Hover still recolours; it just stops moving. */
+  .graph__node.is-lit {
+    transform: none;
+  }
+}

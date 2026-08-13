@@ -1,0 +1,136 @@
+/* ============================================================
+   0. GLOBAL BASE
+   Reset, body defaults, and the shared type/utility classes that
+   more than one component needs.
+   ============================================================ */
+
+@import './tokens.css';
+
+/* --- 1. Reset --- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-blueprint);
+  color: var(--color-text-body);
+  font-family: var(--font-body);
+  font-size: var(--size-body-base);
+  line-height: var(--leading-body-base);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* --- 2. Focus --- */
+
+:focus-visible {
+  outline: 2px solid var(--color-anzac);
+  outline-offset: 3px;
+}
+
+/* --- 3. Layout utilities --- */
+
+.wrap {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* --- 4. Type utilities --- */
+
+/* Technical register: eyebrows, dimensions, data labels. */
+.overline {
+  font-family: var(--font-technical);
+  /* A step above the 12px token: at brand size the section eyebrows read as
+     a caption rather than a label. Deliberate override, not drift. */
+  font-size: 14px;
+  line-height: var(--leading-overline);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-anzac);
+}
+
+/* --- 5. Buttons --- */
+
+/* Shared by every section's calls to action, so a hover or radius change
+   is one edit here rather than one per component. */
+.btn {
+  font-family: var(--font-ui);
+  font-size: 15px;
+  font-weight: var(--weight-semibold);
+  padding: 13px var(--space-4);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  transition:
+    transform var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
+}
+
+/* Monza is fill-only per 02_Colors — white text sits on it at 5.8:1. */
+.btn--primary {
+  background-color: var(--color-monza);
+  border: 1px solid var(--color-monza);
+  color: var(--color-white);
+}
+
+.btn--primary:hover {
+  background-color: var(--color-monza-hover);
+  border-color: var(--color-monza-hover);
+  transform: translateY(-2px);
+}
+
+.btn--ghost {
+  background-color: transparent;
+  border: 1px solid var(--color-line);
+  color: var(--color-white);
+}
+
+.btn--ghost:hover {
+  border-color: var(--color-white);
+  transform: translateY(-2px);
+}
+
+.btn__arrow {
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.btn:hover .btn__arrow {
+  transform: translateX(3px);
+}
+
+/* --- 6. Reduced motion --- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
