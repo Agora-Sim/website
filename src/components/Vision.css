@@ -10,7 +10,52 @@
   padding-block: var(--space-6) var(--space-7);
 }
 
-/* --- 2. Panel --- */
+/* --- 2. Frame and tab --- */
+
+/* Holds the tab next to the panel rather than inside it. The tab is out of
+   flow, so the top padding reserves the room it occupies — one pixel less
+   than its height, which is the overlap that lands it on the panel's border
+   rather than a hair above it. */
+.vision__frame {
+  position: relative;
+  padding-top: 34px;
+}
+
+/* The section label as a file-folder tab on the panel's top-left corner:
+   three borders and top-only radius, so it reads as the same sheet of card
+   the panel is cut from, folded up rather than a separate chip. */
+.vision__tab {
+  position: absolute;
+  top: 0;
+  /* Flush with the panel's left edge — the two borders stack into one
+     continuous line, which is what makes it a folder rather than a chip. */
+  left: 0;
+  height: 35px;
+  display: inline-flex;
+  align-items: center;
+  padding-inline: var(--space-4);
+  border: 1px solid var(--color-line);
+  border-bottom: none;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  background-color: rgba(13, 53, 118, 0.4);
+  box-shadow: inset 0 1px 0 var(--color-line-soft);
+}
+
+/* Covers the panel's top border where the tab meets it, so tab and panel
+   share one continuous outline instead of reading as two stacked boxes.
+   Opaque on purpose — the composite of the blueprint field and the panel's
+   own 40% wash, which a translucent strip could not hide the line under. */
+.vision__tab::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background-color: rgb(16, 64, 144);
+}
+
+/* --- 3. Panel --- */
 
 /* A detail view cut from the blueprint sheet: a bordered card, not the
    full-bleed field the rest of the page uses, so the claim inside reads as
@@ -23,12 +68,14 @@
   overflow: hidden;
   padding: clamp(48px, 8vw, 88px) clamp(24px, 6vw, 64px);
   border: 1px solid var(--color-line);
-  border-radius: var(--radius-md);
+  /* Square at top-left: the tab owns that corner's radius, and a second
+     curve under it would break the shared outline into two shapes. */
+  border-radius: 0 var(--radius-md) var(--radius-md) var(--radius-md);
   background-color: rgba(13, 53, 118, 0.4);
   box-shadow: inset 0 1px 0 var(--color-line-soft);
 }
 
-/* --- 3. Copy --- */
+/* --- 4. Copy --- */
 
 .vision__inner {
   position: relative;
@@ -37,10 +84,6 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-}
-
-.vision__eyebrow {
-  margin-bottom: var(--space-3);
 }
 
 /* Deliberately well under the hero's display size (clamp(40px,5vw,68px)) —
@@ -72,7 +115,7 @@
   margin-bottom: var(--space-5);
 }
 
-/* --- 4. Rings --- */
+/* --- 5. Rings --- */
 
 /* A compass circle, not land-book's ring pattern — the same drafting
    vocabulary the background's registration marks already carry, at a
@@ -118,9 +161,9 @@
   }
 }
 
-/* --- 5. Load-in --- */
+/* --- 6. Load-in --- */
 
-.vision__eyebrow,
+.vision__tab,
 .vision__headline,
 .vision__body,
 .vision__cta {
@@ -128,7 +171,7 @@
   animation: vision-rise var(--dur-slow) var(--ease-out) forwards;
 }
 
-.vision__eyebrow { animation-delay: 0.1s; }
+.vision__tab { animation-delay: 0.1s; }
 .vision__headline { animation-delay: 0.2s; }
 .vision__body { animation-delay: 0.34s; }
 .vision__cta { animation-delay: 0.46s; }
@@ -145,7 +188,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .vision__eyebrow,
+  .vision__tab,
   .vision__headline,
   .vision__body,
   .vision__cta,
@@ -156,7 +199,7 @@
   }
 }
 
-/* --- 6. Small screens --- */
+/* --- 7. Small screens --- */
 
 @media (max-width: 900px) {
   .vision {

@@ -19,6 +19,10 @@ import './Vision.css';
  * it are a compass circle rather than land-book's decorative dashed rings —
  * the same drafting vocabulary the background's registration marks already
  * use, drawn once at a larger scale instead of borrowed as ornament.
+ *
+ * The eyebrow is that panel's file-folder tab rather than a line of copy
+ * inside it: the callout gets labelled on its edge, the way a drawing's
+ * detail view is titled outside the frame it encloses.
  */
 export default function Vision() {
   const { eyebrow, headline, body, cta } = VISION;
@@ -29,31 +33,35 @@ export default function Vision() {
           content width, so its border lines up with the hero's own `wrap`
           edges instead of insetting further. */}
       <div className="wrap">
-        <div className="vision__panel">
-          <div className="vision__rings" aria-hidden="true">
-            <span className="vision__ring vision__ring--outer" />
-            <span className="vision__ring vision__ring--inner" />
-          </div>
+        {/* The tab is a sibling of the panel, not a child: the panel clips
+            its own rings, and a child would be clipped with them. */}
+        <div className="vision__frame">
+          <span className="overline vision__tab">{eyebrow}</span>
 
-          <div className="vision__inner">
-            <span className="overline vision__eyebrow">{eyebrow}</span>
+          <div className="vision__panel">
+            <div className="vision__rings" aria-hidden="true">
+              <span className="vision__ring vision__ring--outer" />
+              <span className="vision__ring vision__ring--inner" />
+            </div>
 
-            <h2 className="vision__headline">
-              {headline.map((line) => (
-                <span className="vision__line" key={line}>
-                  {line}
+            <div className="vision__inner">
+              <h2 className="vision__headline">
+                {headline.map((line) => (
+                  <span className="vision__line" key={line}>
+                    {line}
+                  </span>
+                ))}
+              </h2>
+
+              <p className="vision__body">{body}</p>
+
+              <a className="btn btn--ghost vision__cta" href={cta.href}>
+                {cta.label}
+                <span className="btn__arrow" aria-hidden="true">
+                  →
                 </span>
-              ))}
-            </h2>
-
-            <p className="vision__body">{body}</p>
-
-            <a className="btn btn--ghost vision__cta" href={cta.href}>
-              {cta.label}
-              <span className="btn__arrow" aria-hidden="true">
-                →
-              </span>
-            </a>
+              </a>
+            </div>
           </div>
         </div>
       </div>
