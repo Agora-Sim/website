@@ -43,3 +43,17 @@ export const HERO = {
 export const GRAPH = {
   alt: 'Rede de nós, com o nó de origem à esquerda e a magnitude a diminuir para a direita',
 };
+
+/* --- 4. Vision --- */
+
+export const VISION = {
+  eyebrow: 'Visão',
+  /* Split so the headline keeps its two-line break at every width. */
+  headline: ['Queremos um país que decide', 'com evidência, não com slogans.'],
+  body:
+    'Em Portugal, quem tem formação para analisar uma política pública raramente ' +
+    'tem tempo, e quem decide raramente espera pelos números. Juntamos estudantes ' +
+    'de engenharia, direito, finanças e design a políticas concretas, com o rigor ' +
+    'de uma tese e sem tomar partido.',
+  cta: { label: 'Como analisamos', href: '#sobre' },
+};

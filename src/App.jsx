@@ -5,6 +5,7 @@
 import BlueprintBackground from './components/BlueprintBackground.jsx';
 import Hero from './components/Hero.jsx';
 import Navbar from './components/Navbar.jsx';
+import Vision from './components/Vision.jsx';
 
 /* ============================================================
    1. COMPONENT
@@ -18,6 +19,7 @@ export default function App() {
       <Navbar />
       <main>
         <Hero />
+        <Vision />
       </main>
     </>
   );
