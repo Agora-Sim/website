@@ -80,6 +80,9 @@ export const METHOD = {
     {
       id: 'simulacao',
       icon: 'network',
+      /* Only this card is stamped: it names the tool itself. Stamping both
+         would read as two products instead of one engine on two problems. */
+      stamp: 'Simulador',
       title: 'Impacto de uma política',
       subtitle: 'Simulação sobre dados abertos',
       lines: [
@@ -102,6 +105,12 @@ export const METHOD = {
       ],
     },
   ],
+  /* The stamp on the first card is the link to the tool it names, so the
+     label here is what a screen reader gets, not visible copy. */
+  repo: {
+    label: 'Ver o simulador no GitHub',
+    href: 'https://github.com/Agora-Sim/Simulator',
+  },
 };
 
 /* --- 6. Footer --- */

@@ -57,9 +57,11 @@ svg {
 /* Technical register: eyebrows, dimensions, data labels. */
 .overline {
   font-family: var(--font-technical);
-  font-size: var(--size-overline);
+  /* A step above the 12px token: at brand size the section eyebrows read as
+     a caption rather than a label. Deliberate override, not drift. */
+  font-size: 14px;
   line-height: var(--leading-overline);
-  font-weight: var(--weight-regular);
+  font-weight: var(--weight-semibold);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-anzac);
