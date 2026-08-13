@@ -7,12 +7,51 @@
 .graph {
   width: 100%;
   height: auto;
-  max-width: 680px;
+  max-width: 600px;
   margin-inline: auto;
   overflow: visible;
 }
 
-/* --- 2. Edges --- */
+/* --- 2. Planes --- */
+
+/* The base plane carries the model, so it reads first. The result plane
+   above it stays faint enough to sit behind without competing. */
+.graph__plane path {
+  stroke-width: 1;
+}
+
+.graph__plane--base path {
+  stroke: rgba(255, 255, 255, 0.13);
+}
+
+.graph__plane--upper path {
+  stroke: rgba(255, 255, 255, 0.085);
+}
+
+/* The boundary is what separates one plate from the other; without it the
+   two grids project onto the same rhombus and read as a single haze. */
+.graph__plane--base .graph__plane-edge {
+  stroke: rgba(255, 255, 255, 0.34);
+}
+
+.graph__plane--upper .graph__plane-edge {
+  stroke: rgba(255, 255, 255, 0.2);
+}
+
+.graph__plane {
+  opacity: 0;
+  animation: graph-ink 0.7s var(--ease-out) forwards;
+}
+
+.graph__plane--base {
+  animation-delay: 0.15s;
+}
+
+.graph__plane--upper {
+  animation-delay: 0.9s;
+}
+
+/* --- 3. Edges --- */
 
 .graph__edge {
   stroke: rgba(255, 255, 255, 0.55);
@@ -32,10 +71,41 @@
   stroke-width: 1.8;
 }
 
-/* --- 3. Pulse --- */
+/* --- 4. Risers and cells --- */
+
+.graph__riser {
+  stroke: rgba(255, 255, 255, 0.22);
+  stroke-width: 1;
+  pointer-events: none;
+  transition:
+    stroke var(--dur-fast) var(--ease-out),
+    opacity var(--dur-fast) var(--ease-out);
+}
+
+.graph__riser.is-lit {
+  stroke: var(--color-anzac);
+}
+
+/* Each node's magnitude, read off the plane above the model. */
+.graph__cell {
+  fill: rgba(13, 53, 118, 0.7);
+  stroke: rgba(255, 255, 255, 0.62);
+  stroke-width: 1.2;
+  pointer-events: none;
+  transition:
+    stroke var(--dur-fast) var(--ease-out),
+    opacity var(--dur-fast) var(--ease-out);
+}
+
+.graph__cell.is-lit {
+  stroke: var(--color-anzac);
+  stroke-width: 1.8;
+}
+
+/* --- 5. Pulse --- */
 
 /* A short dash riding each edge, released one beat per hop so the wave
-   spreads outward from the origin instead of firing all at once. */
+   spreads outward from the origin, then up the risers once it arrives. */
 .graph__pulse {
   stroke: var(--color-anzac);
   stroke-width: 2.4;
@@ -48,19 +118,26 @@
   animation: graph-pulse 3.6s linear infinite;
 }
 
+.graph__pulse--riser {
+  stroke-width: 2;
+  stroke-dasharray: 0.1 0.9;
+}
+
 /* Engaging with the graph replaces the ambient wave with your own reading. */
 .graph--hovering .graph__pulse {
   display: none;
 }
 
-/* --- 4. Nodes --- */
+/* --- 6. Nodes --- */
 
 /* Filled so edges terminate at the node instead of crossing it. The fill
    matches the pool behind the figure, so it reads as a hole, not a disc. */
+/* Flattening into the plane costs a node most of its area, so the stroke
+   carries more of the weight here than it would on an upright circle. */
 .graph__node {
   fill: var(--color-blueprint-deep);
   stroke: var(--color-white);
-  stroke-width: 1.6;
+  stroke-width: 1.9;
   cursor: pointer;
   transform-box: fill-box;
   transform-origin: center;
@@ -81,14 +158,18 @@
   pointer-events: none;
 }
 
-.graph__node.is-dim {
-  opacity: 0.26;
-}
-
 .graph__node.is-lit {
   stroke: var(--color-anzac);
   stroke-width: 2.4;
   transform: scale(1.1);
+}
+
+/* --- 7. Dimming --- */
+
+.graph__node.is-dim,
+.graph__riser.is-dim,
+.graph__cell.is-dim {
+  opacity: 0.22;
 }
 
 /* On touch, mouseenter fires on tap with nothing to clear it, so the graph
@@ -100,10 +181,11 @@
   }
 }
 
-/* --- 5. Draw-in --- */
+/* --- 8. Draw-in --- */
 
-/* pathLength="1" on every edge means one dash value covers them all. */
-.graph__edge {
+/* pathLength="1" on every stroke means one dash value covers them all. */
+.graph__edge,
+.graph__riser {
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
   animation: graph-draw 0.9s var(--ease-out) forwards;
@@ -116,9 +198,20 @@
   animation: graph-pop var(--dur-base) var(--ease-out) forwards;
 }
 
+.graph__cell {
+  opacity: 0;
+  animation: graph-ink var(--dur-base) var(--ease-out) forwards;
+}
+
 @keyframes graph-draw {
   to {
     stroke-dashoffset: 0;
+  }
+}
+
+@keyframes graph-ink {
+  to {
+    opacity: 1;
   }
 }
 
@@ -155,14 +248,17 @@
   }
 }
 
-/* --- 6. Reduced motion --- */
+/* --- 9. Reduced motion --- */
 
 @media (prefers-reduced-motion: reduce) {
-  .graph__edge {
+  .graph__edge,
+  .graph__riser {
     stroke-dashoffset: 0;
   }
 
-  .graph__pop {
+  .graph__pop,
+  .graph__plane,
+  .graph__cell {
     opacity: 1;
     transform: none;
   }

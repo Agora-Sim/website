@@ -4,28 +4,30 @@
 
 /* --- 1. Bar --- */
 
+/* The bottom hairline is a shadow, not a border: a border would add its 1px
+   to the bar's box and put it out of step with --navbar-height. */
 .navbar {
   position: sticky;
   top: 0;
   z-index: 10;
-  border-bottom: 1px solid transparent;
   transition:
-    border-color var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out),
     background-color var(--dur-base) var(--ease-out);
 }
 
 .navbar--scrolled {
-  border-bottom-color: var(--color-line-soft);
+  box-shadow: 0 1px 0 var(--color-line-soft);
   background-color: rgba(13, 53, 118, 0.72);
   backdrop-filter: blur(10px);
 }
 
+/* Height comes from the token rather than from padding, so the hero can
+   subtract the same value and the two can never drift apart. */
 .navbar__inner {
   display: flex;
   align-items: center;
   gap: var(--space-5);
-  /* Taller than before so the 46px logo keeps clear air top and bottom. */
-  padding-block: var(--space-5) var(--space-4);
+  min-height: var(--navbar-height);
 }
 
 /* --- 2. Brand --- */

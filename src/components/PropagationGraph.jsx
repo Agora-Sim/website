@@ -8,20 +8,103 @@ import { GRAPH } from '../content/site.js';
 import './PropagationGraph.css';
 
 /* ============================================================
-   1. GRAPH DATA
+   1. PROJECTION
    ============================================================ */
 
-/* Radius falls monotonically with x: magnitude attenuating as it propagates
-   outward from the origin node. Positions are hand-placed, not solved.
-   `drift` and `phase` set each node's idle wander (see section 2). */
+/* Dimetric rather than true isometric: the vertical squash is gentler than
+   0.577, so a node lying in the base plane still reads as a node. */
+const ISO_X = 0.866;
+const ISO_Y = 0.52;
+
+/* The plane is large relative to the nodes on purpose: they have to sit
+   inside the rhombus with clearance, radius included, or the model looks
+   like it is falling off its own base. */
+const PLANE = 300;
+const RISE = 165;
+
+/* Centres the projected extent inside the viewBox. */
+const ORIGIN_X = 280;
+const ORIGIN_Y = 185;
+
+/* A circle of radius r lying in the ground plane projects to an ellipse.
+   Substituting the projection into (cos t, sin t) gives
+   (√2·ISO_X·cos u, √2·ISO_Y·sin u) — axis-aligned, no rotation needed. */
+const ELLIPSE_X = Math.SQRT2 * ISO_X;
+const ELLIPSE_Y = Math.SQRT2 * ISO_Y;
+
+/** Plane coordinates and height to a point in the SVG's own space. */
+function project(x, y, z) {
+  return [ORIGIN_X + (x - y) * ISO_X, ORIGIN_Y + (x + y) * ISO_Y - z];
+}
+
+/** `M … L …` between two plane points at the same height. */
+function segment(ax, ay, bx, by, z) {
+  const [x1, y1] = project(ax, ay, z);
+  const [x2, y2] = project(bx, by, z);
+  return `M${x1.toFixed(2)} ${y1.toFixed(2)} L${x2.toFixed(2)} ${y2.toFixed(2)}`;
+}
+
+/** The vertical from a node up to its cell on the plane above. */
+function riserAt(x, y) {
+  const [x1, y1] = project(x, y, 0);
+  const [x2, y2] = project(x, y, RISE);
+  return `M${x1.toFixed(2)} ${y1.toFixed(2)} L${x2.toFixed(2)} ${y2.toFixed(2)}`;
+}
+
+/** The lines of one grid plane, drawn both ways across `PLANE`. */
+function gridOf(z, divisions) {
+  const step = PLANE / divisions;
+  const lines = [];
+
+  for (let i = 0; i <= divisions; i += 1) {
+    const at = i * step;
+    lines.push(segment(at, 0, at, PLANE, z));
+    lines.push(segment(0, at, PLANE, at, z));
+  }
+
+  return lines;
+}
+
+/** The closed boundary of a plane, so it reads as a plate and not a haze. */
+function outlineOf(z) {
+  const corners = [
+    project(0, 0, z),
+    project(PLANE, 0, z),
+    project(PLANE, PLANE, z),
+    project(0, PLANE, z),
+  ];
+
+  return `M${corners.map(([x, y]) => `${x.toFixed(2)} ${y.toFixed(2)}`).join(' L')} Z`;
+}
+
+/** An axis-aligned square in a plane, as projected polygon points. */
+function cellAt(x, y, half, z) {
+  return [
+    project(x - half, y - half, z),
+    project(x + half, y - half, z),
+    project(x + half, y + half, z),
+    project(x - half, y + half, z),
+  ]
+    .map(([px, py]) => `${px.toFixed(2)},${py.toFixed(2)}`)
+    .join(' ');
+}
+
+/* ============================================================
+   2. GRAPH DATA
+   ============================================================ */
+
+/* All lengths are plane units, not screen pixels — `r` is the node's radius
+   as it lies in the base plane, before projection flattens it. Plane
+   coordinates are chosen so projected x runs left to right in order, which
+   keeps the radii falling monotonically across the screen. */
 const NODES = [
-  { id: 'n1', x: 92, y: 184, r: 54, drift: 2.4, phase: 0.0 },
-  { id: 'n2', x: 208, y: 64, r: 35, drift: 3.6, phase: 1.7 },
-  { id: 'n3', x: 226, y: 302, r: 28, drift: 4.1, phase: 3.2 },
-  { id: 'n4', x: 338, y: 170, r: 20, drift: 5.2, phase: 0.8 },
-  { id: 'n5', x: 356, y: 322, r: 14, drift: 6.0, phase: 4.6 },
-  { id: 'n6', x: 462, y: 86, r: 10, drift: 6.8, phase: 2.4 },
-  { id: 'n7', x: 490, y: 248, r: 7, drift: 7.4, phase: 5.5 },
+  { id: 'n1', x: 70, y: 225, r: 46, drift: 2.4, phase: 0.0 },
+  { id: 'n2', x: 55, y: 135, r: 33, drift: 3.4, phase: 1.7 },
+  { id: 'n3', x: 150, y: 215, r: 25, drift: 4.0, phase: 3.2 },
+  { id: 'n4', x: 115, y: 120, r: 18.5, drift: 4.8, phase: 0.8 },
+  { id: 'n5', x: 215, y: 180, r: 14, drift: 5.6, phase: 4.6 },
+  { id: 'n6', x: 205, y: 75, r: 10, drift: 6.2, phase: 2.4 },
+  { id: 'n7', x: 270, y: 105, r: 7.4, drift: 6.8, phase: 5.5 },
 ];
 
 /* Ten of the twenty-one possible pairs. A complete graph would say nothing
@@ -40,17 +123,47 @@ const EDGES = [
   ['n5', 'n7'],
 ];
 
-/* Edges from a node one hop out start their pulse one beat later, so the
-   wave reads as spreading rather than firing everywhere at once. */
+/* Edges one hop out start their pulse a beat later, so the wave spreads
+   rather than firing everywhere at once. Risers go last: the result only
+   rises once the measure has reached that node. */
 const HOP = { n1: 0, n2: 1, n3: 1, n4: 1, n5: 2, n6: 2, n7: 2 };
 
 const INDEX_BY_ID = Object.fromEntries(NODES.map((node, i) => [node.id, i]));
 
+const CELL_SCALE = 0.78;
+const BASE_GRID = gridOf(0, 6);
+const UPPER_GRID = gridOf(RISE, 4);
+
 /* ============================================================
-   2. MOTION
+   3. DEPTH
+   ============================================================ */
+
+/* Viewing along (1,1,1), so x + y + z increases toward the camera. Painter's
+   order is that key ascending: whatever is furthest goes down first.
+   Drift never moves a node far enough to reorder the stack, so this is
+   settled once at module load rather than every frame. */
+function depthOf(node, z) {
+  return node.x + node.y + z;
+}
+
+const MODEL_ORDER = NODES.flatMap((node, index) => [
+  { kind: 'riser', index, depth: depthOf(node, RISE * 0.5) },
+  { kind: 'node', index, depth: depthOf(node, 0) },
+]).sort((a, b) => a.depth - b.depth);
+
+const CELL_ORDER = NODES.map((node, index) => ({
+  index,
+  depth: depthOf(node, RISE),
+}))
+  .sort((a, b) => a.depth - b.depth)
+  .map((item) => item.index);
+
+/* ============================================================
+   4. MOTION
    ============================================================ */
 
 const PULSE_BEAT_S = 0.5;
+const RISER_DELAY_S = 1.1;
 
 /* Slow enough that no node ever appears to be travelling somewhere. */
 const DRIFT_RATE = 0.24;
@@ -67,7 +180,7 @@ function neighbourhoodOf(id) {
   return ids;
 }
 
-/** Each node's position at time `t` seconds, on its own Lissajous loop. */
+/** Each node's plane position at time `t` seconds, on its own slow loop. */
 function positionsAt(t) {
   return NODES.map((node) => ({
     x: node.x + Math.sin(t * DRIFT_RATE + node.phase) * node.drift,
@@ -76,30 +189,42 @@ function positionsAt(t) {
 }
 
 /* ============================================================
-   3. COMPONENT
+   5. COMPONENT
    ============================================================ */
 
 /**
- * The hero's signature: a node-link network with one large origin node on the
- * left and magnitude attenuating to the right, edges skipping most pairs so it
- * reads as a dependency graph rather than a constellation.
+ * The hero's signature: an exploded axonometric of a simulation.
  *
- * Three things make it move. The nodes drift continuously on slow independent
+ * The base plate carries the model — a dependency graph with one large origin
+ * node and magnitude attenuating outward, edges skipping most pairs so it
+ * reads as structure rather than a constellation. Above it, a second plate
+ * holds the results: every node sends a riser up to a cell sized by its own
+ * magnitude. That vertical move is the argument of the page, a measure
+ * modelled below and its consequence read off above.
+ *
+ * Nodes are ellipses, not circles: they lie in the base plane and take the
+ * same projection everything else does. Everything is painted back to front
+ * by depth, so a node never covers a cell that is nearer the camera.
+ *
+ * Three things make it move. Nodes drift continuously on slow independent
  * loops, so it reads as a model being run rather than a diagram. A pulse
- * travels outward from the origin along each edge, one beat per hop. Hovering
- * a node takes over: the ambient pulse stops, that node and its incident edges
- * light, and the rest of the graph drops back.
+ * travels outward along the edges one beat per hop, then up the risers once
+ * it arrives. Hovering a node takes over: the ambient pulse stops, that node
+ * with its edges, riser and cell light, and the rest drops back.
  *
- * The drift is driven from a rAF loop writing SVG attributes directly, because
- * edge endpoints have to track their nodes every frame and CSS cannot express
- * that relationship.
+ * The drift is driven from a rAF loop writing SVG attributes directly,
+ * because every derived shape has to track its node every frame and CSS
+ * cannot express that relationship.
  */
 export default function PropagationGraph() {
   const [hovered, setHovered] = useState(null);
 
   const nodeRefs = useRef([]);
+  const riserRefs = useRef([]);
+  const riserPulseRefs = useRef([]);
+  const cellRefs = useRef([]);
   const edgeRefs = useRef([]);
-  const pulseRefs = useRef([]);
+  const edgePulseRefs = useRef([]);
   const coreRef = useRef(null);
 
   useEffect(() => {
@@ -112,20 +237,30 @@ export default function PropagationGraph() {
       const at = positionsAt((now - started) / 1000);
 
       at.forEach((point, i) => {
-        nodeRefs.current[i]?.setAttribute('cx', point.x.toFixed(2));
-        nodeRefs.current[i]?.setAttribute('cy', point.y.toFixed(2));
+        const [bx, by] = project(point.x, point.y, 0);
+        const riser = riserAt(point.x, point.y);
+
+        nodeRefs.current[i]?.setAttribute('cx', bx.toFixed(2));
+        nodeRefs.current[i]?.setAttribute('cy', by.toFixed(2));
+        riserRefs.current[i]?.setAttribute('d', riser);
+        riserPulseRefs.current[i]?.setAttribute('d', riser);
+        cellRefs.current[i]?.setAttribute(
+          'points',
+          cellAt(point.x, point.y, NODES[i].r * CELL_SCALE, RISE),
+        );
       });
 
-      coreRef.current?.setAttribute('cx', at[0].x.toFixed(2));
-      coreRef.current?.setAttribute('cy', at[0].y.toFixed(2));
+      const [cx, cy] = project(at[0].x, at[0].y, 0);
+      coreRef.current?.setAttribute('cx', cx.toFixed(2));
+      coreRef.current?.setAttribute('cy', cy.toFixed(2));
 
       EDGES.forEach(([from, to], j) => {
         const a = at[INDEX_BY_ID[from]];
         const b = at[INDEX_BY_ID[to]];
-        const d = `M${a.x.toFixed(2)} ${a.y.toFixed(2)} L${b.x.toFixed(2)} ${b.y.toFixed(2)}`;
+        const d = segment(a.x, a.y, b.x, b.y, 0);
 
         edgeRefs.current[j]?.setAttribute('d', d);
-        pulseRefs.current[j]?.setAttribute('d', d);
+        edgePulseRefs.current[j]?.setAttribute('d', d);
       });
 
       frame = requestAnimationFrame(step);
@@ -136,19 +271,103 @@ export default function PropagationGraph() {
   }, []);
 
   const lit = hovered ? neighbourhoodOf(hovered) : null;
+  const dimClass = (id) => (lit && !lit.has(id) ? ' is-dim' : '');
+
+  const renderRiser = (index) => {
+    const node = NODES[index];
+    const d = riserAt(node.x, node.y);
+
+    return (
+      <g key={`riser-${node.id}`}>
+        <path
+          className={`graph__riser${hovered === node.id ? ' is-lit' : ''}${dimClass(node.id)}`}
+          ref={(el) => {
+            riserRefs.current[index] = el;
+          }}
+          pathLength="1"
+          d={d}
+          style={{ animationDelay: `${1.1 + index * 0.06}s` }}
+        />
+        <path
+          className="graph__pulse graph__pulse--riser"
+          ref={(el) => {
+            riserPulseRefs.current[index] = el;
+          }}
+          pathLength="1"
+          d={d}
+          style={{
+            animationDelay: `${1.6 + HOP[node.id] * PULSE_BEAT_S + RISER_DELAY_S}s`,
+          }}
+        />
+      </g>
+    );
+  };
+
+  const renderNode = (index) => {
+    const node = NODES[index];
+    const [cx, cy] = project(node.x, node.y, 0);
+
+    return (
+      /* The wrapper owns the draw-in so hover is free to drive the ellipse's
+         own opacity and scale without the two colliding. */
+      <g
+        className="graph__pop"
+        key={`node-${node.id}`}
+        style={{ animationDelay: `${0.45 + index * 0.09}s` }}
+      >
+        <ellipse
+          className={[
+            'graph__node',
+            node.id === 'n1' ? 'graph__node--origin' : '',
+            hovered === node.id ? 'is-lit' : '',
+            lit && !lit.has(node.id) ? 'is-dim' : '',
+          ]
+            .filter(Boolean)
+            .join(' ')}
+          ref={(el) => {
+            nodeRefs.current[index] = el;
+          }}
+          cx={cx}
+          cy={cy}
+          rx={node.r * ELLIPSE_X}
+          ry={node.r * ELLIPSE_Y}
+          onMouseEnter={() => setHovered(node.id)}
+          onMouseLeave={() => setHovered(null)}
+        />
+        {node.id === 'n1' && (
+          <ellipse
+            className="graph__core"
+            ref={coreRef}
+            cx={cx}
+            cy={cy}
+            rx={6.4 * ELLIPSE_X}
+            ry={6.4 * ELLIPSE_Y}
+          />
+        )}
+      </g>
+    );
+  };
 
   return (
     <svg
       className={`graph${hovered ? ' graph--hovering' : ''}`}
-      viewBox="0 0 540 380"
+      viewBox="0 0 560 520"
       role="img"
       aria-label={GRAPH.alt}
     >
+      {/* --- Base plate: the ground the model stands on --- */}
+      <g className="graph__plane graph__plane--base" fill="none">
+        {BASE_GRID.map((d) => (
+          <path d={d} key={d} />
+        ))}
+        <path className="graph__plane-edge" d={outlineOf(0)} />
+      </g>
+
       <g className="graph__edges" fill="none">
         {EDGES.map(([from, to], index) => {
           const a = NODES[INDEX_BY_ID[from]];
           const b = NODES[INDEX_BY_ID[to]];
-          const d = `M${a.x} ${a.y} L${b.x} ${b.y}`;
+          const d = segment(a.x, a.y, b.x, b.y, 0);
           const isLit = hovered === from || hovered === to;
 
           return (
@@ -165,7 +384,7 @@ export default function PropagationGraph() {
               <path
                 className="graph__pulse"
                 ref={(el) => {
-                  pulseRefs.current[index] = el;
+                  edgePulseRefs.current[index] = el;
                 }}
                 pathLength="1"
                 d={d}
@@ -176,39 +395,35 @@ export default function PropagationGraph() {
         })}
       </g>
 
-      <g className="graph__nodes">
-        {NODES.map((node, index) => (
-          /* The wrapper owns the draw-in so hover is free to drive the
-             circle's own opacity and scale without the two colliding. */
-          <g
-            className="graph__pop"
-            key={node.id}
-            style={{ animationDelay: `${0.45 + index * 0.09}s` }}
-          >
-            <circle
-              className={[
-                'graph__node',
-                node.id === 'n1' ? 'graph__node--origin' : '',
-                lit && !lit.has(node.id) ? 'is-dim' : '',
-                hovered === node.id ? 'is-lit' : '',
-              ]
-                .filter(Boolean)
-                .join(' ')}
-              ref={(el) => {
-                nodeRefs.current[index] = el;
-              }}
-              cx={node.x}
-              cy={node.y}
-              r={node.r}
-              onMouseEnter={() => setHovered(node.id)}
-              onMouseLeave={() => setHovered(null)}
-            />
-            {node.id === 'n1' && (
-              <circle className="graph__core" ref={coreRef} cx={node.x} cy={node.y} r="9" />
-            )}
-          </g>
+      {/* --- Model and risers, furthest first --- */}
+      {MODEL_ORDER.map((item) =>
+        item.kind === 'riser' ? renderRiser(item.index) : renderNode(item.index),
+      )}
+
+      {/* --- Result plate, in front: it is nearer the camera than the model,
+              which is what an exploded axonometric is meant to show --- */}
+      <g className="graph__plane graph__plane--upper" fill="none">
+        {UPPER_GRID.map((d) => (
+          <path d={d} key={d} />
         ))}
+        <path className="graph__plane-edge" d={outlineOf(RISE)} />
       </g>
+
+      {CELL_ORDER.map((index) => {
+        const node = NODES[index];
+
+        return (
+          <polygon
+            className={`graph__cell${hovered === node.id ? ' is-lit' : ''}${dimClass(node.id)}`}
+            key={`cell-${node.id}`}
+            ref={(el) => {
+              cellRefs.current[index] = el;
+            }}
+            points={cellAt(node.x, node.y, node.r * CELL_SCALE, RISE)}
+            style={{ animationDelay: `${1.7 + index * 0.06}s` }}
+          />
+        );
+      })}
     </svg>
   );
 }
