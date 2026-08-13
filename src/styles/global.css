@@ -56,7 +56,7 @@ svg {
 
 /* Technical register: eyebrows, dimensions, data labels. */
 .overline {
-  font-family: var(--font-mono);
+  font-family: var(--font-technical);
   font-size: var(--size-overline);
   line-height: var(--leading-overline);
   font-weight: var(--weight-regular);

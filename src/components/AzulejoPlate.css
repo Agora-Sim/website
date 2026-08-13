@@ -28,9 +28,9 @@
 }
 
 .plate__label {
-  font-family: var(--font-mono);
+  font-family: var(--font-technical);
   font-size: 11px;
-  letter-spacing: var(--tracking-mono);
+  letter-spacing: var(--tracking-technical);
   text-transform: uppercase;
   fill: rgba(255, 255, 255, 0.66);
 }

@@ -27,8 +27,9 @@
   --font-display: 'Bricolage Grotesque', 'Inter', system-ui, sans-serif;
   --font-body: 'Bricolage Grotesque', 'Inter', system-ui, sans-serif;
   --font-ui: 'Inter', system-ui, sans-serif;
-  /* Not yet approved in 03_Fonts — see 05_Mockups/README.md "quarta fonte" */
-  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  /* Technical register — Inter is the System face in 03_Fonts, and wide
+     tracking is what carries the drawing-label feel without a fourth font. */
+  --font-technical: 'Inter', system-ui, sans-serif;
 
   /* --- 5. Typography: weights --- */
   --weight-regular: 400;
@@ -62,7 +63,7 @@
   --tracking-heading-md: -0.01em;
   --tracking-body: 0;
   --tracking-overline: 0.08em;
-  --tracking-mono: 0.1em;
+  --tracking-technical: 0.1em;
 
   /* --- 9. Space: 8px base unit --- */
   --space-1: 4px;

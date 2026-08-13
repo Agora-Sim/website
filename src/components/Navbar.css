@@ -35,7 +35,7 @@
 }
 
 .navbar__logo {
-  height: 26px;
+  height: 34px;
   width: auto;
 }
 
@@ -77,6 +77,6 @@
   }
 
   .navbar__logo {
-    height: 22px;
+    height: 28px;
   }
 }
