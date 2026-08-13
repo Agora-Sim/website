@@ -1,0 +1,82 @@
+/* ============================================================
+   0. GLOBAL BASE
+   Reset, body defaults, and the shared type/utility classes that
+   more than one component needs.
+   ============================================================ */
+
+@import './tokens.css';
+
+/* --- 1. Reset --- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-blueprint);
+  color: var(--color-text-body);
+  font-family: var(--font-body);
+  font-size: var(--size-body-base);
+  line-height: var(--leading-body-base);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* --- 2. Focus --- */
+
+:focus-visible {
+  outline: 2px solid var(--color-anzac);
+  outline-offset: 3px;
+}
+
+/* --- 3. Layout utilities --- */
+
+.wrap {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* --- 4. Type utilities --- */
+
+/* Technical register: eyebrows, dimensions, data labels. */
+.overline {
+  font-family: var(--font-mono);
+  font-size: var(--size-overline);
+  line-height: var(--leading-overline);
+  font-weight: var(--weight-regular);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-anzac);
+}
+
+/* --- 5. Reduced motion --- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,211 @@
+/* ============================================================
+   0. HERO
+   ============================================================ */
+
+/* --- 1. Layout --- */
+
+.hero {
+  position: relative;
+  z-index: 1;
+}
+
+.hero__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr);
+  gap: clamp(var(--space-5), 5vw, var(--space-8));
+  align-items: center;
+  min-height: calc(100svh - 96px);
+  padding-block: var(--space-7) var(--space-8);
+}
+
+/* --- 2. Copy --- */
+
+.hero__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.hero__eyebrow::after {
+  content: '';
+  flex: 1;
+  max-width: 120px;
+  height: 1px;
+  background: var(--color-line-soft);
+}
+
+.hero__headline {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 5vw, 68px);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  font-weight: var(--weight-extrabold);
+  font-variation-settings: 'opsz' 64;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-4);
+}
+
+.hero__line {
+  display: block;
+}
+
+.hero__accent {
+  font-style: normal;
+  color: var(--color-anzac);
+}
+
+.hero__lede {
+  font-size: clamp(16px, 1.15vw, var(--size-body-lg));
+  line-height: 1.6;
+  max-width: 46ch;
+  color: var(--color-text-body);
+  margin-bottom: var(--space-6);
+}
+
+/* --- 3. Plate --- */
+
+/* A pool of deeper blue so the drawn tile reads as figure against the
+   patterned field rather than merging with it. */
+.hero__plate {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+
+.hero__plate::before {
+  content: '';
+  position: absolute;
+  inset: -12%;
+  background: radial-gradient(
+    closest-side,
+    rgba(13, 53, 118, 0.82) 0%,
+    rgba(13, 53, 118, 0.5) 55%,
+    transparent 100%
+  );
+}
+
+.hero__plate > * {
+  position: relative;
+}
+
+/* --- 4. Actions --- */
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.btn {
+  font-family: var(--font-ui);
+  font-size: 15px;
+  font-weight: var(--weight-semibold);
+  padding: 13px var(--space-4);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  transition:
+    transform var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
+}
+
+/* Monza is fill-only per 02_Colors — white text sits on it at 5.8:1. */
+.btn--primary {
+  background-color: var(--color-monza);
+  border: 1px solid var(--color-monza);
+  color: var(--color-white);
+}
+
+.btn--primary:hover {
+  background-color: var(--color-monza-hover);
+  border-color: var(--color-monza-hover);
+  transform: translateY(-2px);
+}
+
+.btn--ghost {
+  background-color: transparent;
+  border: 1px solid var(--color-line);
+  color: var(--color-white);
+}
+
+.btn--ghost:hover {
+  border-color: var(--color-white);
+  transform: translateY(-2px);
+}
+
+.btn__arrow {
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.btn:hover .btn__arrow {
+  transform: translateX(3px);
+}
+
+/* --- 5. Load-in --- */
+
+.hero__eyebrow,
+.hero__headline,
+.hero__lede,
+.hero__actions {
+  opacity: 0;
+  animation: hero-rise var(--dur-slow) var(--ease-out) forwards;
+}
+
+.hero__eyebrow { animation-delay: 0.05s; }
+.hero__headline { animation-delay: 0.15s; }
+.hero__lede { animation-delay: 0.3s; }
+.hero__actions { animation-delay: 0.42s; }
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__eyebrow,
+  .hero__headline,
+  .hero__lede,
+  .hero__actions {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* --- 6. Small screens --- */
+
+@media (max-width: 900px) {
+  .hero__inner {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+    padding-block: var(--space-6) var(--space-7);
+  }
+
+  /* Drawing first would push the thesis below the fold on a phone. */
+  .hero__plate {
+    order: 1;
+    max-width: 420px;
+    margin-inline: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Near-equal content widths read as a misalignment; match them instead. */
+  .hero__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn {
+    justify-content: center;
+  }
+}

@@ -1,0 +1,82 @@
+/* ============================================================
+   0. NAVBAR
+   ============================================================ */
+
+/* --- 1. Bar --- */
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border-bottom: 1px solid transparent;
+  transition:
+    border-color var(--dur-base) var(--ease-out),
+    background-color var(--dur-base) var(--ease-out);
+}
+
+.navbar--scrolled {
+  border-bottom-color: var(--color-line-soft);
+  background-color: rgba(13, 53, 118, 0.72);
+  backdrop-filter: blur(10px);
+}
+
+.navbar__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  padding-block: var(--space-4) var(--space-3);
+}
+
+/* --- 2. Brand --- */
+
+.navbar__brand {
+  display: block;
+  line-height: 0;
+}
+
+.navbar__logo {
+  height: 26px;
+  width: auto;
+}
+
+/* --- 3. Links --- */
+
+.navbar__nav {
+  display: flex;
+  gap: var(--space-5);
+  margin-left: auto;
+}
+
+.navbar__link {
+  font-family: var(--font-ui);
+  font-size: var(--size-body-sm);
+  color: var(--color-text-body);
+  text-decoration: none;
+  padding-block: var(--space-1);
+  border-bottom: 1px solid transparent;
+  transition:
+    color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
+}
+
+.navbar__link:hover,
+.navbar__link:focus-visible {
+  color: var(--color-white);
+  border-bottom-color: var(--color-anzac);
+}
+
+/* --- 4. Small screens --- */
+
+@media (max-width: 480px) {
+  .navbar__inner {
+    gap: var(--space-3);
+  }
+
+  .navbar__nav {
+    gap: var(--space-4);
+  }
+
+  .navbar__logo {
+    height: 22px;
+  }
+}

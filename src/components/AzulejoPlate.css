@@ -1,0 +1,89 @@
+/* ============================================================
+   0. AZULEJO PLATE
+   ============================================================ */
+
+/* --- 1. Sheet --- */
+
+.plate {
+  width: 100%;
+  height: auto;
+  max-width: 460px;
+  margin-inline: auto;
+}
+
+/* --- 2. Strokes --- */
+
+.plate__dims {
+  stroke: rgba(255, 255, 255, 0.28);
+  stroke-width: 1;
+}
+
+.plate__draw {
+  stroke: var(--color-white);
+  stroke-width: 1.6;
+}
+
+.plate__datum {
+  fill: var(--color-anzac);
+}
+
+.plate__label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  fill: rgba(255, 255, 255, 0.66);
+}
+
+/* --- 3. Draw-in --- */
+
+/* pathLength="1" on every stroke means one dash value covers them all. */
+.plate__draw > * {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: plate-draw 1.6s var(--ease-out) forwards;
+}
+
+.plate__dims,
+.plate__datum,
+.plate__label {
+  opacity: 0;
+  animation: plate-ink var(--dur-base) var(--ease-out) forwards;
+}
+
+/* The tile draws outward from the centre, then the annotations land. */
+.plate__draw > *:nth-child(1) { animation-delay: 0.25s; }
+.plate__draw > *:nth-child(2) { animation-delay: 0.35s; }
+.plate__draw > *:nth-child(3) { animation-delay: 0.45s; }
+.plate__draw > *:nth-child(4) { animation-delay: 0.5s; }
+.plate__draw > *:nth-child(n + 5) { animation-delay: 0.6s; }
+
+.plate__dims { animation-delay: 1.5s; }
+.plate__datum { animation-delay: 1.7s; }
+.plate__label { animation-delay: 1.85s; }
+
+@keyframes plate-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes plate-ink {
+  to {
+    opacity: 1;
+  }
+}
+
+/* --- 4. Reduced motion --- */
+
+@media (prefers-reduced-motion: reduce) {
+  .plate__draw > * {
+    stroke-dashoffset: 0;
+  }
+
+  .plate__dims,
+  .plate__datum,
+  .plate__label {
+    opacity: 1;
+  }
+}
