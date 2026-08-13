@@ -67,7 +67,7 @@
   font-size: var(--size-body-lg);
   line-height: var(--leading-body-lg);
   max-width: 56ch;
-  text-align: left;
+  text-align: center;
   color: var(--color-text-body);
   margin-bottom: var(--space-5);
 }
