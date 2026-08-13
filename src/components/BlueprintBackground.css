@@ -111,29 +111,7 @@
     );
 }
 
-/* --- 5. Registration marks --- */
-
-/* A crosshair-in-circle at two of the viewport's four true corners, in
-   Anzac — 05_Mockups' own note for the cartouche ("marcas de canto a
-   Anzac") applied to the page itself rather than just the hero's plate.
-   Anzac carries data and eyebrows; a registration mark is exactly that,
-   which is what earns it the colour here. Top-left is left bare: that's
-   where the navbar logo sits, and a second mark that close to it read as
-   clutter rather than a second data point. Top-right is bare too: it sits
-   right where the hero's drawn network figure is, and a mark competing
-   with the page's other figure lost to the same "too strong" test the
-   sheet border failed. One image, two background-position values. */
-.blueprint__registration {
-  opacity: 0.55;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 22 22'%3E%3Cg fill='none' stroke='%23e2c953' stroke-width='1'%3E%3Ccircle cx='11' cy='11' r='5'/%3E%3Cpath d='M11 1 V6 M11 16 V21 M1 11 H6 M16 11 H21'/%3E%3C/g%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position:
-    bottom 14px left 14px,
-    bottom 14px right 14px;
-  background-size: 22px 22px;
-}
-
-/* --- 6. Depth --- */
+/* --- 5. Depth --- */
 
 .blueprint__fade {
   background: radial-gradient(
@@ -143,7 +121,7 @@
   );
 }
 
-/* --- 7. Grain --- */
+/* --- 6. Grain --- */
 
 /* Cyanotype prints are a physical process, not a flat fill — this is the
    difference between "blue background" and "print on paper". White noise

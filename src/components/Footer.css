@@ -2,45 +2,56 @@
    0. FOOTER
    ============================================================ */
 
-/* --- 1. Bar --- */
+/* --- 1. Strip --- */
 
 .footer {
   position: relative;
   z-index: 1;
-  padding-block: var(--space-7) var(--space-5);
+  padding-block: var(--space-4);
   border-top: 1px solid var(--color-line-soft);
+}
+
+/* Registration tick on the top rule, the background's mark at strip scale. */
+.footer::before {
+  content: '';
+  position: absolute;
+  inset-block-start: -1px;
+  inset-inline-start: 0;
+  width: 48px;
+  height: 1px;
+  background: var(--color-anzac);
 }
 
 .footer__inner {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   flex-wrap: wrap;
-  gap: var(--space-6);
-  padding-bottom: var(--space-5);
+  gap: var(--space-3) var(--space-4);
 }
 
-/* --- 2. Brand --- */
+/* --- 2. Fields --- */
 
-.footer__brand {
-  max-width: 360px;
+/* Hairline between fields, the way a title block divides its cells. */
+.footer__field + .footer__field,
+.footer__logo-link + .footer__field {
+  border-inline-start: 1px solid var(--color-line-soft);
+  padding-inline-start: var(--space-4);
 }
 
 .footer__logo-link {
   display: block;
   line-height: 0;
-  margin-bottom: var(--space-3);
 }
 
 .footer__logo {
-  height: 32px;
+  height: 34px;
   width: auto;
 }
 
 .footer__tagline {
-  font-size: var(--size-body-sm);
-  line-height: var(--leading-body-sm);
-  color: var(--color-text-body);
+  flex: 1 1 260px;
+  font-size: var(--size-caption);
+  color: var(--color-text-muted);
 }
 
 /* --- 3. Links --- */
@@ -48,15 +59,16 @@
 .footer__nav {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-5);
+  gap: var(--space-4);
 }
 
 .footer__link {
-  font-family: var(--font-ui);
-  font-size: var(--size-body-base);
+  font-family: var(--font-technical);
+  font-size: var(--size-overline);
+  letter-spacing: var(--tracking-technical);
+  text-transform: uppercase;
   color: var(--color-text-body);
   text-decoration: none;
-  padding-block: var(--space-1);
   border-bottom: 1px solid transparent;
   transition:
     color var(--dur-fast) var(--ease-out),
@@ -71,25 +83,31 @@
 
 /* --- 4. Copyright --- */
 
-.footer__bar {
-  padding-top: var(--space-4);
-  border-top: 1px solid var(--color-line-soft);
-}
-
 .footer__copyright {
   font-size: var(--size-caption);
   color: var(--color-text-muted);
+  white-space: nowrap;
 }
 
 /* --- 5. Small screens --- */
 
-@media (max-width: 600px) {
+@media (max-width: 720px) {
   .footer__inner {
-    flex-direction: column;
-    gap: var(--space-4);
+    gap: var(--space-3);
+  }
+
+  /* Stacked fields read as rows, so the dividing hairline moves to the top. */
+  .footer__field + .footer__field,
+  .footer__logo-link + .footer__field {
+    border-inline-start: 0;
+    padding-inline-start: 0;
+  }
+
+  .footer__tagline {
+    flex-basis: 100%;
   }
 
   .footer__nav {
-    gap: var(--space-4);
+    flex: 1 1 auto;
   }
 }

@@ -11,8 +11,10 @@ import './Footer.css';
    ============================================================ */
 
 /**
- * Page close: wordmark and tagline on the left, the same section links the
- * navbar carries plus the source repo on the right, a copyright line below.
+ * Page close, drawn as a drawing's title block: one strip of fields divided by
+ * hairlines — wordmark, tagline, section links, copyright — rather than the two
+ * stacked rows it used to be, which cost the page a screenful of height for
+ * four short pieces of metadata.
  *
  * The build year comes from the browser clock rather than site content, so
  * it never needs a manual bump.
@@ -24,14 +26,13 @@ export default function Footer() {
   return (
     <footer className="footer">
       <div className="footer__inner wrap">
-        <div className="footer__brand">
-          <a className="footer__logo-link" href={BRAND.homeHref}>
-            <img className="footer__logo" src={logo} alt={BRAND.logoAlt} />
-          </a>
-          <p className="footer__tagline">{tagline}</p>
-        </div>
+        <a className="footer__logo-link" href={BRAND.homeHref}>
+          <img className="footer__logo" src={logo} alt={BRAND.logoAlt} />
+        </a>
 
-        <nav className="footer__nav" aria-label="Rodapé">
+        <p className="footer__field footer__tagline">{tagline}</p>
+
+        <nav className="footer__field footer__nav" aria-label="Rodapé">
           {NAV_LINKS.map((link) => (
             <a className="footer__link" key={link.id} href={link.href}>
               {link.label}
@@ -41,10 +42,8 @@ export default function Footer() {
             {repo.label}
           </a>
         </nav>
-      </div>
 
-      <div className="footer__bar wrap">
-        <p className="footer__copyright">© {year} AgoraSim</p>
+        <p className="footer__field footer__copyright">© {year} AgoraSim</p>
       </div>
     </footer>
   );

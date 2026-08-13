@@ -9,17 +9,14 @@ import './BlueprintBackground.css';
    ============================================================ */
 
 /**
- * The page's blue field, in eight stacked layers.
+ * The page's blue field, in seven stacked layers.
  *
  * Bottom to top, in three groups. Base texture: the azulejo pattern in two
  * corners (top-right and, point-mirrored through the page centre, bottom-
  * left), a minor graph-paper grid, the major millimetre grid on top of it.
- * Ink, drawn on that texture: two sparse construction lines and an Anzac
- * registration mark at two of the page's four true corners (top-left is
- * bare — the navbar logo owns that spot; top-right is bare too — the
- * hero's drawn network figure owns that one). Post-process, over the
- * assembled image: a depth vignette, then paper grain. Purely decorative —
- * it is fixed, non-interactive, and hidden from assistive tech.
+ * Ink, drawn on that texture: two sparse construction lines. Post-process,
+ * over the assembled image: a depth vignette, then paper grain. Purely
+ * decorative — it is fixed, non-interactive, and hidden from assistive tech.
  */
 export default function BlueprintBackground() {
   return (
@@ -29,7 +26,6 @@ export default function BlueprintBackground() {
       <div className="blueprint__grid-minor" />
       <div className="blueprint__grid" />
       <div className="blueprint__lines" />
-      <div className="blueprint__registration" />
       <div className="blueprint__fade" />
       <div className="blueprint__grain" />
     </div>
