@@ -10,12 +10,13 @@
 
 export const METHOD = {
   eyebrow: 'Método',
-  headline: ['Uma ferramenta, muitos', 'problemas por resolver.'],
+  headline: ['Um método, muitos', 'problemas por resolver.'],
   body:
-    'O simulador testa o impacto de uma política pública com o mesmo rigor com que ' +
-    'testaria um gargalo numa autarquia, ou qualquer outro problema de gestão pública. ' +
-    'Onde os dados não existem, uma investigação vai buscá-los — para que a ' +
-    'transparência não dependa de quem já os tem.',
+    'Usamos o método científico: testamos empiricamente para tirar conclusões ' +
+    'concretas sobre o impacto de medidas, arquiteturas, hierarquias, etc. Para ' +
+    'isso desenvolvemos o Simulador, uma ferramenta que replica qualquer ambiente ' +
+    'com grande flexibilidade.Cada projeto junta essa investigação a um relatório ' +
+    'completo das soluções mais discutidas.',
   /* Two cards, not three — the reference stages exactly two, and a third
      diluted the "one engine, staggered" composition. The investigation
      angle stays in `body` above rather than getting its own card. */
@@ -26,25 +27,25 @@ export const METHOD = {
       /* Only this card is stamped: it names the tool itself. Stamping both
          would read as two products instead of one engine on two problems. */
       stamp: 'Simulador',
-      title: 'Impacto de uma política',
-      subtitle: 'Simulação sobre dados abertos',
+      title: 'Simulação da realidade',
+      subtitle: 'Código todo open-source',
       lines: [
-        'Testa o cenário antes da decisão',
-        'Milhares de agentes sintéticos',
-        'Isola a variável em análise',
-        'Sem dados pessoais',
+        'Ferramenta flexível para diferentes tipos de problemas',
+        'Acompanhamento de ferramentas de análise',
+        'Permite testar o possível impacto de uma solução',
+        'Validado com dados reais',
       ],
     },
     {
       id: 'gargalo',
       icon: 'flow',
-      title: 'Gargalo organizacional',
-      subtitle: 'Réplica de um processo público',
+      title: 'Baseado na realidade',
+      subtitle: 'Utilizando dados reais para prever impacto',
       lines: [
-        'Mapeia cada etapa do processo',
-        'Identifica onde o processo trava',
-        'Compara alternativas de desenho',
-        'Modelo aberto e auditável',
+        'Análise investigacional do problema',
+        'Tranparência sobre a natureza da questão',
+        'Trabalho completo e detalhado',
+        'Relatório disponível para download',
       ],
     },
   ],

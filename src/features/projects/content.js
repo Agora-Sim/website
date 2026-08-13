@@ -27,45 +27,46 @@ export const PROJECTS = {
   eyebrow: 'Projetos',
   headline: ['O que estamos a construir,', 'e o que vem a seguir.'],
   body:
-    'Cada projeto é público desde o primeiro dia — o código, o modelo e os ' +
-    'pressupostos. O estado de cada um está indicado para que ninguém tenha de ' +
-    'adivinhar o que já é utilizável.',
+    'Todos os nossos projetos abrangem várias dimensões da realidade Portuguesa. ' +
+    'Alguns projetos serão relativos a novas ferramentas, outros a análise de soluções. ' +
+    'Todos estão disponíveis e abertos a discussões e melhorias. ',
   items: [
     {
       id: 'simulador',
-      image: '',
+      image: 'src/assets/images/simulator_banner.png',
       imageAlt: '',
       status: 'desenvolvimento',
       title: 'Simulador',
       description:
-        'Ferramenta para simular qualquer ambiente e apoiar a nossa investigação. ' +
-        'Reproduz um sistema em agentes sintéticos e mede o efeito de uma alteração.',
+        'Ferramenta para simular qualquer ambiente e apoiar a nossa investigação. ',
       href: 'https://github.com/Agora-Sim/Simulator',
     },
-    /* Placeholders — substituir por projetos reais. */
     {
-      id: 'projeto-2',
+      id: 'aguas',
       image: '',
       imageAlt: '',
       status: 'planeado',
-      title: 'Por anunciar',
-      description: 'Espaço reservado para o próximo projeto.',
+      title: 'Água em Almada',
+      description: 'Projeto de análise tanto de qual será o estado da rede de águas ' +
+      'de Almada, bem como qual seria o impacto de cada possível solução ',
     },
     {
-      id: 'projeto-3',
+      id: 'rendas',
       image: '',
       imageAlt: '',
       status: 'planeado',
-      title: 'Por anunciar',
-      description: 'Espaço reservado para o próximo projeto.',
+      title: 'A Fortuna das Rendas',
+      description: 'Desmisitificar o verdadero impacto das diferentes medidas propostas ' +
+      'para melhorar a situação das rendas. ',
     },
     {
-      id: 'projeto-4',
+      id: 'digital-twin',
       image: '',
       imageAlt: '',
       status: 'planeado',
-      title: 'Por anunciar',
-      description: 'Espaço reservado para o próximo projeto.',
+      title: 'Portugal Digital',
+      description: 'O quão exata consegue ser a simulação em relação ao panorama nacional? ' +
+      'Um teste de stress da ferramenta',
     },
   ],
 };
