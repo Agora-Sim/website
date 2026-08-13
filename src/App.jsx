@@ -7,6 +7,7 @@ import Footer from './components/Footer.jsx';
 import Hero from './components/Hero.jsx';
 import Method from './components/Method.jsx';
 import Navbar from './components/Navbar.jsx';
+import Projects from './components/Projects.jsx';
 import Vision from './components/Vision.jsx';
 
 /* ============================================================
@@ -23,6 +24,7 @@ export default function App() {
         <Hero />
         <Vision />
         <Method />
+        <Projects />
       </main>
       <Footer />
     </>

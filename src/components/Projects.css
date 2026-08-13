@@ -1,0 +1,395 @@
+/* ============================================================
+   0. PROJECTS
+   ============================================================ */
+
+/* --- 1. Layout --- */
+
+.projects {
+  position: relative;
+  z-index: 1;
+  padding-block: var(--space-6) var(--space-7);
+}
+
+/* --- 2. Intro --- */
+
+/* Mirrors Method's asymmetric intro, flipped: body left, headline right
+   would read as a new template — same axis, same order, keeps the two
+   sections part of one page rather than two designs. */
+.projects__intro {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(var(--space-5), 5vw, var(--space-7));
+  align-items: center;
+  margin-bottom: var(--space-6);
+}
+
+.projects__eyebrow {
+  display: block;
+  margin-bottom: var(--space-3);
+}
+
+.projects__headline {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 2.6vw, 32px);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  font-weight: var(--weight-extrabold);
+  font-variation-settings: 'opsz' 32;
+  color: var(--color-text-primary);
+}
+
+.projects__line {
+  display: block;
+}
+
+.projects__body {
+  font-size: var(--size-body-lg);
+  line-height: var(--leading-body-lg);
+  max-width: 52ch;
+  color: var(--color-text-body);
+}
+
+/* --- 3. Grid --- */
+
+/* Four across on the widest screens, halving down rather than reflowing to
+   an odd count — a row of plates on a sheet, not a masonry wall. */
+.projects__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-4);
+  list-style: none;
+}
+
+/* --- 4. Card --- */
+
+.projects__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background-color: rgba(13, 53, 118, 0.55);
+  box-shadow: inset 0 1px 0 var(--color-line-soft);
+  /* The transition lives in section 8 — reveal and hover share `transform`
+     and would otherwise be declared twice with different timings. */
+}
+
+.projects__card:hover {
+  border-color: var(--color-line-strong);
+}
+
+/* --- 5. Banner --- */
+
+/* The plate: its own pool of deep blueprint under a millimetre grid, the
+   same trick the hero uses to separate a drawn figure from the drawn field
+   behind it. The grid stays under the image so a photo never fights it. */
+.projects__banner {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-bottom: 1px solid var(--color-line-soft);
+  background-color: var(--color-blueprint-deep);
+  background-image:
+    linear-gradient(var(--color-line-soft) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-line-soft) 1px, transparent 1px);
+  background-size: 16px 16px;
+  background-position: 0 0;
+  transition: background-position var(--dur-slow) var(--ease-out);
+}
+
+/* The sheet slides half a square under the card on approach — the smallest
+   move that says the plate is a surface, not a printed panel. */
+.projects__card:hover .projects__banner {
+  background-position: 8px 8px;
+}
+
+.projects__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+
+.projects__card:hover .projects__image {
+  transform: scale(1.04);
+}
+
+/* An empty plate still has to read as a sheet awaiting a drawing rather
+   than a hole: the monogram sits on it as a watermark, faint enough to be
+   texture, and a vignette pools the light toward the centre. */
+.projects__banner--empty::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(
+    circle at 50% 50%,
+    rgba(18, 72, 161, 0.9),
+    transparent 70%
+  );
+}
+
+/* The monogram is masked rather than drawn: the file is multicolour, and a
+   watermark has to be one ink or it reads as an artefact on the plate. */
+.projects__banner--empty::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: var(--color-white);
+  opacity: 0.09;
+  mask-image: url('/monogram.svg');
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: 76px;
+  -webkit-mask-image: url('/monogram.svg');
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: 76px;
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+
+.projects__card:hover .projects__banner--empty::after {
+  opacity: 0.16;
+}
+
+/* --- 5b. Registration frame --- */
+
+/* Corner brackets, the background's registration-mark register at card
+   scale — six bars drawn as gradients so it stays one element. They grow on
+   hover, the way a mark tightens on the thing it marks. Top-left is bare:
+   the status chip holds that corner, and a bracket under it read as a
+   collision rather than a second mark. */
+.projects__frame {
+  position: absolute;
+  inset: 10px;
+  pointer-events: none;
+  background-repeat: no-repeat;
+  background-image:
+    linear-gradient(var(--color-anzac), var(--color-anzac)),
+    linear-gradient(var(--color-anzac), var(--color-anzac)),
+    linear-gradient(var(--color-anzac), var(--color-anzac)),
+    linear-gradient(var(--color-anzac), var(--color-anzac)),
+    linear-gradient(var(--color-anzac), var(--color-anzac)),
+    linear-gradient(var(--color-anzac), var(--color-anzac));
+  background-position:
+    right top, right top,
+    left bottom, left bottom,
+    right bottom, right bottom;
+  background-size:
+    12px 1.5px, 1.5px 12px,
+    12px 1.5px, 1.5px 12px,
+    12px 1.5px, 1.5px 12px;
+  opacity: 0.55;
+  transition:
+    background-size var(--dur-base) var(--ease-out),
+    opacity var(--dur-base) var(--ease-out);
+}
+
+.projects__card:hover .projects__frame {
+  opacity: 1;
+  background-size:
+    22px 1.5px, 1.5px 22px,
+    22px 1.5px, 1.5px 22px,
+    22px 1.5px, 1.5px 22px;
+}
+
+/* --- 6. Status --- */
+
+/* State is data, so it carries Anzac and sits on the plate rather than in
+   the copy — it is the first thing a reader needs about a project. Monza is
+   deliberately absent here; it is spent on Method's stamp. */
+.projects__status {
+  position: absolute;
+  /* Flush with the frame's inset, so the chip reads as the fourth corner
+     mark rather than as a label floating over one. */
+  top: 10px;
+  left: 10px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px var(--space-2);
+  border: 1px solid var(--color-line-soft);
+  border-radius: var(--radius-sm);
+  background-color: rgba(9, 38, 86, 0.82);
+  font-family: var(--font-technical);
+  font-size: var(--size-overline);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-technical);
+  text-transform: uppercase;
+  color: var(--color-text-body);
+}
+
+/* The dot, not the label colour, is what separates the three states — a
+   filled lamp reads as done, a ring as not yet, without a second hue. */
+.projects__status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-anzac);
+}
+
+.projects__status--concluido .projects__status-dot {
+  background-color: var(--color-anzac);
+}
+
+.projects__status--desenvolvimento .projects__status-dot {
+  background-image: linear-gradient(
+    to right,
+    var(--color-anzac) 50%,
+    transparent 50%
+  );
+}
+
+.projects__status--planeado .projects__status-dot {
+  border-color: var(--color-text-muted);
+}
+
+/* --- 7. Card body --- */
+
+.projects__card-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
+}
+
+.projects__card-title {
+  font-family: var(--font-technical);
+  font-size: var(--size-body-base);
+  letter-spacing: var(--tracking-technical);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-primary);
+}
+
+/* Stretched over the whole card: the title is the only link, but the card
+   is the target a reader aims at. */
+.projects__card-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.projects__card-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.projects__card-link:hover {
+  color: var(--color-anzac);
+}
+
+/* Only linked cards get an arrow, and only on approach — it marks the card
+   that leaves the site, so it must not appear on the ones that don't. */
+.projects__arrow {
+  display: inline-block;
+  margin-left: 6px;
+  opacity: 0;
+  transform: translate(-3px, 3px);
+  transition:
+    opacity var(--dur-base) var(--ease-out),
+    transform var(--dur-base) var(--ease-out);
+}
+
+.projects__card:hover .projects__arrow,
+.projects__card-link:focus-visible .projects__arrow {
+  opacity: 1;
+  transform: none;
+}
+
+.projects__card-text {
+  font-size: var(--size-body-sm);
+  line-height: var(--leading-body-sm);
+  color: var(--color-text-muted);
+}
+
+/* --- 8. Reveal --- */
+
+/* Tied to the scroll, not to load: the section sits well below the fold, so
+   a load-time animation would be over before anyone got here. `.is-revealed`
+   is set once by the observer in Projects.jsx and never removed. Cards carry
+   their own transition-delay inline, so the row deals itself out left to
+   right instead of arriving as one block. */
+.projects__eyebrow,
+.projects__headline,
+.projects__body,
+.projects__card {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity var(--dur-slow) var(--ease-out),
+    transform var(--dur-slow) var(--ease-out);
+}
+
+.projects__card {
+  /* Reveal and hover share `transform`, so the hover lift has to be listed
+     here too or it inherits the slow reveal timing. */
+  transition:
+    opacity var(--dur-slow) var(--ease-out),
+    transform var(--dur-slow) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out);
+}
+
+.projects.is-revealed .projects__eyebrow,
+.projects.is-revealed .projects__headline,
+.projects.is-revealed .projects__body,
+.projects.is-revealed .projects__card {
+  opacity: 1;
+  transform: none;
+}
+
+/* Once revealed, the card hands `transform` back to the hover lift — at
+   hover speed, and at a specificity that clears the reveal's own rule. */
+.projects.is-revealed .projects__card:hover {
+  transform: translateY(-4px);
+  transition-delay: 0s;
+  transition-duration: var(--dur-base);
+}
+
+.projects.is-revealed .projects__headline { transition-delay: 0.08s; }
+.projects.is-revealed .projects__body { transition-delay: 0.14s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .projects__eyebrow,
+  .projects__headline,
+  .projects__body,
+  .projects__card {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .projects.is-revealed .projects__card:hover {
+    transform: none;
+  }
+
+  .projects__card:hover .projects__image {
+    transform: none;
+  }
+}
+
+/* --- 9. Small screens --- */
+
+@media (max-width: 1100px) {
+  .projects__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .projects {
+    padding-block: var(--space-5) var(--space-6);
+  }
+
+  .projects__intro {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    margin-bottom: var(--space-5);
+  }
+}
+
+@media (max-width: 560px) {
+  .projects__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
