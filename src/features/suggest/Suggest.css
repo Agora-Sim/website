@@ -108,10 +108,10 @@
   pointer-events: none;
   opacity: 0.09;
   background-color: var(--color-blueprint);
-  mask-image: url('/azulejo.svg');
+  mask-image: url('/patterns/azulejo.svg');
   mask-repeat: repeat;
   mask-size: 160px 160px;
-  -webkit-mask-image: url('/azulejo.svg');
+  -webkit-mask-image: url('/patterns/azulejo.svg');
   -webkit-mask-repeat: repeat;
   -webkit-mask-size: 160px 160px;
 }
