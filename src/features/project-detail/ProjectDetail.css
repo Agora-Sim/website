@@ -223,6 +223,9 @@
 
 /* Ghost, not Monza: the one action on this page leaves the site, and the
    red fill is already spent on Method's stamp and the suggestion slip. */
+/* Both column actions run the block's full width, so the primary and the
+   ghost read as one stack rather than two loose buttons. */
+.detail__join,
 .detail__repo {
   align-self: stretch;
   justify-content: space-between;

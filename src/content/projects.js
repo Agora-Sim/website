@@ -10,6 +10,10 @@
    invented numbers for sizing, and those must not reach the site.
    ============================================================ */
 
+/* --- 0. Imports --- */
+
+import { JOIN_PATH } from './site.js';
+
 /* --- 1. Routing --- */
 
 /* The register's own path, and the base every project page hangs off. Kept
@@ -22,6 +26,16 @@ export const projectPath = (id) => `${PROJECTS_PATH}/${id}`;
 
 /** A project by `id`, or `undefined` for a URL that names no project. */
 export const findProject = (id) => PROJECTS.find((project) => project.id === id);
+
+/* The query parameter a project page hands `/participar` so the slip opens
+   with that project already chosen. It carries the `id`, not the title: the
+   id is already a published URL segment, and a title can be reworded without
+   breaking a link someone shared. */
+export const JOIN_PARAM = 'projeto';
+
+/** The participation slip, with `project` preselected. */
+export const joinPath = (project) =>
+  `${JOIN_PATH}?${JOIN_PARAM}=${encodeURIComponent(project.id)}`;
 
 /* --- 2. Figure formats --- */
 
@@ -125,6 +139,11 @@ export const leadField = (project) => {
    the one cell that fits at a quarter of the grid. It is optional: without
    it the first disclosed field stands in. The open panel shows them all.
 
+   `join: true` puts the "Participar neste projeto" button on the project's
+   own page, which opens `/participar` with this project already chosen. It
+   is opt-in and omitted by default, because a project that is not taking
+   people yet should not ask for them: delete the key to close it again.
+
    `sections` is the project page's body — a list of
    `{ heading, paragraphs }`, drawn in order. It is optional and starts
    empty: a project with none gets a placeholder line rather than a page
@@ -147,6 +166,7 @@ export const PROJECTS = [
       'Desenvolvido em aberto, com o código e as decisões de modelação à ' +
       'vista de quem quiser contestá-las.',
     href: 'https://github.com/Agora-Sim/Simulator',
+    join: true,
     cardField: 'scope',
     fields: {
       started: '2025',
@@ -170,6 +190,7 @@ export const PROJECTS = [
       'abastecimento de Almada e o que cada solução proposta mudaria, em ' +
       'perdas, em custo e em tempo. Começa por levantar os dados públicos ' +
       'que existem — e por documentar os que não existem.',
+    join: true,
     fields: {
       scope: 'Política pública',
     },
@@ -190,6 +211,7 @@ export const PROJECTS = [
       'elas é quase todo qualitativo. Este projeto modela cada uma no ' +
       'simulador e publica o que cada uma faz ao mercado de arrendamento, ' +
       'com os pressupostos declarados.',
+    join: true,
     fields: {
       scope: 'Política pública',
     },
@@ -210,6 +232,7 @@ export const PROJECTS = [
       'inteiro num único modelo, e onde é que essa aproximação deixa de ser ' +
       'útil. Vale tanto pelo que conseguir reproduzir como pelos limites que ' +
       'expuser.',
+    join: true,
     fields: {
       scope: 'Investigação',
     },

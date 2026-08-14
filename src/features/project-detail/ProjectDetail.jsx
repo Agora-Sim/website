@@ -10,6 +10,7 @@ import {
   PROJECT_FIGURES,
   PROJECT_STATUSES,
   disclosedFields,
+  joinPath,
 } from '@/content/projects.js';
 
 import { PROJECT_DETAIL } from './content.js';
@@ -32,7 +33,7 @@ import './ProjectDetail.css';
  * @param {object} props.project an entry from PROJECTS
  */
 export default function ProjectDetail({ project }) {
-  const { eyebrow, back, specsLabel, statusLabel, repo, bodyEmpty } =
+  const { eyebrow, back, specsLabel, statusLabel, repo, join, bodyEmpty } =
     PROJECT_DETAIL;
   const fields = disclosedFields(project.fields);
   const sections = project.sections ?? [];
@@ -110,6 +111,22 @@ export default function ProjectDetail({ project }) {
                 </div>
               ))}
             </dl>
+
+            {/* The page's one action, and the only Monza on it — a project
+                that isn't taking people simply omits `join` and the column
+                ends at the repository link. `→` because it stays on the
+                site, the same rule the cards follow. */}
+            {project.join && (
+              <Link
+                className="btn btn--primary detail__join"
+                to={joinPath(project)}
+              >
+                {join}
+                <span className="btn__arrow" aria-hidden="true">
+                  →
+                </span>
+              </Link>
+            )}
 
             {project.href && (
               <a

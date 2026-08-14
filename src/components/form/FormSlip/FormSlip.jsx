@@ -41,17 +41,25 @@ const ACCESS_KEY = import.meta.env.VITE_WEB3FORMS_KEY ?? '';
  * @param {object} props
  * @param {object} props.content Copy for this slip, shaped like SUGGEST.
  * @param {Array} props.fields The fields to draw, in order.
+ * @param {Record<string, string>} [props.defaults] Values a field opens
+ *   with, keyed by field id — how a project page hands the slip the project
+ *   the reader came from. Uncontrolled: the reader can change any of them.
  */
-export default function FormSlip({ content, fields }) {
+export default function FormSlip({ content, fields, defaults = {} }) {
   const { eyebrow, headline, body, subject, submit, optional, progress, states } =
     content;
   const rootRef = useRef(null);
   const revealed = useRevealed(rootRef, 0.1);
   const [status, setStatus] = useState(ACCESS_KEY ? 'idle' : 'unconfigured');
+  /* A preselected field is already filled, so the count and its underline
+     have to open agreeing with the control rather than at zero. */
+  const filledDefaults = Object.fromEntries(
+    Object.entries(defaults).map(([id, value]) => [id, value.trim() !== '']),
+  );
   /* Which fields currently hold something. Drives the filled underline and
      the progress count — both are feedback on the form's own state, so they
      are derived from it rather than tracked separately. */
-  const [filled, setFilled] = useState({});
+  const [filled, setFilled] = useState(filledDefaults);
 
   const sending = status === 'sending';
   const filledCount = fields.filter((field) => filled[field.id]).length;
@@ -85,8 +93,10 @@ export default function FormSlip({ content, fields }) {
       setStatus('ok');
       form.reset();
       /* The underlines and the count follow the fields, so clearing one
-         without the other would leave the slip reading as still filled. */
-      setFilled({});
+         without the other would leave the slip reading as still filled.
+         `form.reset()` restores the defaults rather than emptying, so the
+         count has to come back to them and not to zero. */
+      setFilled(filledDefaults);
     } catch {
       setStatus('error');
     }
@@ -174,6 +184,7 @@ export default function FormSlip({ content, fields }) {
                   rows={3}
                   required={field.required}
                   placeholder={field.placeholder}
+                  defaultValue={defaults[field.id] ?? ''}
                   onInput={handleInput}
                 />
               )}
@@ -184,7 +195,7 @@ export default function FormSlip({ content, fields }) {
                   id={`slip-${field.id}`}
                   name={field.name}
                   required={field.required}
-                  defaultValue=""
+                  defaultValue={defaults[field.id] ?? ''}
                   onChange={handleInput}
                 >
                   {/* Empty and disabled, so the placeholder can't be sent
@@ -208,6 +219,7 @@ export default function FormSlip({ content, fields }) {
                   name={field.name}
                   required={field.required}
                   placeholder={field.placeholder}
+                  defaultValue={defaults[field.id] ?? ''}
                   onInput={handleInput}
                 />
               )}

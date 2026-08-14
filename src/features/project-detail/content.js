@@ -20,6 +20,10 @@ export const PROJECT_DETAIL = {
      way a card's can be — no replacement line is needed. */
   statusLabel: 'Estado',
   repo: 'Ver repositório',
+  /* The page's one action, drawn only for a project carrying `join: true`
+     in the registry. Names the project rather than the site — the reader is
+     already on one, and "Participar" alone would repeat the bar. */
+  join: 'Participar neste projeto',
   /* Project pages start with no `sections` and are filled over time; until
      then the body says so rather than ending at the summary. */
   bodyEmpty:

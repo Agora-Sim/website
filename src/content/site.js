@@ -19,13 +19,18 @@ export const NAV_LINKS = [
   { id: 'sobre', label: 'Sobre', to: '/#sobre' },
 ];
 
+/* The participation slip's own path. Exported because the bar is no longer
+   the only thing that sends a reader there — a project page can too, with
+   that project preselected — and both must name one string. */
+export const JOIN_PATH = '/participar';
+
 /* The bar's one action, kept apart from NAV_LINKS: those jump to a section,
    this one is the site's single ask. It routes like any other link — it used
    to leave for the GitHub org, which is now linked from the project pages
    and the footer, where a reader who wants the code will look. */
 export const NAV_CTA = {
   label: 'Participar',
-  to: '/participar',
+  to: JOIN_PATH,
 };
 
 /* --- 2. Brand --- */
