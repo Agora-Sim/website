@@ -161,17 +161,19 @@ export const PROJECTS = [
       'Ferramenta para simular qualquer ambiente e apoiar a nossa investigação. ',
     summary:
       'O motor sobre o qual todos os outros projetos assentam: um simulador ' +
-      'de agentes que replica um ambiente — uma rede, um serviço, um ' +
-      'mercado — e permite medir o que acontece quando se muda uma regra. ' +
-      'Desenvolvido em aberto, com o código e as decisões de modelação à ' +
-      'vista de quem quiser contestá-las.',
+      'flexível capaz de, nas mãos de pessoas experientes, simular variados problemas ' +
+      'Acompanhado de ferramentas de análise permite ter respostas objetivas sobre ' +
+      'as questões portuguesas mais prevalentes na discussão pública. ' +
+      'Desenvolvido em código aberto, está disponível para qualquer um a utilizar.',
     href: 'https://github.com/Agora-Sim/Simulator',
-    join: true,
+    join: false,
     cardField: 'scope',
     fields: {
-      started: '2025',
+      started: '2026',
       scope: 'Ferramenta',
-      license: 'MIT',
+      license: 'AGPL-3.0',
+      team: 'Guilherme Costa-Ferreira',
+      version: '0.3.0',
     },
   },
   {
@@ -188,11 +190,10 @@ export const PROJECTS = [
     summary:
       'Um caso concreto e local: perceber em que estado está a rede de ' +
       'abastecimento de Almada e o que cada solução proposta mudaria, em ' +
-      'perdas, em custo e em tempo. Começa por levantar os dados públicos ' +
-      'que existem — e por documentar os que não existem.',
+      'perdas, em custo e em tempo.',
     join: true,
     fields: {
-      scope: 'Política pública',
+      scope: 'Recursos',
     },
   },
   {
@@ -209,11 +210,10 @@ export const PROJECTS = [
     summary:
       'As medidas propostas para a habitação são muitas e o debate sobre ' +
       'elas é quase todo qualitativo. Este projeto modela cada uma no ' +
-      'simulador e publica o que cada uma faz ao mercado de arrendamento, ' +
-      'com os pressupostos declarados.',
+      'simulador e publica o que cada uma faz ao mercado de arrendamento. ',
     join: true,
     fields: {
-      scope: 'Política pública',
+      scope: 'Política Pública',
     },
   },
   {
@@ -226,7 +226,7 @@ export const PROJECTS = [
     title: 'Portugal Digital',
     description:
       'O quão exata consegue ser a simulação em relação ao panorama nacional? ' +
-      'Um teste de stress da ferramenta',
+      'Um teste de stress do simulador',
     summary:
       'O teste de stress do simulador: até onde é possível aproximar o país ' +
       'inteiro num único modelo, e onde é que essa aproximação deixa de ser ' +
@@ -254,7 +254,7 @@ export const PROJECTS = [
     /* Marks a slot rather than a project: the register and the row draw it
        like any other card, but nothing that asks the reader to pick a
        project should offer four identical unnamed ones. */
-    placeholder: true,
+    placeholder: false,
     title: 'Por anunciar',
     description: 'Um projeto ainda por anunciar.',
     summary:

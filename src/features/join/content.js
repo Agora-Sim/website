@@ -56,12 +56,12 @@ export const JOIN_FIELDS = [
     required: true,
     /* Free text rather than a list: the areas the work needs are not
        settled, and a closed list would turn anyone outside it away. */
-    placeholder: 'Engenharia, direito, dados, design…',
+    placeholder: 'Engenharia, direito, economia, design…',
   },
   {
     id: 'projeto',
     name: 'Projeto',
-    label: 'Onde queres entrar',
+    label: 'Onde queres ajudar',
     type: 'select',
     required: true,
     /* Placeholder, not a default: the empty option is disabled, so an
@@ -75,7 +75,7 @@ export const JOIN_FIELDS = [
     label: 'O que trazes',
     type: 'area',
     required: true,
-    placeholder: 'Área, ferramentas que usas, e quanto tempo tens por semana.',
+    placeholder: 'Área, ferramentas que usas, motivação, etc',
   },
   {
     id: 'contexto',
@@ -84,8 +84,7 @@ export const JOIN_FIELDS = [
     type: 'area',
     required: false,
     placeholder:
-      'Opcional. Se escolheste um projeto novo, descreve-o aqui: que questão ' +
-      'é que responde.',
+      'Opcional. Se escolheste um projeto novo, descreve-o aqui',
   },
 ];
 

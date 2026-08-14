@@ -18,23 +18,23 @@ export const SUGGEST_FIELDS = [
     label: 'Projeto',
     type: 'text',
     required: true,
-    placeholder: 'Um nome de trabalho chega',
+    placeholder: 'Nome inicial de projeto',
   },
   {
     id: 'questao',
     name: 'Questão',
-    label: 'O que é preciso perceber',
+    label: 'Qual o problema?',
     type: 'area',
     required: true,
-    placeholder: 'Que decisão é que este projeto ajudaria a tomar?',
+    placeholder: 'Que problema nacional precisa de mais atenção',
   },
   {
     id: 'dados',
     name: 'Dados',
-    label: 'Dados ou fontes que conheças',
+    label: 'Como atuar?',
     type: 'area',
     required: false,
-    placeholder: 'Opcional. Um link, um relatório, um contacto.',
+    placeholder: 'Opcional. Um link, um relatório, um contacto, uma metodologia.',
   },
   {
     id: 'nome',
@@ -58,11 +58,11 @@ export const SUGGEST_FIELDS = [
 
 export const SUGGEST = {
   eyebrow: 'Sugerir',
-  headline: ['Há um problema que', 'devíamos estar a medir?'],
+  headline: ['Tem uma idea e', 'gostava de ajudar?'],
   body:
-    'O registo acima não é uma lista fechada. Se há uma medida, um serviço ' +
-    'ou um número que ninguém está a verificar, diz-nos — não precisas de ' +
-    'trazer o método, só a questão.',
+    'O AgoraSim está sempre aberto a novos projetos, novas áreas de ação e ' +
+    'novos métodos de validação. Somos uma organização de contribuição pública. ' +
+    'Gostava de sugerir um novo problema para nós analisarmos?',
   /* The subject line the email arrives with, so a suggestion is
      recognisable in the inbox without opening it. */
   subject: 'Sugestão de projeto — agorasimlab.com',
