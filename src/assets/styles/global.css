@@ -20,6 +20,13 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Anchored sections stop clear of the sticky bar rather than under it —
+   the bar is in flow at the top of the page but overlays everything below
+   it, so an anchor that lands flush loses its first line. */
+section[id] {
+  scroll-margin-top: var(--navbar-height);
+}
+
 body {
   background-color: var(--color-blueprint);
   color: var(--color-text-body);

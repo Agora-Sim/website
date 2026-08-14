@@ -71,6 +71,13 @@
   border-bottom-color: var(--color-anzac);
 }
 
+/* The page you are on keeps the underline the others only get on hover —
+   the bar's only state, and the same Anzac mark rather than a second one. */
+.navbar__link--current {
+  color: var(--color-white);
+  border-bottom-color: var(--color-anzac);
+}
+
 /* --- 4. Join action --- */
 
 /* Same stamp register as Method's — Monza fill, white text, technical
