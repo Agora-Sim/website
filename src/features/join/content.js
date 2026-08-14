@@ -14,11 +14,15 @@ import { PROJECTS } from '@/content/projects.js';
 /* The project choices, read from the registry so a new project appears here
    the moment it is added, with no edit in this file. The last entry is the
    way out of the list: someone who wants to start something takes it and
-   describes it in the field below. */
+   describes it in the field below. Unannounced slots are left out: they all
+   carry the same title, so they would offer the reader identical choices —
+   and duplicate React keys with them. */
 export const NEW_PROJECT_OPTION = 'Um projeto novo';
 
 const PROJECT_OPTIONS = [
-  ...PROJECTS.map((project) => project.title),
+  ...PROJECTS.filter((project) => !project.placeholder).map(
+    (project) => project.title,
+  ),
   NEW_PROJECT_OPTION,
 ];
 

@@ -14,7 +14,7 @@ export const PROJECTS_SECTION = {
     'Todos os nossos projetos abrangem várias dimensões da realidade Portuguesa. ' +
     'Alguns projetos são relativos a novas ferramentas, outros à análise de soluções. ' +
     'Todos estão disponíveis e abertos a discussões e melhorias. ',
-  /* The row is a summary; the register is the whole of it. Today both hold
-     the same four, but the link is what makes the split legible. */
+  /* The row is a summary — the four in HOME_PROJECT_IDS — and the register
+     is the whole of it; this link is what makes the split legible. */
   more: { label: 'Ver o registo completo', to: '/projetos' },
 };

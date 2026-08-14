@@ -6,7 +6,7 @@ import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 
 import { ProjectPlate } from '@/components/media/ProjectPlate';
-import { PROJECTS, projectPath } from '@/content/projects.js';
+import { homeProjects, projectPath } from '@/content/projects.js';
 import { useRevealed } from '@/hooks';
 
 import { PROJECTS_SECTION } from './content.js';
@@ -19,8 +19,8 @@ import './Projects.css';
 /**
  * The work itself: a row of cards, each a plate with the project's state
  * stamped on it and a one-line description under it. This is the summary —
- * the /projetos register carries the same projects with their metadata, and
- * the link under the row is what says so.
+ * four projects, named by HOME_PROJECT_IDS — and the /projetos register
+ * carries all of them with their metadata; the link under the row says so.
  */
 export default function Projects() {
   const { eyebrow, headline, body, more } = PROJECTS_SECTION;
@@ -50,7 +50,7 @@ export default function Projects() {
         </div>
 
         <ul className="projects__grid">
-          {PROJECTS.map((item, index) => (
+          {homeProjects().map((item, index) => (
             <li
               className="projects__card plate-host"
               key={item.id}

@@ -228,6 +228,10 @@ export const PROJECTS = [
     cover: '',
     coverAlt: '',
     status: 'planeado',
+    /* Marks a slot rather than a project: the register and the row draw it
+       like any other card, but nothing that asks the reader to pick a
+       project should offer four identical unnamed ones. */
+    placeholder: true,
     title: 'Por anunciar',
     description: 'Um projeto ainda por anunciar.',
     summary:
@@ -236,3 +240,25 @@ export const PROJECTS = [
       'e o método à vista, como os restantes.',
   })),
 ];
+
+/* --- 6. The home row's selection --- */
+
+/* The four projects the home page shows, by `id`, in the order they appear
+   there. The row is a summary, not the register — it holds four cards on one
+   line, so changing what the home page features is editing this list and
+   nothing else. Order here wins over registry order; the /projetos register
+   keeps drawing every project either way. */
+export const HOME_PROJECT_IDS = [
+  'simulador',
+  'aguas',
+  'rendas',
+  'digital-twin',
+];
+
+/**
+ * The projects the home row draws, in HOME_PROJECT_IDS order. An id that
+ * names no project is dropped rather than rendered as a hole — that happens
+ * when a project is renamed or removed and this list is not updated with it.
+ */
+export const homeProjects = () =>
+  HOME_PROJECT_IDS.map(findProject).filter(Boolean);
