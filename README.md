@@ -35,37 +35,50 @@ changing it needs no deploy.
 Vite reads `.env` only at server start — adding the key to a running
 `npm run dev` needs a restart.
 
-## Deploying to Cloudflare Pages
+## Deploying to Cloudflare Workers
 
-Free tier covers this entirely: unlimited static requests and bandwidth, 500
-builds a month.
-
-**One-time setup** — Workers & Pages → Create → Pages → connect the GitHub
-repo:
+The site deploys as a **Worker serving static assets**, configured by
+[wrangler.jsonc](wrangler.jsonc). It costs nothing: requests to static assets
+are free and unlimited, and only Worker *invocations* are billed — this
+Worker has no `main`, so no script runs on any request and there is nothing
+to bill.
 
 | Setting | Value |
 |---|---|
-| Framework preset | Vite |
 | Build command | `npm run build` |
-| Build output directory | `dist` |
+| Deploy command | `npx wrangler deploy` |
 | Production branch | `main` |
 
-Then add `VITE_WEB3FORMS_KEY` under Settings → Environment variables, for
-**both** Production and Preview — it is read at build time, so a variable
-added after a build needs a redeploy to take effect.
+`name` in `wrangler.jsonc` **must match the Worker in the dashboard**, or a
+deploy creates a second Worker beside the one holding the custom domain.
 
-Custom domain: Settings → Custom domains → add `agorasimlab.com`. If `www`
-is also added, make one of them canonical with a bulk redirect so the site
-answers on a single hostname — every absolute URL in this repo
-(`sitemap.xml`, `robots.txt`, the Open Graph tags) names the apex.
+Add `VITE_WEB3FORMS_KEY` under the project's build environment variables — it
+is read at build time, so a variable added after a build needs a redeploy to
+take effect.
 
-**Files Cloudflare reads.** All live in `public/`, which Vite copies to
-`dist/` verbatim:
+Custom domain: add `agorasimlab.com` to the Worker. If `www` is also added,
+redirect it to the apex so the site answers on a single hostname — every
+absolute URL in this repo (`sitemap.xml`, `robots.txt`, the Open Graph tags)
+names the apex.
 
-- `_redirects` — `/* /index.html 200`. The router uses real paths, so an
-  unknown path must serve the app shell, not a 404. Static assets are matched
-  before this rule. **A different host needs its own equivalent or every
-  route but `/` 404s on refresh.**
+Validate a config change without deploying:
+
+```bash
+npx wrangler deploy --dry-run
+```
+
+**SPA routing** is `assets.not_found_handling: "single-page-application"` in
+`wrangler.jsonc`: the router uses real paths, so an unknown path is a client
+route and gets `index.html` with a 200. There is deliberately **no
+`_redirects` file** — that is the Pages mechanism, and on Workers a
+`/* /index.html 200` line is a *proxy* rather than a rewrite, which serves
+duplicate content at every path. Deploying this to Pages instead would mean
+adding `_redirects` back.
+
+**Files Cloudflare reads** live in `public/`, which Vite copies to `dist/`
+verbatim. Workers parses them out of the assets directory and does not serve
+them as assets:
+
 - `_headers` — CSP and the other security headers, plus cache lifetimes.
   The CSP allowlist is exactly what the site loads: the two Google Fonts
   hosts and `api.web3forms.com`. Adding a third-party script, embed, or

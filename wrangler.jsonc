@@ -1,0 +1,24 @@
+{
+  // Cloudflare Workers with static assets. The build produces `dist/` and
+  // this Worker does nothing but serve it — there is no `main`, so no Worker
+  // script runs on any request. That is what keeps the site free: requests
+  // to static assets are free and unlimited, and only Worker invocations
+  // are billed.
+  //
+  // `name` must match the Worker in the Cloudflare dashboard, or a deploy
+  // creates a second Worker beside the one with the custom domain on it.
+  "name": "agorasim-website",
+  "compatibility_date": "2026-08-14",
+  "assets": {
+    "directory": "./dist",
+    // The router uses real paths, so an unknown path is a client route and
+    // must get the app shell with a 200, not a 404. This is the Workers
+    // mechanism for that, and it replaces the `_redirects` file Pages uses:
+    // on Workers a `/* /index.html 200` line is a *proxy* rather than a
+    // rewrite, which serves duplicate content at every path.
+    //
+    // `public/_headers` still applies — Workers parses it out of the assets
+    // directory exactly as Pages does, so the CSP survives this change.
+    "not_found_handling": "single-page-application"
+  }
+}

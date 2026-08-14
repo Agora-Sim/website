@@ -1,3 +1,0 @@
-# Cloudflare Pages: every unknown path is a client route, so serve the app
-# shell rather than a 404. Static assets are matched before this rule.
-/*  /index.html  200
