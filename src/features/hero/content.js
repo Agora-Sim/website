@@ -11,7 +11,7 @@ export const HERO = {
   headlineAccent: 'Portugal',
   lede:
     'Projeto open-source com o objectivo de trazer o método científico ao discurso ' +
-    'político. Para que não dependamos mais do discurso político para avaliarmos as ' +
+    'político. Para que não dependamos mais do apelo à autoridade para avaliarmos as ' +
     'soluções aos muitos problemas do país.',
   actions: {
     /* The hero's one action. It leaves the page for the full register, so

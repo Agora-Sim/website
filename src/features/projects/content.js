@@ -12,7 +12,7 @@ export const PROJECTS_SECTION = {
   headline: ['O que estamos a construir,', 'e o que vem a seguir.'],
   body:
     'Todos os nossos projetos abrangem várias dimensões da realidade Portuguesa. ' +
-    'Alguns projetos serão relativos a novas ferramentas, outros a análise de soluções. ' +
+    'Alguns projetos são relativos a novas ferramentas, outros à análise de soluções. ' +
     'Todos estão disponíveis e abertos a discussões e melhorias. ',
   /* The row is a summary; the register is the whole of it. Today both hold
      the same four, but the link is what makes the split legible. */
