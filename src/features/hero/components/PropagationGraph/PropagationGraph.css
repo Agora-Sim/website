@@ -4,13 +4,13 @@
 
 /* --- 1. Sheet --- */
 
-/* Capped narrower than before: at its old 600px this was the tallest thing
-   in the hero row, which is what pushed the section close to a full-viewport
-   height even after the min-height was dropped. */
+/* The cap is what sets the figure's size in the hero row. It went to 520px
+   when the model was a diagonal cascade filling the viewBox top to bottom; a
+   ring is a shorter drawing at the same width, so it can afford more. */
 .graph {
   width: 100%;
   height: auto;
-  max-width: 520px;
+  max-width: 640px;
   margin-inline: auto;
   overflow: visible;
 }

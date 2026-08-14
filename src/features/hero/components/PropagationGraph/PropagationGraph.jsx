@@ -94,39 +94,42 @@ function cellAt(x, y, half, z) {
    ============================================================ */
 
 /* All lengths are plane units, not screen pixels — `r` is the node's radius
-   as it lies in the base plane, before projection flattens it. Plane
-   coordinates are chosen so projected x runs left to right in order, which
-   keeps the radii falling monotonically across the screen. */
+   as it lies in the base plane, before projection flattens it. The six outer
+   nodes sit on a ring around the origin at the plane's centre, at slightly
+   different radii so the figure reads as drawn rather than plotted. */
+/* Radius varies by a couple of units and no more: an attenuating scale said
+   the origin mattered most, which the ring topology already says. */
 const NODES = [
-  { id: 'n1', x: 70, y: 225, r: 46, drift: 2.4, phase: 0.0 },
-  { id: 'n2', x: 55, y: 135, r: 33, drift: 3.4, phase: 1.7 },
-  { id: 'n3', x: 150, y: 215, r: 25, drift: 4.0, phase: 3.2 },
-  { id: 'n4', x: 115, y: 120, r: 18.5, drift: 4.8, phase: 0.8 },
-  { id: 'n5', x: 215, y: 180, r: 14, drift: 5.6, phase: 4.6 },
-  { id: 'n6', x: 205, y: 75, r: 10, drift: 6.2, phase: 2.4 },
-  { id: 'n7', x: 270, y: 105, r: 7.4, drift: 6.8, phase: 5.5 },
+  { id: 'n1', x: 150, y: 150, r: 27, drift: 2.2, phase: 0.0 },
+  { id: 'n2', x: 252, y: 150, r: 25, drift: 3.0, phase: 1.7 },
+  { id: 'n3', x: 197.5, y: 232.3, r: 22.5, drift: 3.4, phase: 3.2 },
+  { id: 'n4', x: 100, y: 236.6, r: 26, drift: 2.8, phase: 0.8 },
+  { id: 'n5', x: 52, y: 150, r: 23, drift: 3.2, phase: 4.6 },
+  { id: 'n6', x: 104, y: 70.3, r: 25.5, drift: 3.5, phase: 2.4 },
+  { id: 'n7', x: 202, y: 59.9, r: 22.8, drift: 3.0, phase: 5.5 },
 ];
 
-/* Ten of the twenty-one possible pairs. A complete graph would say nothing
-   about dependency, which is the whole point of drawing one. Each pair is
-   ordered origin-ward first, so pulses travel outward along it. */
+/* Nine of the twenty-one possible pairs. A complete graph would say nothing
+   about dependency, which is the whole point of drawing one. Three spokes
+   reach alternating points of the ring and the ring itself is left open in
+   two places, so the figure is round without closing into a wheel. Each pair
+   is ordered origin-ward first, so pulses travel outward along it. */
 const EDGES = [
   ['n1', 'n2'],
-  ['n1', 'n3'],
   ['n1', 'n4'],
-  ['n2', 'n4'],
-  ['n3', 'n4'],
-  ['n3', 'n5'],
-  ['n2', 'n6'],
-  ['n4', 'n6'],
-  ['n4', 'n7'],
-  ['n5', 'n7'],
+  ['n1', 'n6'],
+  ['n2', 'n3'],
+  ['n4', 'n3'],
+  ['n4', 'n5'],
+  ['n6', 'n5'],
+  ['n6', 'n7'],
+  ['n2', 'n7'],
 ];
 
 /* Edges one hop out start their pulse a beat later, so the wave spreads
    rather than firing everywhere at once. Risers go last: the result only
    rises once the measure has reached that node. */
-const HOP = { n1: 0, n2: 1, n3: 1, n4: 1, n5: 2, n6: 2, n7: 2 };
+const HOP = { n1: 0, n2: 1, n4: 1, n6: 1, n3: 2, n5: 2, n7: 2 };
 
 const INDEX_BY_ID = Object.fromEntries(NODES.map((node, i) => [node.id, i]));
 
@@ -195,8 +198,9 @@ function positionsAt(t) {
 /**
  * The hero's signature: an exploded axonometric of a simulation.
  *
- * The base plate carries the model — a dependency graph with one large origin
- * node and magnitude attenuating outward, edges skipping most pairs so it
+ * The base plate carries the model — a dependency graph laid out as a ring
+ * around one origin node, every node near enough the same size that structure
+ * rather than magnitude is what the eye reads, edges skipping most pairs so it
  * reads as structure rather than a constellation. Above it, a second plate
  * holds the results: every node sends a riser up to a cell sized by its own
  * magnitude. That vertical move is the argument of the page, a measure
