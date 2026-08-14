@@ -10,6 +10,7 @@ import { Navbar } from '@/components/layout/Navbar';
 
 import ScrollManager from './ScrollManager.jsx';
 import Home from './pages/Home.jsx';
+import ProjectPage from './pages/ProjectPage.jsx';
 import ProjectsPage from './pages/ProjectsPage.jsx';
 
 /* ============================================================
@@ -35,6 +36,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/projetos" element={<ProjectsPage />} />
+          <Route path="/projetos/:id" element={<ProjectPage />} />
           {/* Nothing else is published yet, so an unknown path is a stale
               link rather than a missing page — send it home. */}
           <Route path="*" element={<Home />} />

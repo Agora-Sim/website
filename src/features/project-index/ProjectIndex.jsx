@@ -3,12 +3,14 @@
    ============================================================ */
 
 import { useRef } from 'react';
+import { Link } from 'react-router-dom';
 
 import { ProjectPlate } from '@/components/media/ProjectPlate';
 import {
   PROJECTS,
-  PROJECT_FIELDS,
   PROJECT_STATUSES,
+  disclosedFields,
+  projectPath,
 } from '@/content/projects.js';
 import { useRevealed } from '@/hooks';
 
@@ -18,19 +20,6 @@ import './ProjectIndex.css';
 /* ============================================================
    1. HELPERS
    ============================================================ */
-
-/**
- * The spec cells a project actually discloses, in registry order. Every
- * field is optional — a project omits any it has no real value for — so
- * this drops the missing ones rather than drawing empty cells.
- *
- * @param {Record<string, string>} [fields] the project's `fields` object
- */
-function disclosedFields(fields = {}) {
-  return PROJECT_FIELDS.filter((field) => Boolean(fields[field.id])).map(
-    (field) => ({ ...field, value: fields[field.id] }),
-  );
-}
 
 /**
  * How many projects sit in each state, in the registry's own order, with
@@ -120,22 +109,18 @@ export default function ProjectIndex() {
                 </div>
 
                 <div className="index__card-body">
+                  {/* Every project has a page, so every card links to one.
+                      The repository is linked from that page, not here. */}
                   <h2 className="index__card-title">
-                    {project.href ? (
-                      <a
-                        className="index__card-link"
-                        href={project.href}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {project.title}
-                        <span className="index__arrow" aria-hidden="true">
-                          ↗
-                        </span>
-                      </a>
-                    ) : (
-                      project.title
-                    )}
+                    <Link
+                      className="index__card-link"
+                      to={projectPath(project.id)}
+                    >
+                      {project.title}
+                      <span className="index__arrow" aria-hidden="true">
+                        →
+                      </span>
+                    </Link>
                   </h2>
 
                   <p className="index__card-text">
@@ -155,9 +140,7 @@ export default function ProjectIndex() {
                     <p className="index__specs-empty">{fieldsEmpty}</p>
                   )}
 
-                  {project.href && (
-                    <span className="index__card-foot">{linkLabel}</span>
-                  )}
+                  <span className="index__card-foot">{linkLabel}</span>
                 </div>
               </li>
             );

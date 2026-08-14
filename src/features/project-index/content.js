@@ -21,5 +21,7 @@ export const PROJECT_INDEX = {
   /* Shown in place of the spec block on a project that discloses no
      fields — an empty title block would read as a rendering fault. */
   fieldsEmpty: 'Sem campos registados',
-  linkLabel: 'Repositório',
+  /* Every card links to the project's own page, so this names that page
+     rather than the repository — the repository is linked from it. */
+  linkLabel: 'Ver projeto',
 };

@@ -6,7 +6,7 @@ import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 
 import { ProjectPlate } from '@/components/media/ProjectPlate';
-import { PROJECTS } from '@/content/projects.js';
+import { PROJECTS, projectPath } from '@/content/projects.js';
 import { useRevealed } from '@/hooks';
 
 import { PROJECTS_SECTION } from './content.js';
@@ -63,22 +63,19 @@ export default function Projects() {
               />
 
               <div className="projects__card-body">
+                {/* Every project has a page, so every card is a link to
+                    one — the repository, where there is one, is linked
+                    from that page rather than from here. */}
                 <h3 className="projects__card-title">
-                  {item.href ? (
-                    <a
-                      className="projects__card-link"
-                      href={item.href}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {item.title}
-                      <span className="projects__arrow" aria-hidden="true">
-                        ↗
-                      </span>
-                    </a>
-                  ) : (
-                    item.title
-                  )}
+                  <Link
+                    className="projects__card-link"
+                    to={projectPath(item.id)}
+                  >
+                    {item.title}
+                    <span className="projects__arrow" aria-hidden="true">
+                      →
+                    </span>
+                  </Link>
                 </h3>
                 <p className="projects__card-text">{item.description}</p>
               </div>

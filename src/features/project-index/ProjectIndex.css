@@ -217,8 +217,8 @@
   color: var(--color-anzac);
 }
 
-/* Only linked cards get an arrow, and only on approach — it marks the card
-   that leaves the site, so it must not appear on the ones that don't. */
+/* The arrow appears only on approach: every card leads to the project's
+   own page, so at rest the mark would be noise on every one of them. */
 .index__arrow {
   display: inline-block;
   margin-left: 6px;
