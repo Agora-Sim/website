@@ -312,11 +312,16 @@
 
 /* One row: the project's leading spec on the left, where the card goes on
    the right. `margin-top: auto` pins it to the panel's foot however long the
-   copy above runs, which is what keeps a row of cards aligned. */
+   copy above runs, which is what keeps a row of cards aligned.
+
+   Centred, not aligned to either edge: the spec cell is two lines (label
+   over value) and the action is one, so `flex-end` hung it off the value and
+   a baseline alignment pinned it to the label. Centring sits it against the
+   cell as a whole, which is what the pair reads as. */
 .index__card-foot {
   position: relative;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
   align-self: stretch;
