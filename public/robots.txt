@@ -1,0 +1,10 @@
+# Everything on the site is public and meant to be found.
+User-agent: *
+Allow: /
+
+# The placeholder project slots (/projetos/por-anunciar-*) resolve to a real
+# page but hold no announced project, so they are simply left out of the
+# sitemap rather than blocked here — a Disallow would also hide them from a
+# reader following a link someone shared.
+
+Sitemap: https://agorasimlab.com/sitemap.xml

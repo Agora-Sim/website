@@ -1,0 +1,44 @@
+# Cloudflare Pages response headers. Rules are matched most-specific first;
+# every header a path needs must be repeated in its own block, since blocks
+# do not merge.
+
+/*
+  # The site is static and loads nothing it did not ship, except the two
+  # Google Fonts hosts and the Web3Forms endpoint the slip posts to. Widen
+  # this only alongside the code that needs it, or the policy stops meaning
+  # anything.
+  #
+  # `style-src` needs 'unsafe-inline' and cannot drop it: React style
+  # attributes (the slip's meter width, the field stagger delays) are inline
+  # styles as far as CSP is concerned. `script-src` carries no such escape.
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://api.web3forms.com; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests
+  # Two years, preloadable — set once the custom domain is confirmed serving
+  # over https, which Cloudflare does by default.
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  X-Content-Type-Options: nosniff
+  # Redundant with `frame-ancestors` above for modern browsers, kept for old ones.
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  # The site asks for no device permissions at all; deny the ones a stray
+  # embed would otherwise inherit.
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()
+  Cross-Origin-Opener-Policy: same-origin
+  X-Robots-Tag: index, follow
+
+# Vite fingerprints everything under /assets, so the filename changes when
+# the bytes do and the old URL can be cached forever.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# The shell is what every route resolves to, so it must never be held past a
+# deploy — revalidate it on each load.
+/index.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Referenced by path rather than imported, so these carry no hash and cannot
+# be cached immutably. A day is long enough to help and short enough to fix
+# a wrong banner without a rename.
+/projects/*
+  Cache-Control: public, max-age=86400
+/patterns/*
+  Cache-Control: public, max-age=86400
