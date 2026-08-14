@@ -81,13 +81,13 @@
 /* --- 4. Figure --- */
 
 /* The project's own figure, not the card's banner stretched across the
-   page. Capped well under page width for that reason: at full width any
-   picture here reads as a hero banner, and this is a plate laid on the
-   sheet. Its shape comes from `--figure-ratio`, set from PROJECT_FIGURES —
-   the stylesheet does not get to disagree with the artwork brief. */
+   page. It sits inside the left column rather than above both, so the
+   column edge is what holds it short of page width and the spec block
+   starts level with its top edge — a figure narrower than the page with a
+   full-width band under it left the sheet lopsided. Its shape comes from
+   `--figure-ratio`, set from PROJECT_FIGURES; the stylesheet does not get
+   to disagree with the artwork brief. */
 .detail__figure {
-  max-width: 820px;
-  margin-bottom: var(--space-6);
   border: 1px solid var(--color-line);
   border-radius: var(--radius-md);
   overflow: hidden;
@@ -109,6 +109,14 @@
 }
 
 /* --- 6. Body --- */
+
+/* The left column: the figure, then the written record under it. */
+.detail__main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  min-width: 0;
+}
 
 .detail__body {
   display: flex;

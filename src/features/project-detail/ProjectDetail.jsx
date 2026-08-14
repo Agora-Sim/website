@@ -53,39 +53,42 @@ export default function ProjectDetail({ project }) {
           <p className="detail__lede">{project.summary ?? project.description}</p>
         </header>
 
-        {/* The page's own figure, not the card's banner — see PROJECT_FIGURES
-            for why they are two pictures. None is drawn yet, so this is an
-            empty plate on every project today. The shape comes from content
-            rather than the stylesheet so the artwork brief and the layout
-            are one number. No `plate-host`: nothing here is a link, and the
-            plate's hover states would promise one. */}
-        <div
-          className="detail__figure"
-          style={{ '--figure-ratio': PROJECT_FIGURES.cover.ratio }}
-        >
-          <ProjectPlate
-            image={project.cover}
-            imageAlt={project.coverAlt}
-            status={project.status}
-          />
-        </div>
-
         <div className="detail__columns">
-          <div className="detail__body">
-            {sections.length > 0 ? (
-              sections.map((section) => (
-                <section className="detail__section" key={section.heading}>
-                  <h2 className="detail__section-title">{section.heading}</h2>
-                  {section.paragraphs.map((paragraph) => (
-                    <p className="detail__text" key={paragraph}>
-                      {paragraph}
-                    </p>
-                  ))}
-                </section>
-              ))
-            ) : (
-              <p className="detail__empty">{bodyEmpty}</p>
-            )}
+          <div className="detail__main">
+            {/* The page's own figure, not the card's banner — see
+                PROJECT_FIGURES for why they are two pictures. None is drawn
+                yet, so this is an empty plate on every project today. The
+                shape comes from content rather than the stylesheet so the
+                artwork brief and the layout are one number. No `plate-host`:
+                nothing here is a link, and the plate's hover states would
+                promise one. */}
+            <div
+              className="detail__figure"
+              style={{ '--figure-ratio': PROJECT_FIGURES.cover.ratio }}
+            >
+              <ProjectPlate
+                image={project.cover}
+                imageAlt={project.coverAlt}
+                status={project.status}
+              />
+            </div>
+
+            <div className="detail__body">
+              {sections.length > 0 ? (
+                sections.map((section) => (
+                  <section className="detail__section" key={section.heading}>
+                    <h2 className="detail__section-title">{section.heading}</h2>
+                    {section.paragraphs.map((paragraph) => (
+                      <p className="detail__text" key={paragraph}>
+                        {paragraph}
+                      </p>
+                    ))}
+                  </section>
+                ))
+              ) : (
+                <p className="detail__empty">{bodyEmpty}</p>
+              )}
+            </div>
           </div>
 
           {/* The card's title block, stood up as the page's spec column. */}
