@@ -19,11 +19,13 @@ export const NAV_LINKS = [
   { id: 'sobre', label: 'Sobre', to: '/#sobre' },
 ];
 
-/* The bar's one action, kept apart from NAV_LINKS: those stay on the site,
-   this one leaves it. Off-site, so it opens in a new tab. */
+/* The bar's one action, kept apart from NAV_LINKS: those jump to a section,
+   this one is the site's single ask. It routes like any other link — it used
+   to leave for the GitHub org, which is now linked from the project pages
+   and the footer, where a reader who wants the code will look. */
 export const NAV_CTA = {
   label: 'Participar',
-  href: 'https://github.com/Agora-Sim',
+  to: '/participar',
 };
 
 /* --- 2. Brand --- */

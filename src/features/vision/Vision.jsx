@@ -55,10 +55,15 @@ export default function Vision() {
 
               <p className="vision__body">{body}</p>
 
-              <a className="btn btn--ghost vision__cta" href={cta.href}>
+              <a
+                className="btn btn--ghost vision__cta"
+                href={cta.href}
+                target="_blank"
+                rel="noreferrer"
+              >
                 {cta.label}
                 <span className="btn__arrow" aria-hidden="true">
-                  →
+                  ↗
                 </span>
               </a>
             </div>

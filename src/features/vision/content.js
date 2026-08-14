@@ -14,5 +14,11 @@ export const VISION = {
     'tem tempo, e quem decide raramente espera pelos números. Juntamos estudantes ' +
     'de engenharia, direito, finanças e design a políticas concretas, com o rigor ' +
     'de uma tese e sem tomar partido.',
-  cta: { label: 'Como analisamos', href: '#sobre' },
+  /* Leaves the site for the GitHub org: the section says the work is done
+     in the open, and this is where it is open. Off-site, so it carries the
+     `↗` and opens in a new tab — `→` is reserved for links that stay here. */
+  cta: {
+    label: 'Ver o trabalho no GitHub',
+    href: 'https://github.com/Agora-Sim',
+  },
 };

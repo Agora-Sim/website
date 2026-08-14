@@ -67,14 +67,13 @@ export default function Navbar() {
             );
           })}
 
-          <a
+          <Link
             className="navbar__cta"
-            href={NAV_CTA.href}
-            target="_blank"
-            rel="noreferrer"
+            to={NAV_CTA.to}
+            aria-current={NAV_CTA.to === pathname ? 'page' : undefined}
           >
             {NAV_CTA.label}
-          </a>
+          </Link>
         </nav>
       </div>
     </header>

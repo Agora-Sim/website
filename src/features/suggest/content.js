@@ -5,14 +5,7 @@
    Language: pt-PT.
    ============================================================ */
 
-/* --- 1. Endpoint --- */
-
-/* Web3Forms takes the POST and forwards it to the address the access key
-   was registered with — projects@agorasimlab.com is configured there, not
-   here, which is why no recipient appears in this file. */
-export const ENDPOINT = 'https://api.web3forms.com/submit';
-
-/* --- 2. Fields --- */
+/* --- 1. Fields --- */
 
 /* One entry per field, in the order they are drawn. `type` picks the
    control: `text`, `email`, or `area` for a textarea. The form maps over
@@ -61,7 +54,7 @@ export const SUGGEST_FIELDS = [
   },
 ];
 
-/* --- 3. Section --- */
+/* --- 2. Section --- */
 
 export const SUGGEST = {
   eyebrow: 'Sugerir',

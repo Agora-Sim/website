@@ -14,12 +14,12 @@ export const HERO = {
     'político. Para que não dependamos mais do discurso político para avaliarmos as ' +
     'soluções aos muitos problemas do país.',
   actions: {
-    /* Leaves the page for the full register, so it is a route rather than
-       an anchor — the home row below is a summary of it, not the thing. */
+    /* The hero's one action. It leaves the page for the full register, so
+       it is a route rather than an anchor — the home row below is a summary
+       of it, not the thing. There is no second button: the fold already
+       carries the bar's "Participar", and a ghost link down to Vision only
+       offered the scroll the reader was about to make anyway. */
     primary: { label: 'Ver os projetos', to: '/projetos' },
-    /* Points at Vision, the section directly below. Same page, so a plain
-       anchor: the browser scrolls to it without the router involved. */
-    secondary: { label: 'Como calculamos', href: '#visao' },
   },
 };
 

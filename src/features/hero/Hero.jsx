@@ -45,9 +45,6 @@ export default function Hero() {
                 →
               </span>
             </Link>
-            <a className="btn btn--ghost" href={actions.secondary.href}>
-              {actions.secondary.label}
-            </a>
           </div>
         </div>
 
