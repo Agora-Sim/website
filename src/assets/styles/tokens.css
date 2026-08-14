@@ -23,7 +23,8 @@
      and the palette has one accent for data. Anzac takes "in progress", the
      state that is actually live; the other two are a mint and the muted
      blue-grey already in use. All three measure above 6:1 on the badge fill.
-     These are for the status badge only — nothing else may reach for them. */
+     These are for the status badge and the register's status ring — the two
+     things that name a project's state. Nothing else may reach for them. */
   --color-status-done: #7fd1a4; /* 6.5:1 */
   --color-status-active: var(--color-anzac); /* 7.2:1 */
   --color-status-planned: var(--color-text-muted); /* 6.3:1 */

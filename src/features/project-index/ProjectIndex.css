@@ -16,12 +16,19 @@
 
 /* --- 2. Header --- */
 
-/* Single column, left-aligned, deliberately not Method's or Projects'
-   two-column intro: this is the top of a page rather than the opening of a
-   section inside one, and the tally strip below is what fills the right. */
+/* Title on the left, the count ring on the right — the two-column head a
+   drawing gives its title block. The intro is held to 62ch so the ring has
+   the room to sit beside it rather than under it. */
 .index__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-5);
+  margin-bottom: var(--space-6);
+}
+
+.index__intro {
   max-width: 62ch;
-  margin-bottom: var(--space-5);
 }
 
 .index__eyebrow {
@@ -52,101 +59,70 @@
   color: var(--color-text-body);
 }
 
-/* --- 3. Tally --- */
+/* --- 3. Header reveal --- */
 
-/* The register's own count, drawn as the footer's title block is: cells
-   divided by hairlines under a single rule. Every figure here is counted
-   from the registry at render time, so it cannot drift from the list. */
-.index__tally {
-  position: relative;
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3) 0;
-  padding-top: var(--space-3);
-  border-top: 1px solid var(--color-line-soft);
-  margin-bottom: var(--space-6);
-}
-
-/* The index tick on the rule above, the same mark the footer's rule
-   carries — this strip is the page's own title block. */
-.index__tally::before {
-  content: '';
-  position: absolute;
-  inset-block-start: -1px;
-  inset-inline-start: 0;
-  width: 48px;
-  height: 1px;
-  background-color: var(--color-anzac);
-}
-
-.index__tally-cell {
-  padding-inline: var(--space-4);
-}
-
-.index__tally-cell:first-child {
-  padding-inline-start: 0;
-}
-
-.index__tally-cell + .index__tally-cell {
-  border-inline-start: 1px solid var(--color-line-soft);
-}
-
-.index__tally-label {
-  font-family: var(--font-technical);
-  font-size: var(--size-overline);
-  font-weight: var(--weight-semibold);
-  letter-spacing: var(--tracking-technical);
-  text-transform: uppercase;
-  color: var(--color-text-muted);
-}
-
-/* Anzac carries data per 02_Colors — a counted figure is exactly that. */
-.index__tally-value {
-  font-family: var(--font-display);
-  font-size: var(--size-heading-md);
-  font-weight: var(--weight-extrabold);
-  font-variation-settings: 'opsz' 24;
-  line-height: 1.2;
-  color: var(--color-anzac);
-}
+/* The deck runs its own reveal — it is handed `revealed` and animates from
+   the right, while the intro rises. Section 9 carries the rest. */
 
 /* --- 4. Grid --- */
 
-/* Two across, not four: these are the home row's cards given the room to
-   carry their metadata, so each one gets roughly double the width. */
+/* Four across, the home row's own count: the register reads as the full
+   sheet of projects rather than a stack of features, and a reader compares
+   states across a line instead of scrolling between pairs. The card carries
+   its metadata at this width by stacking the title block's cells. */
 .index__grid {
+  position: relative;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--space-4);
   list-style: none;
 }
 
-/* --- 5. Card --- */
+/* --- 5. Card cell --- */
 
-/* The home row's card at double scale: plate on top, title block below.
-   Same surface as Method's cards and the row's, so the three read as one
-   material at three sizes. Stretched to the grid row's height so two cards
-   side by side land their spec blocks on the same line. */
+/* The cell holds the space; the panel inside it does the drawing. The two
+   are separate because an approached card leaves the flow to cover the row,
+   and a cell that collapsed behind it would shuffle the whole grid under
+   the pointer. Its height is pinned inline at that moment, measured from
+   what it already had.
+
+   The cell is deliberately *not* positioned: the open panel takes the grid
+   as its containing block, so `inset-inline: 0` gives it the row's width
+   rather than the cell's. It is also why `offsetTop` measured on the cell
+   is already the offset the panel needs. */
 .index__card {
+  display: flex;
+}
+
+/* --- 5b. Panel --- */
+
+/* The card's surface: the same material as Method's cards and the home
+   row's, so the three read as one sheet at three sizes. */
+.index__panel {
   position: relative;
   display: flex;
   flex-direction: column;
+  width: 100%;
   overflow: hidden;
   border: 1px solid var(--color-line);
   border-radius: var(--radius-md);
-  background-color: rgba(13, 53, 118, 0.55);
+  /* Lit from the top edge rather than a flat wash: at card scale a single
+     opacity reads as a panel, and the falloff is what gives the sheet a
+     near edge and a far one. */
+  background-image: linear-gradient(
+    180deg,
+    rgba(19, 71, 154, 0.62),
+    rgba(11, 45, 102, 0.55)
+  );
   box-shadow: inset 0 1px 0 var(--color-line-soft);
-  /* The transition lives in section 9 — reveal and hover share `transform`
-     and would otherwise be declared twice with different timings. */
-}
-
-.index__card:hover {
-  border-color: var(--color-line-strong);
+  transition:
+    border-color var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out);
 }
 
 /* The Anzac tick along the top edge, Method's card register at this scale:
-   short at rest so it reads as a mark, running the full edge on hover. */
-.index__card::before {
+   short at rest so it reads as a mark, running the full edge on approach. */
+.index__panel::before {
   content: '';
   position: absolute;
   z-index: 3;
@@ -159,14 +135,12 @@
   transition: width var(--dur-base) var(--ease-out);
 }
 
-.index__card:hover::before {
+.index__card:hover .index__panel::before {
   width: calc(100% + 2px);
 }
 
 /* Sets the plate's shape and the rule that divides it from the copy; the
-   plate component itself is shape-agnostic. Wider than the row's 16/10 —
-   at this size a taller plate would push the title block below the fold of
-   the card. */
+   plate component itself is shape-agnostic. */
 .index__plate {
   position: relative;
   border-bottom: 1px solid var(--color-line-soft);
@@ -176,31 +150,97 @@
   aspect-ratio: 16 / 9;
 }
 
+/* --- 5c. Open panel --- */
+
+/* Approaching a card lifts its panel over the whole row: the plate turns to
+   the left column, and the copy — summary and full title block — takes the
+   room that opens beside it. The panel is placed against the grid, at the
+   row's own offset, so it covers its neighbours instead of displacing them.
+   `inset-inline: 0` is what makes it the row's width rather than the
+   cell's. */
+.index__card.is-open .index__panel {
+  position: absolute;
+  inset-inline: 0;
+  z-index: 6;
+  flex-direction: row;
+  align-items: stretch;
+  border-color: var(--color-line-strong);
+  /* Fully opaque, unlike the resting card: the panel covers its neighbours,
+     and the wash that reads as a sheet on the blueprint field lets three
+     other cards show straight through it. Both stops are that wash already
+     composited over the field, so the surface keeps its lit top edge without
+     anything showing behind it. */
+  background-color: rgb(21, 68, 147);
+  background-image: linear-gradient(
+    180deg,
+    rgb(24, 76, 160),
+    rgb(16, 54, 120)
+  );
+  box-shadow:
+    inset 0 1px 0 var(--color-line-soft),
+    0 24px 48px rgba(4, 20, 48, 0.55);
+  animation: index-open var(--dur-base) var(--ease-out) both;
+}
+
+/* Rises the last few pixels rather than fading in from nothing: the panel is
+   the card moving forward, not a tooltip appearing over it. */
+@keyframes index-open {
+  from {
+    opacity: 0.4;
+    transform: translateY(6px);
+  }
+}
+
+/* A third of the row, and the plate fills it however tall the copy runs —
+   the aspect ratio is what shapes the closed card, not this one. */
+.index__card.is-open .index__plate {
+  flex: 0 0 34%;
+  border-bottom: 0;
+  border-inline-end: 1px solid var(--color-line-soft);
+}
+
+.index__card.is-open .index__plate .plate {
+  aspect-ratio: auto;
+  height: 100%;
+}
+
 /* --- 6. Card copy --- */
 
-/* Grows to fill the card so the spec block's `margin-top: auto` has
-   something to push against — without it the block sits under the
-   paragraph and the two cards in a row misalign. */
+/* Grows to fill the panel so the foot's `margin-top: auto` has something to
+   push against — without it the row sits under the paragraph and two cards
+   side by side misalign. */
 .index__card-body {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   flex: 1;
   gap: var(--space-2);
+  padding: var(--space-3);
+}
+
+.index__card.is-open .index__card-body {
   padding: var(--space-4);
 }
 
+/* A step down from a two-across card's heading: at a quarter of the grid a
+   24px title wraps to three lines on the longer names. The open panel has
+   the width to carry it at full size. */
 .index__card-title {
   font-family: var(--font-display);
-  font-size: var(--size-heading-md);
+  font-size: var(--size-heading-sm);
   line-height: var(--leading-heading-md);
   font-weight: var(--weight-extrabold);
-  font-variation-settings: 'opsz' 24;
+  font-variation-settings: 'opsz' 20;
   color: var(--color-text-primary);
 }
 
-/* Stretched over the whole card: the title is the only link, but the card
-   is the target a reader aims at. */
+.index__card.is-open .index__card-title {
+  font-size: var(--size-heading-md);
+  font-variation-settings: 'opsz' 24;
+}
+
+/* Stretched over the whole cell: the title is the only link, but the card is
+   the target a reader aims at. */
 .index__card-link {
   color: inherit;
   text-decoration: none;
@@ -217,13 +257,15 @@
   color: var(--color-anzac);
 }
 
-/* The arrow appears only on approach: every card leads to the project's
-   own page, so at rest the mark would be noise on every one of them. */
+/* The arrow rides the card's foot rather than the title: the foot is the
+   line that names where the card goes, and one mark beside that label beats
+   the same mark trailing a heading that is already the link. It appears only
+   on approach — at rest, on every card, it would be noise. */
 .index__arrow {
   display: inline-block;
   margin-left: 6px;
   opacity: 0;
-  transform: translate(-3px, 3px);
+  transform: translateX(-6px);
   transition:
     opacity var(--dur-base) var(--ease-out),
     transform var(--dur-base) var(--ease-out);
@@ -235,39 +277,103 @@
   transform: none;
 }
 
+/* Clamped rather than trusted to be short: `description` is written for the
+   home row, and one long entry there would otherwise set the height of every
+   card in its grid row. The open panel drops it for the summary — the same
+   project said twice, once short and once properly, would read as a stutter. */
 .index__card-text {
-  font-size: var(--size-body-base);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  font-size: var(--size-body-sm);
   line-height: var(--leading-body-base);
-  max-width: 62ch;
   color: var(--color-text-body);
 }
 
-/* --- 7. Spec block --- */
+.index__card.is-open .index__card-text {
+  display: none;
+}
 
-/* The card's title block: label over value, cells divided by hairlines
-   under a single rule. Fields are optional and render in registry order, so
-   the same field lands in the same place on every card that discloses it.
-   `margin-top: auto` pins the block to the card's foot however long the
-   paragraph above it runs, which is what keeps a row of cards aligned. */
-.index__specs {
+/* The paragraph the panel exists to show, so it is drawn only there. */
+.index__card-summary {
+  display: none;
+  max-width: 74ch;
+  font-size: var(--size-body-base);
+  line-height: var(--leading-body-base);
+  color: var(--color-text-body);
+}
+
+.index__card.is-open .index__card-summary {
+  display: block;
+}
+
+/* --- 7. Card foot --- */
+
+/* One row: the project's leading spec on the left, where the card goes on
+   the right. `margin-top: auto` pins it to the panel's foot however long the
+   copy above runs, which is what keeps a row of cards aligned. */
+.index__card-foot {
+  position: relative;
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3) 0;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-3);
   align-self: stretch;
   margin-top: auto;
   padding-top: var(--space-3);
   border-top: 1px solid var(--color-line-soft);
 }
 
-.index__spec {
+/* The foot's rule is drawn twice: the hairline above, and this Anzac overlay
+   that runs it on approach. It answers the panel's top tick at the opposite
+   edge, so hovering closes the card between two marks instead of moving one.
+   Scaled from the left rather than animating `width`, which would lay the
+   row out on every frame. */
+.index__card-foot::before {
+  content: '';
+  position: absolute;
+  inset-block-start: -1px;
+  inset-inline: 0;
+  height: 1px;
+  transform: scaleX(0);
+  transform-origin: left;
+  background-color: var(--color-anzac);
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.index__card:hover .index__card-foot::before {
+  transform: scaleX(1);
+}
+
+/* --- 7b. Spec block --- */
+
+/* The whole title block is always rendered; the closed card shows one cell
+   of it. Which cell is the project's own choice (`cardField`), carried here
+   as `is-lead` rather than by filtering the list, so the panel keeps the
+   block in registry order. */
+.index__specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) 0;
+}
+
+.index__card:not(.is-open) .index__spec:not(.is-lead) {
+  display: none;
+}
+
+/* Cells divided by hairlines, the footer's title block at card scale. The
+   closed card shows one cell, so its padding only applies once the block is
+   open and there is a second cell for it to separate. */
+.index__card.is-open .index__spec {
   padding-inline: var(--space-4);
 }
 
-.index__spec:first-child {
+.index__card.is-open .index__spec:first-child {
   padding-inline-start: 0;
 }
 
-.index__spec + .index__spec {
+.index__card.is-open .index__spec + .index__spec {
   border-inline-start: 1px solid var(--color-line-soft);
 }
 
@@ -282,19 +388,15 @@
 
 .index__spec-value {
   font-family: var(--font-technical);
-  font-size: var(--size-body-base);
+  font-size: var(--size-overline);
   letter-spacing: var(--tracking-technical);
   font-weight: var(--weight-semibold);
   color: var(--color-text-primary);
 }
 
-/* A project can disclose nothing at all; an empty title block would read as
-   a rendering fault, so the block is replaced rather than left blank. */
-.index__specs-empty {
-  align-self: stretch;
-  margin-top: auto;
-  padding-top: var(--space-3);
-  border-top: 1px solid var(--color-line-soft);
+/* A project can disclose nothing at all; an empty cell would read as a
+   rendering fault, so the cell is replaced rather than left blank. */
+.index__spec-empty {
   font-family: var(--font-technical);
   font-size: var(--size-overline);
   letter-spacing: var(--tracking-technical);
@@ -302,10 +404,11 @@
   color: var(--color-text-muted);
 }
 
-/* --- 8. Card foot --- */
+/* --- 8. Card action --- */
 
 /* Names where the card's link goes, since the arrow alone doesn't say. */
-.index__card-foot {
+.index__action {
+  flex: none;
   font-family: var(--font-technical);
   font-size: var(--size-overline);
   font-weight: var(--weight-semibold);
@@ -315,7 +418,7 @@
   transition: color var(--dur-fast) var(--ease-out);
 }
 
-.index__card:hover .index__card-foot {
+.index__card:hover .index__action {
   color: var(--color-anzac);
 }
 
@@ -327,7 +430,6 @@
 .index__eyebrow,
 .index__headline,
 .index__body,
-.index__tally,
 .index__card {
   opacity: 0;
   transform: translateY(18px);
@@ -336,81 +438,74 @@
     transform var(--dur-slow) var(--ease-out);
 }
 
-.index__card {
-  /* Reveal and hover share `transform`, so the hover lift has to be listed
-     here too or it inherits the slow reveal timing. */
-  transition:
-    opacity var(--dur-slow) var(--ease-out),
-    transform var(--dur-slow) var(--ease-out),
-    border-color var(--dur-base) var(--ease-out);
-}
-
 .index.is-revealed .index__eyebrow,
 .index.is-revealed .index__headline,
 .index.is-revealed .index__body,
-.index.is-revealed .index__tally,
 .index.is-revealed .index__card {
   opacity: 1;
   transform: none;
 }
 
-/* Once revealed, the card hands `transform` back to the hover lift — at
-   hover speed, and at a specificity that clears the reveal's own rule. */
-.index.is-revealed .index__card:hover {
-  transform: translateY(-3px);
-  transition-delay: 0s;
-  transition-duration: var(--dur-base);
-}
-
+/* The cell no longer lifts on hover: the panel inside it comes forward
+   instead, so `transform` here belongs to the reveal alone. */
 .index.is-revealed .index__headline { transition-delay: 0.08s; }
 .index.is-revealed .index__body { transition-delay: 0.14s; }
-.index.is-revealed .index__tally { transition-delay: 0.2s; }
 
 @media (prefers-reduced-motion: reduce) {
   .index__eyebrow,
   .index__headline,
   .index__body,
-  .index__tally,
   .index__card {
     opacity: 1;
     transform: none;
     transition: none;
   }
 
-  .index.is-revealed .index__card:hover {
-    transform: none;
+  .index__card:hover .index__panel::before {
+    width: 40px;
   }
 
-  .index__card:hover::before {
-    width: 40px;
+  .index__card:hover .index__card-foot::before {
+    transform: scaleX(0);
+  }
+
+  /* The panel still opens — it is what carries the extra information — but
+     it arrives in place rather than rising into it. */
+  .index__card.is-open .index__panel {
+    animation: none;
   }
 }
 
 /* --- 10. Small screens --- */
+
+/* Three, then two, then one: the card stops being readable at roughly
+   240px, so the count drops rather than the cards narrowing further. */
+@media (max-width: 1180px) {
+  .index__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
 
 @media (max-width: 900px) {
   .index {
     padding-block: var(--space-5) var(--space-7);
   }
 
-  /* One across: below this width two cards leave the spec cells too narrow
-     to stay on one row, and the block wraps into a stack of one-cell rows. */
+  /* The ring drops under the intro; there is no width left to put it beside
+     a headline. */
+  .index__head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
   .index__grid {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 560px) {
-  /* Stacked cells read as rows, so the dividing hairline moves to the top —
-     the same swap the footer makes at its own breakpoint. */
-  .index__tally-cell,
-  .index__spec {
-    flex: 1 1 100%;
-    padding-inline: 0;
+  .index__grid {
+    grid-template-columns: minmax(0, 1fr);
   }
 
-  .index__tally-cell + .index__tally-cell,
-  .index__spec + .index__spec {
-    border-inline-start: 0;
-  }
 }

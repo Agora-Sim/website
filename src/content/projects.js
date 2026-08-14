@@ -36,7 +36,10 @@ export const findProject = (id) => PROJECTS.find((project) => project.id === id)
    at, so the brief and the layout stay one number; the banner's is the
    file's shape, which the two card sizes then crop. */
 export const PROJECT_FIGURES = {
-  /* Card banner, `public/projects/<id>.png`. Drawn at 1600 × 900. */
+  /* Card banner, `public/projects/<id>.png`. Drawn at 1600 × 900, and cropped
+     two ways: the register's closed card shows it whole at 16/9, its open
+     panel shows only the central column of it. Keep the subject inside the
+     middle 55% of the width. Full brief: `docs/imagens.md`. */
   image: { ratio: '16 / 9' },
   /* Project page figure, `public/projects/covers/<id>.png`. 1600 × 1000. */
   cover: { ratio: '8 / 5' },
@@ -83,6 +86,20 @@ export const disclosedFields = (fields = {}) =>
     value: fields[field.id],
   }));
 
+/**
+ * The single field the register's closed card shows, since one cell is all
+ * that fits at a quarter of the grid. Which one is the project's own call —
+ * the licence is the point of one and an afterthought on the next — so it
+ * names a `cardField`; a project that names none falls back to the first
+ * field it discloses, in registry order.
+ *
+ * @param {object} project an entry from PROJECTS
+ */
+export const leadField = (project) => {
+  const fields = disclosedFields(project.fields);
+  return fields.find((field) => field.id === project.cardField) ?? fields[0];
+};
+
 /* --- 5. Projects --- */
 
 /* To add a project: append an entry below. Drop the banner image in
@@ -103,6 +120,10 @@ export const disclosedFields = (fields = {}) =>
    shapes). None exists yet — every project carries an empty `cover`, which
    draws the empty plate, and filling one is dropping the file in
    `public/projects/covers/` and naming it here.
+
+   `cardField` names which of `fields` the register's closed card shows —
+   the one cell that fits at a quarter of the grid. It is optional: without
+   it the first disclosed field stands in. The open panel shows them all.
 
    `sections` is the project page's body — a list of
    `{ heading, paragraphs }`, drawn in order. It is optional and starts
@@ -126,6 +147,7 @@ export const PROJECTS = [
       'Desenvolvido em aberto, com o código e as decisões de modelação à ' +
       'vista de quem quiser contestá-las.',
     href: 'https://github.com/Agora-Sim/Simulator',
+    cardField: 'scope',
     fields: {
       started: '2025',
       scope: 'Ferramenta',
@@ -192,4 +214,25 @@ export const PROJECTS = [
       scope: 'Investigação',
     },
   },
+
+  /* --- Placeholders ---
+     Slots held open for projects not yet announced. They carry no invented
+     title, summary or figures — the content warning at the top of this file
+     applies to placeholders too — so each says only that it is a slot.
+     Delete an entry as the real project replaces it; the register's tally
+     counts these, so leaving them in overstates the registry. */
+  ...[1, 2, 3, 4].map((n) => ({
+    id: `por-anunciar-${n}`,
+    image: '',
+    imageAlt: '',
+    cover: '',
+    coverAlt: '',
+    status: 'planeado',
+    title: 'Por anunciar',
+    description: 'Um projeto ainda por anunciar.',
+    summary:
+      'Este lugar está reservado para um projeto que ainda não foi ' +
+      'anunciado. Quando estiver, é aqui que fica — com o âmbito, o estado ' +
+      'e o método à vista, como os restantes.',
+  })),
 ];
