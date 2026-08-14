@@ -123,56 +123,63 @@
 
 /* --- 4. Status --- */
 
-/* State is data, so it carries Anzac and sits on the plate rather than in
-   the copy. Monza is deliberately absent; it is spent on Method's stamp. */
+/* A badge, colour-coded by state: the hue is what a reader reads, and the
+   badge is built entirely from it — a 14% wash for the fill, 40% for the
+   border, full strength for the text. One rule, one variable, so a new
+   state is a single line in section 4b and nothing else.
+
+   The hue does the work, so there is no dot: it would restate the state a
+   second time in the same 90px. Small and translucent on purpose — the plate
+   underneath has to stay the thing you look at. */
 .plate__status {
   position: absolute;
-  /* Flush with the frame's inset, so the chip reads as the fourth corner
+  /* Flush with the frame's inset, so the badge reads as the fourth corner
      mark rather than as a label floating over one. */
   top: 10px;
   left: 10px;
   z-index: 2;
+  --status-ink: var(--color-status-planned);
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 4px var(--space-2);
-  border: 1px solid var(--color-line-soft);
-  border-radius: var(--radius-sm);
-  background-color: rgba(9, 38, 86, 0.82);
+  /* Fully rounded, and the horizontal padding grows to match — a pill with
+     square-badge padding reads as a mistake at the ends. This is the one
+     place on the page that is not a drafting rectangle, which is what keeps
+     it reading as a state rather than another drawn element. */
+  padding: 3px 10px;
+  border: 1px solid color-mix(in srgb, var(--status-ink) 40%, transparent);
+  border-radius: var(--radius-full);
+  background-color: color-mix(
+    in srgb,
+    var(--status-ink) 14%,
+    rgba(9, 38, 86, 0.88)
+  );
   font-family: var(--font-technical);
-  font-size: var(--size-overline);
+  font-size: 11px;
+  line-height: var(--leading-overline);
   font-weight: var(--weight-semibold);
   letter-spacing: var(--tracking-technical);
   text-transform: uppercase;
-  color: var(--color-text-body);
+  color: var(--status-ink);
+  backdrop-filter: blur(2px);
 }
 
-/* The dot, not the label colour, is what separates the three states — a
-   filled lamp reads as done, a ring as not yet, without a second hue. */
-.plate__status-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: var(--radius-full);
-  border: 1px solid var(--color-anzac);
+/* --- 4b. Status hues --- */
+
+/* One line per state. The tokens are documented in `tokens.css`; nothing
+   outside this badge may use them. */
+.plate__status--concluido {
+  --status-ink: var(--color-status-done);
 }
 
-.plate__status--concluido .plate__status-dot {
-  background-color: var(--color-anzac);
+.plate__status--desenvolvimento {
+  --status-ink: var(--color-status-active);
 }
 
-.plate__status--desenvolvimento .plate__status-dot {
-  background-image: linear-gradient(
-    to right,
-    var(--color-anzac) 50%,
-    transparent 50%
-  );
+.plate__status--planeado {
+  --status-ink: var(--color-status-planned);
 }
 
-.plate__status--planeado .plate__status-dot {
-  border-color: var(--color-text-muted);
-}
-
-/* --- 5. Reduced motion --- */
+/* --- 6. Reduced motion --- */
 
 @media (prefers-reduced-motion: reduce) {
   .plate-host:hover .plate__image {

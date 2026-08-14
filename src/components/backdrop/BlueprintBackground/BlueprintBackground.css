@@ -29,7 +29,11 @@
    on a grid intersection and the grid lines read as the tile's own borders. */
 .blueprint__azulejo {
   opacity: 0.13;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 100 100'%3E%3Cg fill='none' stroke='%23ffffff' stroke-width='1.15'%3E%3Cpath d='M50 5 L95 50 L50 95 L5 50 Z'/%3E%3Cpath d='M50 24 L76 50 L50 76 L24 50 Z'/%3E%3Ccircle cx='50' cy='50' r='7'/%3E%3Cpath d='M0 24 A 24 24 0 0 0 24 0'/%3E%3Cpath d='M76 0 A 24 24 0 0 0 100 24'/%3E%3Cpath d='M100 76 A 24 24 0 0 0 76 100'/%3E%3Cpath d='M24 100 A 24 24 0 0 0 0 76'/%3E%3Cpath d='M50 5 L44 14 L56 14 Z'/%3E%3Cpath d='M50 95 L44 86 L56 86 Z'/%3E%3Cpath d='M5 50 L14 44 L14 56 Z'/%3E%3Cpath d='M95 50 L86 44 L86 56 Z'/%3E%3C/g%3E%3Cg fill='%23ffffff'%3E%3Ccircle cx='0' cy='0' r='4'/%3E%3Ccircle cx='100' cy='0' r='4'/%3E%3Ccircle cx='0' cy='100' r='4'/%3E%3Ccircle cx='100' cy='100' r='4'/%3E%3C/g%3E%3C/svg%3E");
+  /* The tile lives in `public/azulejo.svg` — the suggestion card masks the
+     same file to draw it in a different ink, so the geometry has one home.
+     Its intrinsic 160px is 2x the 80px grid cell, which is what lands every
+     corner dot on a grid intersection. */
+  background-image: url('/azulejo.svg');
 }
 
 .blueprint__azulejo--tr {

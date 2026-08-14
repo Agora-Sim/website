@@ -38,10 +38,7 @@ export default function ProjectPlate({ image, imageAlt = '', status }) {
 
       <span className="plate__frame" aria-hidden="true" />
 
-      <span className={`plate__status plate__status--${status}`}>
-        <span className="plate__status-dot" aria-hidden="true" />
-        {label}
-      </span>
+      <span className={`plate__status plate__status--${status}`}>{label}</span>
     </div>
   );
 }

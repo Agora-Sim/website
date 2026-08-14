@@ -55,10 +55,10 @@ const pad = (n) => String(n).padStart(2, '0');
    ============================================================ */
 
 /**
- * The full project register: one wide card per project, laid out as a
- * drawing's title block — the plate on the left, the copy and a row of
- * label/value cells on the right. It is the same plate the home row draws,
- * given the room to carry its metadata instead of just its name.
+ * The full project register: a two-across grid of cards, each the home
+ * row's card at double scale — the plate on top, and under it the copy and
+ * a drawing's title block of label/value cells. Same card, given the room
+ * to carry a project's metadata instead of just its name.
  */
 export default function ProjectIndex() {
   const { eyebrow, headline, body, countLabel, fieldsEmpty, linkLabel } =
@@ -101,7 +101,7 @@ export default function ProjectIndex() {
           ))}
         </dl>
 
-        <ul className="index__list">
+        <ul className="index__grid">
           {PROJECTS.map((project, position) => {
             const fields = disclosedFields(project.fields);
 

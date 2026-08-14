@@ -6,10 +6,12 @@
 
 /* --- 1. Layout --- */
 
+/* The bottom padding is the gap to the suggestion slip, not the gap to the
+   footer — the register is no longer the last thing on the page. */
 .index {
   position: relative;
   z-index: 1;
-  padding-block: var(--space-6) var(--space-8);
+  padding-block: var(--space-6) var(--space-7);
 }
 
 /* --- 2. Header --- */
@@ -108,24 +110,27 @@
   color: var(--color-anzac);
 }
 
-/* --- 4. List --- */
+/* --- 4. Grid --- */
 
-.index__list {
-  display: flex;
-  flex-direction: column;
+/* Two across, not four: these are the home row's cards given the room to
+   carry their metadata, so each one gets roughly double the width. */
+.index__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-4);
   list-style: none;
 }
 
 /* --- 5. Card --- */
 
-/* Wide rather than tall: the plate keeps the row's left column and the
-   title block fills the rest. Same surface as Method's cards and the home
-   row's, so the three read as one material at three sizes. */
+/* The home row's card at double scale: plate on top, title block below.
+   Same surface as Method's cards and the row's, so the three read as one
+   material at three sizes. Stretched to the grid row's height so two cards
+   side by side land their spec blocks on the same line. */
 .index__card {
   position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
   border: 1px solid var(--color-line);
   border-radius: var(--radius-md);
@@ -159,23 +164,28 @@
 }
 
 /* Sets the plate's shape and the rule that divides it from the copy; the
-   plate component itself is shape-agnostic. */
+   plate component itself is shape-agnostic. Wider than the row's 16/10 —
+   at this size a taller plate would push the title block below the fold of
+   the card. */
 .index__plate {
   position: relative;
-  border-inline-end: 1px solid var(--color-line-soft);
+  border-bottom: 1px solid var(--color-line-soft);
 }
 
 .index__plate .plate {
-  height: 100%;
-  min-height: 240px;
+  aspect-ratio: 16 / 9;
 }
 
 /* --- 6. Card copy --- */
 
+/* Grows to fill the card so the spec block's `margin-top: auto` has
+   something to push against — without it the block sits under the
+   paragraph and the two cards in a row misalign. */
 .index__card-body {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  flex: 1;
   gap: var(--space-2);
   padding: var(--space-4);
 }
@@ -383,20 +393,10 @@
     padding-block: var(--space-5) var(--space-7);
   }
 
-  /* Plate over copy: below this width a 340px column leaves the title block
-     too narrow for its cells to stay on one row. */
-  .index__card {
+  /* One across: below this width two cards leave the spec cells too narrow
+     to stay on one row, and the block wraps into a stack of one-cell rows. */
+  .index__grid {
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  .index__plate {
-    border-inline-end: 0;
-    border-bottom: 1px solid var(--color-line-soft);
-  }
-
-  .index__plate .plate {
-    min-height: 0;
-    aspect-ratio: 16 / 9;
   }
 }
 
