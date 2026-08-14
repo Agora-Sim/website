@@ -58,14 +58,14 @@ export const SUGGEST_FIELDS = [
 
 export const SUGGEST = {
   eyebrow: 'Sugerir',
-  headline: ['Tem uma idea e', 'gostava de ajudar?'],
+  headline: ['Tens uma ideia e', 'gostavas de ajudar?'],
   body:
     'O AgoraSim está sempre aberto a novos projetos, novas áreas de ação e ' +
     'novos métodos de validação. Somos uma organização de contribuição pública. ' +
     'Gostava de sugerir um novo problema para nós analisarmos?',
   /* The subject line the email arrives with, so a suggestion is
      recognisable in the inbox without opening it. */
-  subject: 'Sugestão de projeto — agorasimlab.com',
+  subject: 'Sugestão de projeto · agorasimlab.com',
   submit: 'Enviar sugestão',
   optional: 'Opcional',
   /* Label for the live count of filled fields. The figures are counted from
@@ -76,7 +76,7 @@ export const SUGGEST = {
     ok: 'Recebido. Respondemos ao email que deixaste.',
     /* Says what to do next, not just that it broke. */
     error:
-      'Não foi possível enviar. Tenta outra vez, ou escreve directamente ' +
+      'Não foi possível enviar. Tenta outra vez, ou escreve diretamente ' +
       'para projects@agorasimlab.com.',
     /* Shown when the build has no access key. Only reachable by a
        misconfigured deploy, so it names the fix rather than apologising. */

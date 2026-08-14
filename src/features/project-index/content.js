@@ -15,7 +15,7 @@ export const PROJECT_INDEX = {
     'natureza. Temos projetos computacionais, projetos económicos, ' +
     'projetos investigacionais, etc. Qualquer projeto que utilize ' +
     'métodos objetivos e que traga clareza a uma esfera da realidade ' +
-    'portuguesa é muito bem vinda. ',
+    'portuguesa é muito bem-vindo. ',
   /* Suffix for the count strip under the header. The figures themselves are
      counted from the registry at render time, never written down here. */
   countLabel: 'no registo',

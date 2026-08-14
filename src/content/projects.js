@@ -161,8 +161,8 @@ export const PROJECTS = [
       'Ferramenta para simular qualquer ambiente e apoiar a nossa investigação. ',
     summary:
       'O motor sobre o qual todos os outros projetos assentam: um simulador ' +
-      'flexível capaz de, nas mãos de pessoas experientes, simular variados problemas ' +
-      'Acompanhado de ferramentas de análise permite ter respostas objetivas sobre ' +
+      'flexível capaz de, nas mãos de pessoas experientes, simular variados problemas. ' +
+      'Acompanhado de ferramentas de análise, permite ter respostas objetivas sobre ' +
       'as questões portuguesas mais prevalentes na discussão pública. ' +
       'Desenvolvido em código aberto, está disponível para qualquer um a utilizar.',
     href: 'https://github.com/Agora-Sim/Simulator',
@@ -205,7 +205,7 @@ export const PROJECTS = [
     status: 'planeado',
     title: 'A Fortuna das Rendas',
     description:
-      'Desmisitificar o verdadero impacto das diferentes medidas propostas ' +
+      'Desmistificar o verdadeiro impacto das diferentes medidas propostas ' +
       'para melhorar a situação das rendas. ',
     summary:
       'As medidas propostas para a habitação são muitas e o debate sobre ' +
@@ -259,7 +259,7 @@ export const PROJECTS = [
     description: 'Um projeto ainda por anunciar.',
     summary:
       'Este lugar está reservado para um projeto que ainda não foi ' +
-      'anunciado. Quando estiver, é aqui que fica — com o âmbito, o estado ' +
+      'anunciado. Quando estiver, é aqui que fica, com o âmbito, o estado ' +
       'e o método à vista, como os restantes.',
   })),
 ];

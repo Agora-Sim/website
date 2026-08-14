@@ -15,7 +15,7 @@ export const METHOD = {
     'Usamos o método científico: testamos empiricamente para tirar conclusões ' +
     'concretas sobre o impacto de medidas, arquiteturas, hierarquias, etc. Para ' +
     'isso desenvolvemos o Simulador, uma ferramenta que replica qualquer ambiente ' +
-    'com grande flexibilidade.Cada projeto junta essa investigação a um relatório ' +
+    'com grande flexibilidade. Cada projeto junta essa investigação a um relatório ' +
     'completo das soluções mais discutidas.',
   /* Two cards, not three — the reference stages exactly two, and a third
      diluted the "one engine, staggered" composition. The investigation
@@ -43,7 +43,7 @@ export const METHOD = {
       subtitle: 'Utilizando dados reais para prever impacto',
       lines: [
         'Análise investigacional do problema',
-        'Tranparência sobre a natureza da questão',
+        'Transparência sobre a natureza da questão',
         'Trabalho completo e detalhado',
         'Relatório disponível para download',
       ],

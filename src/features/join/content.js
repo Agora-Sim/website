@@ -94,13 +94,12 @@ export const JOIN = {
   eyebrow: 'Participar',
   headline: ['Escolhe um projeto,', 'ou traz o teu.'],
   body:
-    'Trabalhamos em aberto e a equipa é quem aparece. Não é preciso ser ' +
-    'investigador nem programador — modelação, dados, direito, desenho, ' +
-    'revisão de texto e trabalho de terreno cabem todos. Diz onde queres ' +
-    'entrar e respondemos com o próximo passo.',
+    'O AgoraSim só funciona com a contribuição de muitos. Se estás revoltado com a condição do país ' +
+    'e gostarias de contribuir sem entrar na vida política, este é o lugar certo. ' +
+    'Candidata-te a um projeto já existente ou sugere o teu próprio projeto, estamos cá para te receber. ',
   /* The subject line the email arrives with, so a candidacy is
      recognisable in the inbox without opening it. */
-  subject: 'Participação — agorasimlab.com',
+  subject: 'Participação · agorasimlab.com',
   submit: 'Enviar candidatura',
   optional: 'Opcional',
   /* Label for the live count of filled fields. The figures are counted from
@@ -111,7 +110,7 @@ export const JOIN = {
     ok: 'Recebido. Respondemos ao email que deixaste.',
     /* Says what to do next, not just that it broke. */
     error:
-      'Não foi possível enviar. Tenta outra vez, ou escreve directamente ' +
+      'Não foi possível enviar. Tenta outra vez, ou escreve diretamente ' +
       'para projects@agorasimlab.com.',
     /* Shown when the build has no access key. Only reachable by a
        misconfigured deploy, so it names the fix rather than apologising. */

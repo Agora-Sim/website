@@ -11,8 +11,8 @@ export const VISION = {
   headline: ['Queremos um país que decide', 'com evidência, não com slogans.'],
   body:
     'Infelizmente, no que toca à decisão dos nossos líderes, tendemos a depender ' +
-    'da elequência dos mesmos comunicar as suas soluções para o país. Isto faz ' +
-    'com que nem sempre a melhor soluções seja adotada, mas sim a que foi melhor ' +
+    'da eloquência dos mesmos ao comunicar as suas soluções para o país. Isto faz ' +
+    'com que nem sempre a melhor solução seja adotada, mas sim a que foi melhor ' +
     'comunicada. Nós queremos acabar com isso. Portugal merece melhores soluções. ',
   /* Leaves the site for the GitHub org: the section says the work is done
      in the open, and this is where it is open. Off-site, so it carries the

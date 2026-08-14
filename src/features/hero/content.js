@@ -10,7 +10,7 @@ export const HERO = {
   headline: ['AgoraSim:', 'Engineering'],
   headlineAccent: 'Portugal',
   lede:
-    'Projeto open-source com o objectivo de trazer o método científico ao discurso ' +
+    'Projeto open-source com o objetivo de trazer o método científico ao discurso ' +
     'político. Para que não dependamos mais do apelo à autoridade para avaliarmos as ' +
     'soluções aos muitos problemas do país.',
   actions: {
