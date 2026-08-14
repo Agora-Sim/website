@@ -1,0 +1,13 @@
+/* ============================================================
+   0. SUGGEST
+   Placement only. The card is `components/form/FormSlip`, which
+   owns every rule inside it.
+   ============================================================ */
+
+/* --- 1. Section --- */
+
+.suggest {
+  position: relative;
+  z-index: 1;
+  padding-block: 0 var(--space-8);
+}

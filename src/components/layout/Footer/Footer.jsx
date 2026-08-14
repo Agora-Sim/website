@@ -2,6 +2,8 @@
    0. IMPORTS
    ============================================================ */
 
+import { Link } from 'react-router-dom';
+
 import { BRAND, FOOTER, NAV_LINKS } from '@/content/site.js';
 import logo from '@/assets/images/logo-fullmark-white.svg';
 import './Footer.css';
@@ -26,17 +28,17 @@ export default function Footer() {
   return (
     <footer className="footer">
       <div className="footer__inner wrap">
-        <a className="footer__logo-link" href={BRAND.homeHref}>
+        <Link className="footer__logo-link" to={BRAND.homeHref}>
           <img className="footer__logo" src={logo} alt={BRAND.logoAlt} />
-        </a>
+        </Link>
 
         <p className="footer__field footer__tagline">{tagline}</p>
 
         <nav className="footer__field footer__nav" aria-label="Rodapé">
           {NAV_LINKS.map((link) => (
-            <a className="footer__link" key={link.id} href={link.href}>
+            <Link className="footer__link" key={link.id} to={link.to}>
               {link.label}
-            </a>
+            </Link>
           ))}
           <a className="footer__link" href={repo.href} target="_blank" rel="noreferrer">
             {repo.label}

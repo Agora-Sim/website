@@ -4,9 +4,16 @@
 
 /* --- 1. Layout --- */
 
+/* The graph draws with `overflow: visible` so its glow bleeds past the svg
+   box, which is deliberate — but that paint reached ~30px past the viewport
+   edge and gave the whole page a horizontal scroll. Clipped at the section,
+   so the bleed still shows everywhere it is visible and only the part
+   already off-screen is cut. `clip` rather than `hidden`: it doesn't make a
+   scroll container, so the navbar's `position: sticky` keeps working. */
 .hero {
   position: relative;
   z-index: 1;
+  overflow-x: clip;
 }
 
 /* Sized to its content, not the viewport — Vision's panel border shows in

@@ -1,0 +1,16 @@
+/* ============================================================
+   0. JOIN
+   Placement only. The card is `components/form/FormSlip`, which
+   owns every rule inside it.
+   ============================================================ */
+
+/* --- 1. Section --- */
+
+/* The page is this section alone, so the top padding is the page's: enough
+   air under the sticky bar that the slip reads as laid on the field rather
+   than tucked under the navbar. */
+.join {
+  position: relative;
+  z-index: 1;
+  padding-block: clamp(var(--space-6), 9vw, var(--space-8)) var(--space-8);
+}

@@ -11,13 +11,15 @@ export const HERO = {
   headlineAccent: 'Portugal',
   lede:
     'Projeto open-source com o objectivo de trazer o método científico ao discurso ' +
-    'político. Para que não dependamos mais do discurso político para avaliarmos as ' +
+    'político. Para que não dependamos mais do apelo à autoridade para avaliarmos as ' +
     'soluções aos muitos problemas do país.',
   actions: {
-    primary: { label: 'Ver os projetos', href: '#projetos' },
-    /* Points at Vision, the section directly below, rather than the
-       not-yet-built #sobre. */
-    secondary: { label: 'Como calculamos', href: '#visao' },
+    /* The hero's one action. It leaves the page for the full register, so
+       it is a route rather than an anchor — the home row below is a summary
+       of it, not the thing. There is no second button: the fold already
+       carries the bar's "Participar", and a ghost link down to Vision only
+       offered the scroll the reader was about to make anyway. */
+    primary: { label: 'Ver os projetos', to: '/projetos' },
   },
 };
 

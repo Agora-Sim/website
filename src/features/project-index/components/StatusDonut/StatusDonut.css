@@ -1,0 +1,340 @@
+/* ============================================================
+   0. STATUS DONUT
+   The registry counted as a ring, beside the page title. Prefix
+   is `donut__`. Used by ProjectIndex and nothing else, which is
+   why it sits inside that feature.
+
+   The svg carries the ring and its leader lines only, in
+   viewBox units so they scale with the column. The labels are
+   HTML laid over the same box and positioned by percentage,
+   because svg text would scale with the drawing and break the
+   page's type scale.
+   ============================================================ */
+
+/* --- 1. Layout --- */
+
+.donut {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-3);
+  width: 100%;
+  max-width: 460px;
+  /* Pulled off the wrap's right edge. The drawing's own box is symmetric,
+     but its right-hand label is the longest thing in it, so flush right the
+     whole block reads as pushed into the margin. */
+  margin-inline-end: var(--space-6);
+}
+
+/* The viewBox is 232 × 124, so the box it sits in has to be too, or the svg
+   is letterboxed and the ring drifts off the labels' centre line. The labels
+   are positioned against this box, which is why it is the positioned one. */
+.donut__ring {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 232 / 124;
+}
+
+.donut__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* --- 2. Ring --- */
+
+.donut__track,
+.donut__arc {
+  fill: none;
+  stroke-width: 9;
+  stroke-linecap: butt;
+}
+
+/* The full ring under the arcs: without it a registry that is mostly one
+   state reads as a broken circle rather than a measured one. */
+.donut__track {
+  stroke: var(--color-line-soft);
+}
+
+/* Each arc is its own length of the same ring, placed by its offset. Both
+   are percentages because the circle carries `pathLength="100"`, so nothing
+   here has to know the radius. Drawn from `0 100` on reveal, which is what
+   makes the ring fill rather than appear. */
+.donut__arc {
+  stroke: var(--status-ink, var(--color-line));
+  stroke-dasharray: 0 100;
+  stroke-dashoffset: var(--offset);
+  transition: stroke-dasharray var(--dur-slow) var(--ease-out);
+}
+
+.donut.is-revealed .donut__arc {
+  stroke-dasharray: var(--length) 100;
+}
+
+/* --- 2b. Status hues --- */
+
+/* The same three inks the status badge uses, and deliberately so: the ring
+   and the badge name the same states, and a second palette would make the
+   reader learn one mapping twice. One line per state, as in
+   `ProjectPlate.css` section 4b. */
+.donut__arc--concluido,
+.donut__label--concluido,
+.donut__leader--concluido,
+.donut__swatch--concluido {
+  --status-ink: var(--color-status-done);
+}
+
+.donut__arc--desenvolvimento,
+.donut__label--desenvolvimento,
+.donut__leader--desenvolvimento,
+.donut__swatch--desenvolvimento {
+  --status-ink: var(--color-status-active);
+}
+
+.donut__arc--planeado,
+.donut__label--planeado,
+.donut__leader--planeado,
+.donut__swatch--planeado {
+  --status-ink: var(--color-status-planned);
+}
+
+/* --- 3. Leaders --- */
+
+/* A leader line off the arc it names, the way a drawing labels a part —
+   which is also why the label sits at the end of a line rather than in a
+   key: a key makes the reader match colours, a leader points. */
+.donut__leader {
+  opacity: 0;
+  transition: opacity var(--dur-slow) var(--ease-out);
+}
+
+.donut.is-revealed .donut__leader {
+  opacity: 1;
+}
+
+.donut__line {
+  fill: none;
+  stroke: var(--color-line);
+  stroke-width: 0.8;
+}
+
+/* The tick where the leader lands, the terminator a drawn leader carries. */
+.donut__node {
+  fill: var(--status-ink, var(--color-line));
+}
+
+/* --- 3b. Labels --- */
+
+/* HTML over the svg, not svg text: svg text scales with the viewBox, so the
+   technical register would come out half again too large here and change
+   size with the column. These read the page's own tokens instead.
+
+   Each is pinned by the edge its leader runs away from and centred on the
+   leader's own line, so a name that wraps grows outward rather than back
+   over the drawing. */
+.donut__label {
+  position: absolute;
+  transform: translateY(-50%);
+  /* Whatever is left between the leader's end and the box edge. The box is
+     deliberately wider than the ring for exactly this. */
+  max-width: 24%;
+  opacity: 0;
+  transition: opacity var(--dur-slow) var(--ease-out);
+}
+
+.donut.is-revealed .donut__label {
+  opacity: 1;
+}
+
+.donut__label--left {
+  text-align: right;
+}
+
+.donut__name {
+  display: block;
+  font-family: var(--font-technical);
+  font-size: var(--size-overline);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-technical);
+  text-transform: uppercase;
+  line-height: var(--leading-overline);
+  color: var(--color-text-muted);
+}
+
+/* Anzac carries data per 02_Colors — a counted figure is exactly that. A
+   step under the total in the middle, which is the figure these are shares
+   of. */
+.donut__figure {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--size-heading-sm);
+  font-weight: var(--weight-extrabold);
+  font-variation-settings: 'opsz' 20;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+  color: var(--color-anzac);
+}
+
+/* --- 4. Centre --- */
+
+/* The total, held in the ring's own hole rather than in a caption: it is
+   what every arc is a share of, so it belongs at the centre of them. */
+.donut__centre {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  pointer-events: none;
+}
+
+.donut__total {
+  font-family: var(--font-display);
+  font-size: clamp(26px, 3vw, 34px);
+  font-weight: var(--weight-extrabold);
+  font-variation-settings: 'opsz' 34;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: var(--color-anzac);
+}
+
+.donut__total-label {
+  max-width: 9ch;
+  font-family: var(--font-technical);
+  font-size: var(--size-overline);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-technical);
+  text-transform: uppercase;
+  line-height: var(--leading-overline);
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+/* --- 5. Key --- */
+
+/* Wide, this holds only the states with no arc — dimmed, because they are
+   lines the registry has not written yet. It is the reason the ring is
+   drawn from `PROJECT_STATUSES` rather than from the projects: a state
+   exists before anything is in it. */
+.donut__key {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2) var(--space-4);
+  padding-top: var(--space-2);
+}
+
+.donut__row {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-technical);
+  font-size: var(--size-overline);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-technical);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+/* A state with an arc is already named on the ring, by a line pointing at
+   it. Repeating it here would label the same thing twice. */
+.donut__row:not(.is-empty) {
+  display: none;
+}
+
+.donut__row.is-empty {
+  opacity: 0.5;
+}
+
+.donut__row-count {
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-primary);
+}
+
+/* Hollow while the state is empty, filled once something lands in it — a
+   solid swatch on an empty state would say the registry had reached it. */
+.donut__swatch {
+  width: 8px;
+  height: 8px;
+  border-radius: 1px;
+  background-color: var(--status-ink, var(--color-line));
+}
+
+.donut__row.is-empty .donut__swatch {
+  background-color: transparent;
+  box-shadow: inset 0 0 0 1px var(--status-ink, var(--color-line));
+}
+
+/* --- 6. Reveal --- */
+
+/* From the right, unlike the header beside it, which rises: the ring is
+   drawn onto the sheet after the title, the way a revision block is added
+   to a drawing that already has one. */
+.donut {
+  opacity: 0;
+  transform: translateX(16px);
+  transition:
+    opacity var(--dur-slow) var(--ease-out),
+    transform var(--dur-slow) var(--ease-out);
+  transition-delay: 0.1s;
+}
+
+.donut.is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .donut,
+  .donut__leader,
+  .donut__label {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  /* The arcs still land at their lengths — they carry the figures, so they
+     are content — but they arrive there instead of being drawn. */
+  .donut__arc {
+    transition: none;
+  }
+}
+
+/* --- 7. Small screens --- */
+
+/* Under about 700px a label at the end of a leader has nowhere to go: the
+   longest state name is wider than the space left beside the ring, and a
+   name that cannot wrap runs off the sheet. So the leaders come off and the
+   key takes over, carrying every state rather than only the empty ones. */
+@media (max-width: 700px) {
+  /* Centred under the intro, so there is no right edge to pull away from. */
+  .donut {
+    margin-inline-end: 0;
+  }
+
+  .donut__leader,
+  .donut__label {
+    display: none;
+  }
+
+  .donut__row:not(.is-empty) {
+    display: inline-flex;
+  }
+
+  /* Without labels the box no longer needs the width they sat in, so the
+     ring takes it back. */
+  .donut__ring {
+    width: min(100%, 260px);
+    margin-inline: auto;
+    aspect-ratio: 1;
+  }
+
+  .donut__svg {
+    /* The viewBox is wider than tall; in a square box it would letterbox and
+       shrink the ring, so it is told to fill instead. */
+    height: 100%;
+    object-fit: cover;
+  }
+}

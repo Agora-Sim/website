@@ -18,9 +18,25 @@
 
 html {
   scroll-behavior: smooth;
+  /* The gutter is vw-based, so a page short enough to lose the scrollbar is
+     laid out ~15px wider than every other route and the footer's fields land
+     at different x. Reserving the track keeps all four routes one width. */
+  scrollbar-gutter: stable;
+}
+
+/* Anchored sections stop clear of the sticky bar rather than under it —
+   the bar is in flow at the top of the page but overlays everything below
+   it, so an anchor that lands flush loses its first line. */
+section[id] {
+  scroll-margin-top: var(--navbar-height);
 }
 
 body {
+  /* /participar is one short section, so without this the footer strip stops
+     wherever the form ends and sits mid-screen with field below it. */
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
   background-color: var(--color-blueprint);
   color: var(--color-text-body);
   font-family: var(--font-body);
@@ -28,6 +44,20 @@ body {
   line-height: var(--leading-body-base);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+/* React mounts into #root, so the body's only flex child is that div — the
+   column has to continue through it or `main` grows against nothing and the
+   footer stops wherever the content ended. */
+#root {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+}
+
+/* Takes the slack in the column so the footer closes the viewport. */
+main {
+  flex: 1 0 auto;
 }
 
 img,

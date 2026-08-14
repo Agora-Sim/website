@@ -2,6 +2,8 @@
    0. IMPORTS
    ============================================================ */
 
+import { Link } from 'react-router-dom';
+
 import { HERO } from './content.js';
 import { PropagationGraph } from './components/PropagationGraph';
 import './Hero.css';
@@ -37,15 +39,12 @@ export default function Hero() {
           <p className="hero__lede">{lede}</p>
 
           <div className="hero__actions">
-            <a className="btn btn--primary" href={actions.primary.href}>
+            <Link className="btn btn--primary" to={actions.primary.to}>
               {actions.primary.label}
               <span className="btn__arrow" aria-hidden="true">
                 →
               </span>
-            </a>
-            <a className="btn btn--ghost" href={actions.secondary.href}>
-              {actions.secondary.label}
-            </a>
+            </Link>
           </div>
         </div>
 

@@ -3,10 +3,13 @@
    ============================================================ */
 
 import { useRef } from 'react';
+import { Link } from 'react-router-dom';
 
+import { ProjectPlate } from '@/components/media/ProjectPlate';
+import { homeProjects, projectPath } from '@/content/projects.js';
 import { useRevealed } from '@/hooks';
 
-import { PROJECTS, PROJECT_STATUSES } from './content.js';
+import { PROJECTS_SECTION } from './content.js';
 import './Projects.css';
 
 /* ============================================================
@@ -14,14 +17,13 @@ import './Projects.css';
    ============================================================ */
 
 /**
- * The work itself: a row of cards, each an image banner with the project's
- * state stamped on it. State is the one thing a reader needs before reading
- * anything else about a project, so it sits on the banner rather than under
- * the title. A card with no image yet renders an empty plate — a blueprint
- * pool, not a grey box — so the row holds its rhythm until the art lands.
+ * The work itself: a row of cards, each a plate with the project's state
+ * stamped on it and a one-line description under it. This is the summary —
+ * four projects, named by HOME_PROJECT_IDS — and the /projetos register
+ * carries all of them with their metadata; the link under the row says so.
  */
 export default function Projects() {
-  const { eyebrow, headline, body, items } = PROJECTS;
+  const { eyebrow, headline, body, more } = PROJECTS_SECTION;
   const sectionRef = useRef(null);
   const revealed = useRevealed(sectionRef);
 
@@ -48,63 +50,45 @@ export default function Projects() {
         </div>
 
         <ul className="projects__grid">
-          {items.map((item, index) => {
-            const status = PROJECT_STATUSES[item.status];
+          {homeProjects().map((item, index) => (
+            <li
+              className="projects__card plate-host"
+              key={item.id}
+              style={{ transitionDelay: `${0.24 + index * 0.09}s` }}
+            >
+              <ProjectPlate
+                image={item.image}
+                imageAlt={item.imageAlt}
+                status={item.status}
+              />
 
-            return (
-              <li
-                className="projects__card"
-                key={item.id}
-                style={{ transitionDelay: `${0.24 + index * 0.09}s` }}
-              >
-                <div
-                  className={
-                    item.image
-                      ? 'projects__banner'
-                      : 'projects__banner projects__banner--empty'
-                  }
-                >
-                  {item.image && (
-                    <img
-                      className="projects__image"
-                      src={item.image}
-                      alt={item.imageAlt ?? ''}
-                      loading="lazy"
-                    />
-                  )}
-
-                  <span className="projects__frame" aria-hidden="true" />
-
-                  <span className={`projects__status projects__status--${item.status}`}>
-                    <span className="projects__status-dot" aria-hidden="true" />
-                    {status.label}
-                  </span>
-                </div>
-
-                <div className="projects__card-body">
-                  <h3 className="projects__card-title">
-                    {item.href ? (
-                      <a
-                        className="projects__card-link"
-                        href={item.href}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {item.title}
-                        <span className="projects__arrow" aria-hidden="true">
-                          ↗
-                        </span>
-                      </a>
-                    ) : (
-                      item.title
-                    )}
-                  </h3>
-                  <p className="projects__card-text">{item.description}</p>
-                </div>
-              </li>
-            );
-          })}
+              <div className="projects__card-body">
+                {/* Every project has a page, so every card is a link to
+                    one — the repository, where there is one, is linked
+                    from that page rather than from here. */}
+                <h3 className="projects__card-title">
+                  <Link
+                    className="projects__card-link"
+                    to={projectPath(item.id)}
+                  >
+                    {item.title}
+                    <span className="projects__arrow" aria-hidden="true">
+                      →
+                    </span>
+                  </Link>
+                </h3>
+                <p className="projects__card-text">{item.description}</p>
+              </div>
+            </li>
+          ))}
         </ul>
+
+        <Link className="projects__more" to={more.to}>
+          {more.label}
+          <span className="projects__more-arrow" aria-hidden="true">
+            →
+          </span>
+        </Link>
       </div>
     </section>
   );

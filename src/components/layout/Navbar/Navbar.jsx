@@ -3,6 +3,7 @@
    ============================================================ */
 
 import { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 import { BRAND, NAV_CTA, NAV_LINKS } from '@/content/site.js';
 import logo from '@/assets/images/logo-fullmark-white.svg';
@@ -29,6 +30,7 @@ const SCROLL_THRESHOLD_PX = 24;
  */
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const { pathname } = useLocation();
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > SCROLL_THRESHOLD_PX);
@@ -41,25 +43,37 @@ export default function Navbar() {
   return (
     <header className={`navbar${isScrolled ? ' navbar--scrolled' : ''}`}>
       <div className="navbar__inner wrap">
-        <a className="navbar__brand" href={BRAND.homeHref}>
+        <Link className="navbar__brand" to={BRAND.homeHref}>
           <img className="navbar__logo" src={logo} alt={BRAND.logoAlt} />
-        </a>
+        </Link>
 
         <nav className="navbar__nav" aria-label="Principal">
-          {NAV_LINKS.map((link) => (
-            <a className="navbar__link" key={link.id} href={link.href}>
-              {link.label}
-            </a>
-          ))}
+          {NAV_LINKS.map((link) => {
+            /* Only whole-page links can be "the page you are on". A link to
+               a section of a page isn't current just because that page is. */
+            const isCurrent = link.to === pathname;
 
-          <a
+            return (
+              <Link
+                className={
+                  isCurrent ? 'navbar__link navbar__link--current' : 'navbar__link'
+                }
+                key={link.id}
+                to={link.to}
+                aria-current={isCurrent ? 'page' : undefined}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
+
+          <Link
             className="navbar__cta"
-            href={NAV_CTA.href}
-            target="_blank"
-            rel="noreferrer"
+            to={NAV_CTA.to}
+            aria-current={NAV_CTA.to === pathname ? 'page' : undefined}
           >
             {NAV_CTA.label}
-          </a>
+          </Link>
         </nav>
       </div>
     </header>

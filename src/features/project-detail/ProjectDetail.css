@@ -1,0 +1,247 @@
+/* ============================================================
+   0. PROJECT DETAIL
+   One project's page. Prefix is `detail__`; the plate is the
+   shared `.plate` component and styles itself.
+
+   No reveal-on-scroll here, unlike the row and the register:
+   this page opens at its own top and its content is the reason
+   the reader followed a link, so fading it in delays the answer.
+   ============================================================ */
+
+/* --- 1. Layout --- */
+
+.detail {
+  position: relative;
+  z-index: 1;
+  padding-block: var(--space-5) var(--space-8);
+}
+
+/* --- 2. Back link --- */
+
+/* The register's path back, in the technical register so it reads as a
+   drawing's sheet reference rather than a second navigation bar. */
+.detail__back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+  font-family: var(--font-technical);
+  font-size: var(--size-overline);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-technical);
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--color-text-muted);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.detail__back:hover {
+  color: var(--color-anzac);
+}
+
+.detail__back-arrow {
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.detail__back:hover .detail__back-arrow {
+  transform: translateX(-3px);
+}
+
+/* --- 3. Header --- */
+
+.detail__head {
+  max-width: 62ch;
+  margin-bottom: var(--space-5);
+}
+
+.detail__eyebrow {
+  display: block;
+  margin-bottom: var(--space-3);
+}
+
+/* The register's headline size: this page and that one are the same rank,
+   one level under the home hero's display. */
+.detail__title {
+  font-family: var(--font-display);
+  font-size: clamp(30px, 4.4vw, 52px);
+  line-height: 1.1;
+  letter-spacing: var(--tracking-display-lg);
+  font-weight: var(--weight-extrabold);
+  font-variation-settings: 'opsz' 52;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-4);
+}
+
+.detail__lede {
+  font-size: var(--size-body-lg);
+  line-height: var(--leading-body-lg);
+  color: var(--color-text-body);
+}
+
+/* --- 4. Figure --- */
+
+/* The project's own figure, not the card's banner stretched across the
+   page. It sits inside the left column rather than above both, so the
+   column edge is what holds it short of page width and the spec block
+   starts level with its top edge — a figure narrower than the page with a
+   full-width band under it left the sheet lopsided. Its shape comes from
+   `--figure-ratio`, set from PROJECT_FIGURES; the stylesheet does not get
+   to disagree with the artwork brief. */
+.detail__figure {
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.detail__figure .plate {
+  aspect-ratio: var(--figure-ratio);
+}
+
+/* --- 5. Columns --- */
+
+/* Text left, title block right — the drawing's own arrangement, and what
+   keeps the spec column visible while the record under it grows. */
+.detail__columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: var(--space-6);
+  align-items: start;
+}
+
+/* --- 6. Body --- */
+
+/* The left column: the figure, then the written record under it. */
+.detail__main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  min-width: 0;
+}
+
+.detail__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  max-width: var(--measure);
+}
+
+.detail__section-title {
+  font-family: var(--font-display);
+  font-size: var(--size-heading-md);
+  line-height: var(--leading-heading-md);
+  letter-spacing: var(--tracking-heading-md);
+  font-weight: var(--weight-extrabold);
+  font-variation-settings: 'opsz' 24;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-3);
+}
+
+.detail__text + .detail__text {
+  margin-top: var(--space-3);
+}
+
+.detail__text {
+  font-size: var(--size-body-base);
+  line-height: var(--leading-body-base);
+  color: var(--color-text-body);
+}
+
+/* Stands in for the record until the project has one — a page that ended
+   at its summary would read as broken rather than as early. */
+.detail__empty {
+  padding: var(--space-4);
+  border: 1px dashed var(--color-line-soft);
+  border-radius: var(--radius-md);
+  font-size: var(--size-body-base);
+  line-height: var(--leading-body-base);
+  color: var(--color-text-muted);
+}
+
+/* --- 7. Spec column --- */
+
+/* The card's title block stood on its end: same label-over-value cells,
+   divided by hairlines that run across instead of down. */
+.detail__specs {
+  position: sticky;
+  top: calc(var(--navbar-height) + var(--space-3));
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-line-soft);
+}
+
+/* The index tick the footer's and the register's rules carry. */
+.detail__specs::before {
+  content: '';
+  position: absolute;
+  inset-block-start: -1px;
+  inset-inline-start: 0;
+  width: 48px;
+  height: 1px;
+  background-color: var(--color-anzac);
+}
+
+.detail__specs-label {
+  font-family: var(--font-technical);
+  font-size: var(--size-overline);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-technical);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.detail__spec-list {
+  align-self: stretch;
+}
+
+.detail__spec {
+  padding-block: var(--space-3);
+}
+
+.detail__spec + .detail__spec {
+  border-block-start: 1px solid var(--color-line-soft);
+}
+
+.detail__spec-key {
+  font-family: var(--font-technical);
+  font-size: var(--size-overline);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-technical);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.detail__spec-value {
+  font-family: var(--font-technical);
+  font-size: var(--size-body-base);
+  letter-spacing: var(--tracking-technical);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-primary);
+}
+
+/* Ghost, not Monza: the one action on this page leaves the site, and the
+   red fill is already spent on Method's stamp and the suggestion slip. */
+/* Both column actions run the block's full width, so the primary and the
+   ghost read as one stack rather than two loose buttons. */
+.detail__join,
+.detail__repo {
+  align-self: stretch;
+  justify-content: space-between;
+}
+
+/* --- 8. Small screens --- */
+
+@media (max-width: 900px) {
+  /* The spec column drops under the record rather than squeezing beside
+     it, and stops sticking — there is nothing left for it to sit beside. */
+  .detail__columns {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-5);
+  }
+
+  .detail__specs {
+    position: static;
+  }
+}
