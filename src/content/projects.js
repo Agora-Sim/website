@@ -155,7 +155,7 @@ export const PROJECTS = [
     imageAlt: '',
     cover: '',
     coverAlt: '',
-    status: 'desenvolvimento',
+    status: 'concluido',
     title: 'Simulador',
     description:
       'Ferramenta para simular qualquer ambiente e apoiar a nossa investigação. ',
@@ -175,6 +175,84 @@ export const PROJECTS = [
       team: 'Guilherme Costa-Ferreira',
       version: '0.3.0',
     },
+    sections: [
+      {
+        heading: 'O que é',
+        paragraphs: [
+          'O agorasimulator é um pacote de Python para simular sistemas ' +
+            'complexos como redes de nós que interagem entre si. Descreve-se ' +
+            'o mundo uma vez num ficheiro de configuração YAML, que atores ' +
+            'existem, que atributos têm e como se ligam, e depois corre-se ' +
+            'esse mundo tantas vezes quantas as necessárias para estudar o ' +
+            'que emerge ao longo das corridas.',
+          'Qualquer sistema que caiba na forma de nós ligados em rede cabe ' +
+            'aqui: cidadãos sob um governo, colaboradores num organograma, ' +
+            'agentes a competir por recursos. Porque cada cenário corre ' +
+            'muitas vezes, o resultado é uma distribuição de desfechos e ' +
+            'não uma única corrida com sorte.',
+        ],
+      },
+      {
+        heading: 'Como funciona',
+        paragraphs: [
+          'A configuração vive num só ficheiro YAML: os tipos de nó, quantos ' +
+            'há de cada, os atributos com que começam e como se ligam. Não é ' +
+            'preciso escrever código para pôr um cenário novo de pé.',
+          'O comportamento agarra-se aos nós através de módulos que se ' +
+            'compõem (saúde, dinheiro, recursos), e cada atributo pode ' +
+            'arrancar de uma distribuição, para que uma população comece ' +
+            'variada em vez de uniforme. As transições de estado são ' +
+            'objetos ordenados por prioridade, aplicados a cada passo, o que ' +
+            'mantém explícito o que muda e por que ordem. Uma semente ' +
+            'configurável torna cada corrida determinista: a mesma ' +
+            'configuração dá o mesmo resultado, corrida após corrida.',
+        ],
+      },
+      {
+        heading: 'Análise e visualização',
+        paragraphs: [
+          'Cada métrica é uma classe (idade, saúde, sobrevivência, ' +
+            'distribuições), o que dá medições tipadas e testáveis em vez de ' +
+            'configuração por strings. As corridas de um mesmo cenário ' +
+            'agregam-se numa única série, para se ver a média e a dispersão ' +
+            'de todo o conjunto.',
+          'Daí saem gráficos de linha, mapas de calor, grelhas-resumo e o ' +
+            'desenho da própria rede, colorido por qualquer atributo. As ' +
+            'figuras exportam-se para PNG, SVG ou PDF. Nada é gerado sozinho ' +
+            'no fim de uma corrida: a visualização é sempre um pedido ' +
+            'explícito, para que se controle o que sai.',
+        ],
+      },
+      {
+        heading: 'Para que serve',
+        paragraphs: [
+          'A mesma ferramenta serve modelação social (saúde e mortalidade ' +
+            'de uma população, envelhecimento, dinâmicas de rendimento) e ' +
+            'análise organizacional (hierarquias, estrangulamentos, fluxo de ' +
+            'recursos por uma cadeia de comando). Serve ainda para simulação ' +
+            'económica de escassez e distribuição entre agentes ligados.',
+          'Serve também de base para investigação e ensino, com sementes ' +
+            'reproduzíveis que tornam um resultado partilhável, e para ' +
+            'análise de cenários: mudar um valor na configuração, correr o ' +
+            'conjunto outra vez e comparar as distribuições dos desfechos.',
+        ],
+      },
+      {
+        heading: 'Código aberto',
+        paragraphs: [
+          'O simulador está publicado no PyPI como agorasimulator, sob a ' +
+            'licença AGPL-3.0-or-later, disponível para qualquer pessoa ' +
+            'usar. É Python moderno, gerido com Poetry e verificado por ' +
+            'tipos, com cerca de 97% de cobertura entre testes unitários e ' +
+            'de integração.',
+          'A arquitetura separa-se em três camadas (serviço, domínio e ' +
+            'adaptadores), com o domínio livre de I/O e fácil de raciocinar. ' +
+            'Módulos, efeitos, métricas e regras de ligação estendem-se ' +
+            'todos pelo mesmo padrão, por subclasse, de modo que o motor ' +
+            'cresce sem se reescrever.',
+        ],
+      },
+    ],
   },
   {
     id: 'aguas',
