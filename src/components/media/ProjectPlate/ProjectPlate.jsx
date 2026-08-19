@@ -22,6 +22,11 @@ import './ProjectPlate.css';
  * plate itself: the thing a reader hovers is the whole card, and the card
  * belongs to the feature, not here.
  *
+ * A finished project (`status: 'concluido'`) also carries a corner seal —
+ * the monogram in a tilted stamp-ring — and a mint frame ring, the drawing's
+ * "approved" stamp. It is the one state that gets a second mark: the others
+ * are stamped only by the status pill.
+ *
  * @param {object} props
  * @param {string} [props.image] path under `public/`; empty draws an empty plate
  * @param {string} [props.imageAlt]
@@ -29,9 +34,21 @@ import './ProjectPlate.css';
  */
 export default function ProjectPlate({ image, imageAlt = '', status }) {
   const { label } = PROJECT_STATUSES[status];
+  const complete = status === 'concluido';
+
+  /* The frame brackets and the seal share the bottom-right corner, so the
+     seal owns it and the brackets vacate — the same trade the status pill
+     makes for the top-left. `plate--complete` is what drops that bracket. */
+  const className = [
+    'plate',
+    image ? '' : 'plate--empty',
+    complete ? 'plate--complete' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
-    <div className={image ? 'plate' : 'plate plate--empty'}>
+    <div className={className}>
       {image && (
         <img className="plate__image" src={image} alt={imageAlt} loading="lazy" />
       )}
@@ -39,6 +56,8 @@ export default function ProjectPlate({ image, imageAlt = '', status }) {
       <span className="plate__frame" aria-hidden="true" />
 
       <span className={`plate__status plate__status--${status}`}>{label}</span>
+
+      {complete && <span className="plate__seal" aria-hidden="true" />}
     </div>
   );
 }
