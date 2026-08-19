@@ -138,24 +138,7 @@
     0 0, 0 0;
 }
 
-/* --- 3b. Completion ring --- */
-
-/* The mint frame a done plate carries, inset just off the brackets. It reads
-   as a deliberate border against the field's own 1px grid because the hue is
-   the done state's, not blueprint. Drawn on the plate itself so it clips with
-   the image and rounds nothing the plate doesn't. */
-.plate--complete {
-  box-shadow: inset 0 0 0 1.5px
-    color-mix(in srgb, var(--color-status-done) 45%, transparent);
-  transition: box-shadow var(--dur-base) var(--ease-out);
-}
-
-.plate-host:hover .plate--complete {
-  box-shadow: inset 0 0 0 1.5px
-    color-mix(in srgb, var(--color-status-done) 70%, transparent);
-}
-
-/* --- 3c. Completion seal --- */
+/* --- 3b. Completion seal --- */
 
 /* The drawing's approval stamp: the monogram in a double ring, inked in the
    done mint, tilted like a stamp pressed by hand. It owns the bottom-right

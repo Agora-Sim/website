@@ -204,6 +204,39 @@
   height: 100%;
 }
 
+/* --- 5d. Complete card --- */
+
+/* A finished project is the one card meant to catch the eye across the grid:
+   its panel is bordered and lit in the done mint rather than the field's own
+   hairline, and it floats a little off the sheet on a soft mint glow. The
+   hue is the status badge's, so a reader who has learned "mint means done" on
+   the plate reads it again here without a second mapping. Placed after the
+   open-panel rules so its border wins while a complete card is also open. */
+.index__card.is-complete .index__panel {
+  border-color: color-mix(in srgb, var(--color-status-done) 70%, transparent);
+  box-shadow:
+    inset 0 1px 0 var(--color-line-soft),
+    0 0 0 1px color-mix(in srgb, var(--color-status-done) 30%, transparent),
+    0 10px 30px color-mix(in srgb, var(--color-status-done) 22%, transparent);
+}
+
+/* The top tick every card carries is short and Anzac; a complete card's runs
+   the full edge and turns mint, so the "done" signal is present at rest
+   rather than only on approach. */
+.index__card.is-complete .index__panel::before {
+  width: calc(100% + 2px);
+  background-color: var(--color-status-done);
+}
+
+/* Kept lit while the card is open, so opening a complete card does not drop
+   its glow back to the plain panel shadow. */
+.index__card.is-complete.is-open .index__panel {
+  box-shadow:
+    inset 0 1px 0 var(--color-line-soft),
+    0 0 0 1px color-mix(in srgb, var(--color-status-done) 35%, transparent),
+    0 24px 48px rgba(4, 20, 48, 0.55);
+}
+
 /* --- 6. Card copy --- */
 
 /* Grows to fill the panel so the foot's `margin-top: auto` has something to
