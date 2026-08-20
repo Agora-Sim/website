@@ -37,7 +37,7 @@ export const SITE = {
 export const STATIC_ROUTES = [
   {
     path: '/',
-    title: 'AgoraSim: Engineering Portugal',
+    title: 'AgoraSim: Projetar Portugal',
     description:
       'A AgoraSim modela o impacto de medidas de política pública com dados ' +
       'abertos e métodos revistos por pares.',
