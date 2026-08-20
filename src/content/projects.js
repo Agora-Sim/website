@@ -117,9 +117,10 @@ export const leadField = (project) => {
 /* --- 5. Projects --- */
 
 /* To add a project: append an entry below. Drop the banner image in
-   `public/projects/` and point `image` at it (`/projects/nome.png`) with an
-   `imageAlt`; leave `image` empty and the card draws an empty plate
-   instead. `href` is optional — the repository the project's own page links
+   `public/projects/` and point `image` at it (`/projects/nome.png`) with a
+   descriptive `imageAlt` — if `image` is set, `imageAlt` must describe it,
+   for screen readers and image search; only an empty `image` (which draws
+   the empty plate) leaves `imageAlt` empty. `href` is optional — the repository the project's own page links
    out to; the cards themselves always route to that page. `fields` keys come
    from PROJECT_FIELDS above and are all optional. `summary` is the longer
    paragraph the /projetos register and the project page show;
@@ -152,7 +153,8 @@ export const PROJECTS = [
   {
     id: 'simulador',
     image: '/projects/simulador.png',
-    imageAlt: '',
+    imageAlt:
+      'Rede de nós vermelhos ligados por arestas amarelas sobre fundo azul, o motivo do simulador.',
     cover: '',
     coverAlt: '',
     status: 'concluido',
