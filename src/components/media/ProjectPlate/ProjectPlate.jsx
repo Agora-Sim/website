@@ -31,10 +31,20 @@ import './ProjectPlate.css';
  * @param {string} [props.image] path under `public/`; empty draws an empty plate
  * @param {string} [props.imageAlt]
  * @param {string} props.status key into PROJECT_STATUSES
+ * @param {boolean} [props.showStatus] draw the corner status pill; the card
+ *   views want it, the project page carries state beside its title instead
+ * @param {boolean} [props.showSeal] draw the completion seal on a finished
+ *   plate; the project page carries the seal beside its title instead
  */
-export default function ProjectPlate({ image, imageAlt = '', status }) {
+export default function ProjectPlate({
+  image,
+  imageAlt = '',
+  status,
+  showStatus = true,
+  showSeal = true,
+}) {
   const { label } = PROJECT_STATUSES[status];
-  const complete = status === 'concluido';
+  const complete = status === 'concluido' && showSeal;
 
   /* The frame brackets and the seal share the bottom-right corner, so the
      seal owns it and the brackets vacate — the same trade the status pill
@@ -55,7 +65,9 @@ export default function ProjectPlate({ image, imageAlt = '', status }) {
 
       <span className="plate__frame" aria-hidden="true" />
 
-      <span className={`plate__status plate__status--${status}`}>{label}</span>
+      {showStatus && (
+        <span className={`plate__status plate__status--${status}`}>{label}</span>
+      )}
 
       {complete && <span className="plate__seal" aria-hidden="true" />}
     </div>
