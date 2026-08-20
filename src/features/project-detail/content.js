@@ -12,14 +12,12 @@
 /* --- 1. Page chrome --- */
 
 export const PROJECT_DETAIL = {
-  eyebrow: 'Projeto',
   back: 'Voltar ao registo',
   /* The title block's own heading, above the fields the project discloses. */
   specsLabel: 'Ficha do projeto',
   /* The one field every project has, so the block is never empty here the
      way a card's can be — no replacement line is needed. */
   statusLabel: 'Estado',
-  repo: 'Ver repositório',
   /* The page's one action, drawn only for a project carrying `join: true`
      in the registry. Names the project rather than the site — the reader is
      already on one, and "Participar" alone would repeat the bar. */

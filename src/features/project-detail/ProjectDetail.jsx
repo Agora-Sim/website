@@ -13,6 +13,7 @@ import {
   joinPath,
 } from '@/content/projects.js';
 
+import { BrandIcon } from './components/BrandIcon';
 import { PROJECT_DETAIL } from './content.js';
 import './ProjectDetail.css';
 
@@ -33,10 +34,11 @@ import './ProjectDetail.css';
  * @param {object} props.project an entry from PROJECTS
  */
 export default function ProjectDetail({ project }) {
-  const { eyebrow, back, specsLabel, statusLabel, repo, join, bodyEmpty } =
-    PROJECT_DETAIL;
+  const { back, specsLabel, statusLabel, join, bodyEmpty } = PROJECT_DETAIL;
   const fields = disclosedFields(project.fields);
   const sections = project.sections ?? [];
+  const links = project.links ?? [];
+  const state = PROJECT_STATUSES[project.status];
 
   return (
     <article className="detail">
@@ -48,9 +50,25 @@ export default function ProjectDetail({ project }) {
           {back}
         </Link>
 
-        <header className="detail__head">
-          <span className="overline detail__eyebrow">{eyebrow}</span>
-          <h1 className="detail__title">{project.title}</h1>
+        <header className={`detail__head detail__head--${project.status}`}>
+          <div className="detail__masthead">
+            <div className="detail__headline">
+              {/* The plate's completion seal, promoted to the page's mark:
+                  the monogram in a tilted double ring at the title's height,
+                  inked in the state's own hue. Decorative beside the name. */}
+              <span className="detail__seal" aria-hidden="true" />
+              <h1 className="detail__title">{project.title}</h1>
+            </div>
+
+            {/* State, moved off the plate and stood up beside the title as a
+                drafting stamp: the reading label over the state. Hue carries
+                the state, the same three inks the register uses. */}
+            <div className="detail__status">
+              <span className="detail__status-label">{statusLabel}</span>
+              <span className="detail__status-state">{state.label}</span>
+            </div>
+          </div>
+
           <p className="detail__lede">{project.summary ?? project.description}</p>
         </header>
 
@@ -71,6 +89,8 @@ export default function ProjectDetail({ project }) {
                 image={project.cover}
                 imageAlt={project.coverAlt}
                 status={project.status}
+                showStatus={false}
+                showSeal={false}
               />
             </div>
 
@@ -97,13 +117,6 @@ export default function ProjectDetail({ project }) {
             <h2 className="detail__specs-label">{specsLabel}</h2>
 
             <dl className="detail__spec-list">
-              <div className="detail__spec">
-                <dt className="detail__spec-key">{statusLabel}</dt>
-                <dd className="detail__spec-value">
-                  {PROJECT_STATUSES[project.status].label}
-                </dd>
-              </div>
-
               {fields.map((field) => (
                 <div className="detail__spec" key={field.id}>
                   <dt className="detail__spec-key">{field.label}</dt>
@@ -128,19 +141,27 @@ export default function ProjectDetail({ project }) {
               </Link>
             )}
 
-            {project.href && (
+            {/* The project's external destinations, in registry order —
+                repository, package registry, and any others it lists. Each
+                carries its own icon and stays off the site, so `↗`, the rule
+                the cards follow. */}
+            {links.map((link) => (
               <a
-                className="btn btn--ghost detail__repo"
-                href={project.href}
+                className="btn btn--ghost detail__link"
+                href={link.href}
                 target="_blank"
                 rel="noreferrer"
+                key={link.href}
               >
-                {repo}
+                <span className="detail__link-lead">
+                  <BrandIcon name={link.icon} />
+                  {link.label}
+                </span>
                 <span className="btn__arrow" aria-hidden="true">
                   ↗
                 </span>
               </a>
-            )}
+            ))}
           </aside>
         </div>
       </div>

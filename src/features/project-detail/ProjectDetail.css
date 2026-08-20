@@ -50,32 +50,133 @@
 /* --- 3. Header --- */
 
 .detail__head {
-  max-width: 62ch;
   margin-bottom: var(--space-5);
+  /* The state's hue, set once on the header and read by both the seal and
+     the status stamp — the same three inks the register and the plate use.
+     The modifier lines below pick the value; this is the fallback. */
+  --status-ink: var(--color-status-planned);
 }
 
-.detail__eyebrow {
-  display: block;
-  margin-bottom: var(--space-3);
+.detail__head--concluido {
+  --status-ink: var(--color-status-done);
+}
+
+.detail__head--desenvolvimento {
+  --status-ink: var(--color-status-active);
+}
+
+.detail__head--planeado {
+  --status-ink: var(--color-status-planned);
+}
+
+/* The mark and title on the left, the state stamp on the right, level with
+   each other. Wraps on narrow screens rather than crushing the stamp. */
+.detail__masthead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-4);
+}
+
+/* The mark sits level with the title and squares to its height, so the
+   `em` here is the title's own size — the wrapper carries the font-size and
+   both the seal and the heading read from it. */
+.detail__headline {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: clamp(30px, 4.4vw, 52px);
+}
+
+/* The plate's completion seal, promoted to the page's mark: the monogram in
+   a double frame at the title's height, inked in the state's hue — a rounded
+   square rather than the plate's circle, so it reads as a logo tile. */
+.detail__seal {
+  position: relative;
+  flex: none;
+  width: 1em;
+  height: 1em;
+  border-radius: var(--radius-md);
+  border: 1.5px solid color-mix(in srgb, var(--status-ink) 60%, transparent);
+  background-color: rgba(9, 38, 86, 0.45);
+}
+
+/* The stamp's second, fainter frame. */
+.detail__seal::before {
+  content: '';
+  position: absolute;
+  inset: 0.07em;
+  border-radius: calc(var(--radius-md) - 2px);
+  border: 1px solid color-mix(in srgb, var(--status-ink) 30%, transparent);
+}
+
+/* The monogram, masked so it draws in the state's single ink — the file is
+   multicolour, so it is a mask, never an <img>. */
+.detail__seal::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: var(--status-ink);
+  mask: url('/monogram.svg') center / 52% no-repeat;
+  -webkit-mask: url('/monogram.svg') center / 52% no-repeat;
 }
 
 /* The register's headline size: this page and that one are the same rank,
-   one level under the home hero's display. */
+   one level under the home hero's display. Size comes from `.detail__headline`
+   so the seal can square to it. */
 .detail__title {
   font-family: var(--font-display);
-  font-size: clamp(30px, 4.4vw, 52px);
+  font-size: 1em;
   line-height: 1.1;
   letter-spacing: var(--tracking-display-lg);
   font-weight: var(--weight-extrabold);
   font-variation-settings: 'opsz' 52;
   color: var(--color-text-primary);
-  margin-bottom: var(--space-4);
+}
+
+/* The state, off the plate and stood up as a drafting stamp: a bordered
+   block keyed left by a bar in the state's hue, the reading label over the
+   state over its meaning. Hue carries the state — no dot, the register's
+   own rule. */
+.detail__status {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 10px 16px;
+  border: 1px solid color-mix(in srgb, var(--status-ink) 35%, transparent);
+  border-left: 3px solid var(--status-ink);
+  border-radius: var(--radius-sm);
+  background-color: color-mix(in srgb, var(--status-ink) 9%, transparent);
+}
+
+.detail__status-label {
+  font-family: var(--font-technical);
+  font-size: 11px;
+  line-height: var(--leading-overline);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-technical);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.detail__status-state {
+  font-family: var(--font-technical);
+  font-size: 17px;
+  line-height: 1.15;
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-technical);
+  text-transform: uppercase;
+  color: var(--status-ink);
 }
 
 .detail__lede {
   font-size: var(--size-body-lg);
   line-height: var(--leading-body-lg);
   color: var(--color-text-body);
+  text-align: justify;
 }
 
 /* --- 4. Figure --- */
@@ -122,7 +223,6 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-5);
-  max-width: var(--measure);
 }
 
 .detail__section-title {
@@ -144,6 +244,7 @@
   font-size: var(--size-body-base);
   line-height: var(--leading-body-base);
   color: var(--color-text-body);
+  text-align: justify;
 }
 
 /* Stands in for the record until the project has one — a page that ended
@@ -223,12 +324,28 @@
 
 /* Ghost, not Monza: the one action on this page leaves the site, and the
    red fill is already spent on Method's stamp and the suggestion slip. */
-/* Both column actions run the block's full width, so the primary and the
-   ghost read as one stack rather than two loose buttons. */
+/* Every column action runs the block's full width, so the primary and the
+   link buttons read as one stack rather than a set of loose buttons. */
 .detail__join,
-.detail__repo {
+.detail__link {
   align-self: stretch;
   justify-content: space-between;
+}
+
+/* Icon and label ride together on the left; the `↗` stays pinned right by the
+   button's own space-between. */
+.detail__link-lead {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* The brand glyph, squared to the label's line so a filled mark (GitHub) and
+   a stroked one (PyPI) sit at the same weight beside the text. */
+.detail__link-glyph {
+  flex: none;
+  width: 1.1em;
+  height: 1.1em;
 }
 
 /* --- 8. Small screens --- */

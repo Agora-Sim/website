@@ -120,8 +120,12 @@ export const leadField = (project) => {
    `public/projects/` and point `image` at it (`/projects/nome.png`) with a
    descriptive `imageAlt` — if `image` is set, `imageAlt` must describe it,
    for screen readers and image search; only an empty `image` (which draws
-   the empty plate) leaves `imageAlt` empty. `href` is optional — the repository the project's own page links
-   out to; the cards themselves always route to that page. `fields` keys come
+   the empty plate) leaves `imageAlt` empty. `links` is optional — the
+   external destinations the project's own page links out to (repository,
+   package registry, …), each `{ label, href, icon }`, drawn as a stacked
+   list of ghost buttons in registry order; `icon` names a glyph in the
+   project page's `BrandIcon` and is itself optional. The cards themselves
+   always route to that page and never carry these. `fields` keys come
    from PROJECT_FIELDS above and are all optional. `summary` is the longer
    paragraph the /projetos register and the project page show;
    `description` is the one-liner the home row shows.
@@ -167,7 +171,18 @@ export const PROJECTS = [
       'Acompanhado de ferramentas de análise, permite ter respostas objetivas sobre ' +
       'as questões portuguesas mais prevalentes na discussão pública. ' +
       'Desenvolvido em código aberto, está disponível para qualquer um a utilizar.',
-    href: 'https://github.com/Agora-Sim/Simulator',
+    links: [
+      {
+        label: 'Ver no GitHub',
+        href: 'https://github.com/Agora-Sim/Simulator',
+        icon: 'github',
+      },
+      {
+        label: 'Ver no PyPI',
+        href: 'https://pypi.org/project/agorasimulator/',
+        icon: 'pypi',
+      },
+    ],
     join: false,
     cardField: 'scope',
     fields: {
@@ -175,7 +190,7 @@ export const PROJECTS = [
       scope: 'Ferramenta',
       license: 'AGPL-3.0',
       team: 'Guilherme Costa-Ferreira',
-      version: '0.3.0',
+      version: '1.0.1',
     },
     sections: [
       {
