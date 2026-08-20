@@ -37,6 +37,37 @@
       name="twitter:description"
       content="A AgoraSim modela o impacto de medidas de política pública com dados abertos e métodos revistos por pares."
     />
+
+    <!-- Structured data: names the site's owner as an Organization so search
+         engines resolve "AgoraSim" to a single entity rather than guessing.
+         Inline JSON-LD is not executable script, but `script-src 'self'`
+         blocks any inline <script>, so _headers whitelists this block by its
+         sha256 hash — recompute and update that hash if the JSON changes. -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://agorasimlab.com/#organization",
+          "name": "AgoraSim",
+          "url": "https://agorasimlab.com/",
+          "logo": "https://agorasimlab.com/social-card.png",
+          "description": "A AgoraSim modela o impacto de medidas de política pública com dados abertos e métodos revistos por pares.",
+          "sameAs": ["https://github.com/Agora-Sim"]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://agorasimlab.com/#website",
+          "url": "https://agorasimlab.com/",
+          "name": "AgoraSim",
+          "inLanguage": "pt-PT",
+          "publisher": { "@id": "https://agorasimlab.com/#organization" }
+        }
+      ]
+    }
+    </script>
+
     <!-- Matches --color-blueprint, the body background, so a mobile browser's
          chrome continues the field rather than banding above it. -->
     <meta name="theme-color" content="#1248a1" />
