@@ -333,6 +333,34 @@ export const PROJECTS = [
   })),
 ];
 
+/* --- 5b. Registry order ---
+   The /projetos register draws projects grouped by state — Concluído, then Em
+   desenvolvimento, then Planeado, the order PROJECT_STATUSES declares above —
+   and within a state by each project's optional numeric `order` (ascending,
+   lower sits higher). A project with no `order` keeps its authored position
+   among its equals, so the field is only needed where you want to override
+   that; the placeholders, all `planeado`, sink to the bottom on their own.
+   The home row and the project pages are unaffected — the row resolves
+   HOME_PROJECT_IDS by id and the pages resolve the URL segment, both
+   independent of this order — so only the register reads it. */
+const STATUS_RANK = Object.fromEntries(
+  Object.keys(PROJECT_STATUSES).map((id, rank) => [id, rank]),
+);
+
+/** PROJECTS grouped by state and sorted by `order` within each state. */
+export const registryProjects = () =>
+  PROJECTS.map((project, index) => ({ project, index }))
+    .sort((a, b) => {
+      const byState =
+        (STATUS_RANK[a.project.status] ?? Infinity) -
+        (STATUS_RANK[b.project.status] ?? Infinity);
+      if (byState !== 0) return byState;
+      const byOrder = (a.project.order ?? Infinity) - (b.project.order ?? Infinity);
+      if (byOrder !== 0) return byOrder;
+      return a.index - b.index;
+    })
+    .map(({ project }) => project);
+
 /* --- 6. The home row's selection --- */
 
 /* The four projects the home page shows, by `id`, in the order they appear
