@@ -342,9 +342,9 @@ export const PROJECTS = [
    keeps drawing every project either way. */
 export const HOME_PROJECT_IDS = [
   'simulador',
+  'digital-twin',
   'aguas',
   'rendas',
-  'digital-twin',
 ];
 
 /**
