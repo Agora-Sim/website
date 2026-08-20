@@ -291,7 +291,7 @@ export const PROJECTS = [
     imageAlt: '',
     cover: '',
     coverAlt: '',
-    status: 'planeado',
+    status: 'desenvolvimento',
     title: 'Portugal Digital',
     description:
       'O quão exata consegue ser a simulação em relação ao panorama nacional? ' +
