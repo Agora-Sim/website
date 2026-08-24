@@ -159,8 +159,11 @@ export const PROJECTS = [
     image: '/projects/simulador.png',
     imageAlt:
       'Rede de nós vermelhos ligados por arestas amarelas sobre fundo azul, o motivo do simulador.',
-    cover: '',
-    coverAlt: '',
+    cover: '/projects/simulator_image.png',
+    coverAlt:
+      'Cartão do simulator.py: à esquerda, uma janela com o logótipo e o ' +
+      'motivo de nós ligados; à direita, um gráfico da métrica de idade ao ' +
+      'longo do tempo e um mapa de calor da distribuição de idades.',
     status: 'concluido',
     title: 'Simulador',
     description:
