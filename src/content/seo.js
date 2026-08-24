@@ -39,8 +39,7 @@ export const STATIC_ROUTES = [
     path: '/',
     title: 'AgoraSim: Projetar Portugal',
     description:
-      'A AgoraSim modela o impacto de medidas de política pública com dados ' +
-      'abertos e métodos revistos por pares.',
+      'O AgoraSim é uma plataforma de análise objetiva e científica de soluções aos problemas de Portugal.',
   },
   {
     path: '/projetos',
