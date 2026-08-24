@@ -52,7 +52,11 @@ export default function Projects() {
         <ul className="projects__grid">
           {homeProjects().map((item, index) => (
             <li
-              className="projects__card plate-host"
+              className={
+                item.status === 'concluido'
+                  ? 'projects__card plate-host is-complete'
+                  : 'projects__card plate-host'
+              }
               key={item.id}
               style={{ transitionDelay: `${0.24 + index * 0.09}s` }}
             >

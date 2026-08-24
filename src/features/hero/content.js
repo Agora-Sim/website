@@ -7,7 +7,7 @@
 
 export const HERO = {
   /* Split so the accent word can be set in Anzac without a nested parser. */
-  headline: ['AgoraSim:', 'Engineering'],
+  headline: ['AgoraSim:', 'Projetar'],
   headlineAccent: 'Portugal',
   lede:
     'Projeto open-source com o objetivo de trazer o método científico ao discurso ' +

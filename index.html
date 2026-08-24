@@ -4,39 +4,71 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/monogram.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="A AgoraSim modela o impacto de medidas de política pública com dados abertos e métodos revistos por pares."
-    />
-    <title>AgoraSim: Engineering Portugal</title>
 
-    <!-- No <link rel="canonical"> on purpose: this shell is served for every
-         route, so a single hardcoded canonical would declare /projetos and
-         /participar duplicates of /. Per-route metadata needs prerendering,
-         which this site does not do yet. -->
+    <!-- SEO:start — per-route head, stamped by scripts/prerender.mjs.
+         These are the home defaults, and what the dev server shows. -->
+    <title>AgoraSim: Projetar Portugal</title>
+    <meta name="description" content="O AgoraSim é uma plataforma de análise objetiva e científica de soluções aos problemas de Portugal." />
+    <link rel="canonical" href="https://agorasimlab.com/" />
+    <meta property="og:url" content="https://agorasimlab.com/" />
+    <meta property="og:title" content="AgoraSim: Projetar Portugal" />
+    <meta property="og:description" content="O AgoraSim é uma plataforma de análise objetiva e científica de soluções aos problemas de Portugal." />
+    <meta name="twitter:title" content="AgoraSim: Projetar Portugal" />
+    <meta name="twitter:description" content="O AgoraSim é uma plataforma de análise objetiva e científica de soluções aos problemas de Portugal." />
+    <!-- SEO:end -->
+
+    <!-- Invariant across routes, so kept out of the SEO block above. -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="AgoraSim" />
     <meta property="og:locale" content="pt_PT" />
-    <meta property="og:url" content="https://agorasimlab.com/" />
-    <meta property="og:title" content="AgoraSim: Engineering Portugal" />
     <meta
       property="og:image"
       content="https://agorasimlab.com/social-card.png"
     />
+    <!-- Fixed 1200×630, so scrapers render the card without downloading it
+         first to measure; og:image:alt describes it for screen readers. -->
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta
-      property="og:description"
-      content="A AgoraSim modela o impacto de medidas de política pública com dados abertos e métodos revistos por pares."
+      property="og:image:alt"
+      content="A marca AgoraSim sobre uma planta técnica azul, com o mote «Projetar Portugal»."
     />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="AgoraSim: Engineering Portugal" />
     <meta
       name="twitter:image"
       content="https://agorasimlab.com/social-card.png"
     />
-    <meta
-      name="twitter:description"
-      content="A AgoraSim modela o impacto de medidas de política pública com dados abertos e métodos revistos por pares."
-    />
+
+    <!-- Structured data: names the site's owner as an Organization so search
+         engines resolve "AgoraSim" to a single entity rather than guessing.
+         Inline JSON-LD is not executable script, but `script-src 'self'`
+         blocks any inline <script>, so _headers whitelists this block by its
+         sha256 hash — recompute and update that hash if the JSON changes. -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://agorasimlab.com/#organization",
+          "name": "AgoraSim",
+          "url": "https://agorasimlab.com/",
+          "logo": "https://agorasimlab.com/social-card.png",
+          "description": "A AgoraSim modela o impacto de medidas de política pública com dados abertos e métodos revistos por pares.",
+          "sameAs": ["https://github.com/Agora-Sim"]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://agorasimlab.com/#website",
+          "url": "https://agorasimlab.com/",
+          "name": "AgoraSim",
+          "inLanguage": "pt-PT",
+          "publisher": { "@id": "https://agorasimlab.com/#organization" }
+        }
+      ]
+    }
+    </script>
+
     <!-- Matches --color-blueprint, the body background, so a mobile browser's
          chrome continues the field rather than banding above it. -->
     <meta name="theme-color" content="#1248a1" />

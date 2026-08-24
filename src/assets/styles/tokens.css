@@ -112,6 +112,16 @@
   --dur-slow: 1.1s;
 }
 
+/* Laptop band: viewport ≈ container, so auto-margins collapse and the sides
+   feel tight. Trim the container a touch to restore side breathing room.
+   Above 1600px (external monitors) the auto-margins are already ample —
+   left untouched so those margins stay as tuned. */
+@media (min-width: 1025px) and (max-width: 1600px) {
+  :root {
+    --container-max: 1300px;
+  }
+}
+
 /* The logo steps down on small screens, so the bar it sits in does too. */
 @media (max-width: 480px) {
   :root {

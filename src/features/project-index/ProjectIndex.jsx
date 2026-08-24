@@ -12,6 +12,7 @@ import {
   disclosedFields,
   leadField,
   projectPath,
+  registryProjects,
 } from '@/content/projects.js';
 import { useRevealed } from '@/hooks';
 
@@ -61,6 +62,8 @@ export default function ProjectIndex() {
   const sectionRef = useRef(null);
   const revealed = useRevealed(sectionRef, 0.02);
   const counts = statusCounts();
+  /* Drawn grouped by state, not in authored order — see registryProjects. */
+  const ordered = registryProjects();
 
   /* The open card, with the geometry measured at the moment it opened: the
      panel leaves the flow, so the cell has to be held at the height it had
@@ -107,20 +110,26 @@ export default function ProjectIndex() {
         </header>
 
         <ul className="index__grid">
-          {PROJECTS.map((project, position) => {
+          {ordered.map((project, position) => {
             const fields = disclosedFields(project.fields);
             /* Which field the closed card shows is the project's own call;
                the panel shows the block whole either way. */
             const lead = leadField(project);
             const isOpen = open?.id === project.id;
+            /* A finished project's card is lifted off the field — mint border,
+               glow and top bar — so the register shows at a glance what is
+               done rather than only saying so on the plate. */
+            const className = [
+              'index__card plate-host',
+              project.status === 'concluido' ? 'is-complete' : '',
+              isOpen ? 'is-open' : '',
+            ]
+              .filter(Boolean)
+              .join(' ');
 
             return (
               <li
-                className={
-                  isOpen
-                    ? 'index__card plate-host is-open'
-                    : 'index__card plate-host'
-                }
+                className={className}
                 key={project.id}
                 style={{
                   transitionDelay: `${0.1 + position * 0.08}s`,

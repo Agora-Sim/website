@@ -1,0 +1,30 @@
+#!/bin/sh
+# Reminder, not a gate: if this commit touches page content but leaves
+# public/sitemap.xml untouched, print a nudge to check the sitemap's
+# <lastmod> dates — they are hand-maintained and easy to forget. It never
+# blocks the commit; plenty of content commits legitimately need no sitemap
+# change, and a blocking hook would only teach everyone to pass --no-verify.
+#
+# Shared via the repo: run once per clone to enable it —
+#   git config core.hooksPath .githooks
+
+staged=$(git diff --cached --name-only)
+
+# Files whose changes might mean a page's content — and so its freshness —
+# changed. Broad on purpose: a false nudge costs a glance, a missed update
+# costs a stale date in the sitemap.
+content=$(printf '%s\n' "$staged" | grep -E \
+  '^(index\.html|src/content/.*\.js|src/features/.*\.(jsx|js)|src/app/pages/.*\.jsx)$')
+
+sitemap=$(printf '%s\n' "$staged" | grep -E '^public/sitemap\.xml$')
+
+if [ -n "$content" ] && [ -z "$sitemap" ]; then
+  echo "──────────────────────────────────────────────────────────────"
+  echo " Reminder: page content changed but public/sitemap.xml did not."
+  echo " If a route was added or a page's content changed, update its"
+  echo " <lastmod> (today, YYYY-MM-DD). Ignore this for CSS/refactor-only"
+  echo " changes. This is a reminder only — the commit proceeds."
+  echo "──────────────────────────────────────────────────────────────"
+fi
+
+exit 0

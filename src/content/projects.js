@@ -117,10 +117,15 @@ export const leadField = (project) => {
 /* --- 5. Projects --- */
 
 /* To add a project: append an entry below. Drop the banner image in
-   `public/projects/` and point `image` at it (`/projects/nome.png`) with an
-   `imageAlt`; leave `image` empty and the card draws an empty plate
-   instead. `href` is optional — the repository the project's own page links
-   out to; the cards themselves always route to that page. `fields` keys come
+   `public/projects/` and point `image` at it (`/projects/nome.png`) with a
+   descriptive `imageAlt` — if `image` is set, `imageAlt` must describe it,
+   for screen readers and image search; only an empty `image` (which draws
+   the empty plate) leaves `imageAlt` empty. `links` is optional — the
+   external destinations the project's own page links out to (repository,
+   package registry, …), each `{ label, href, icon }`, drawn as a stacked
+   list of ghost buttons in registry order; `icon` names a glyph in the
+   project page's `BrandIcon` and is itself optional. The cards themselves
+   always route to that page and never carry these. `fields` keys come
    from PROJECT_FIELDS above and are all optional. `summary` is the longer
    paragraph the /projetos register and the project page show;
    `description` is the one-liner the home row shows.
@@ -152,10 +157,14 @@ export const PROJECTS = [
   {
     id: 'simulador',
     image: '/projects/simulador.png',
-    imageAlt: '',
-    cover: '',
-    coverAlt: '',
-    status: 'desenvolvimento',
+    imageAlt:
+      'Rede de nós vermelhos ligados por arestas amarelas sobre fundo azul, o motivo do simulador.',
+    cover: '/projects/simulator_image.png',
+    coverAlt:
+      'Cartão do simulator.py: à esquerda, uma janela com o logótipo e o ' +
+      'motivo de nós ligados; à direita, um gráfico da métrica de idade ao ' +
+      'longo do tempo e um mapa de calor da distribuição de idades.',
+    status: 'concluido',
     title: 'Simulador',
     description:
       'Ferramenta para simular qualquer ambiente e apoiar a nossa investigação. ',
@@ -165,7 +174,18 @@ export const PROJECTS = [
       'Acompanhado de ferramentas de análise, permite ter respostas objetivas sobre ' +
       'as questões portuguesas mais prevalentes na discussão pública. ' +
       'Desenvolvido em código aberto, está disponível para qualquer um a utilizar.',
-    href: 'https://github.com/Agora-Sim/Simulator',
+    links: [
+      {
+        label: 'Ver no GitHub',
+        href: 'https://github.com/Agora-Sim/Simulator',
+        icon: 'github',
+      },
+      {
+        label: 'Ver no PyPI',
+        href: 'https://pypi.org/project/agorasimulator/',
+        icon: 'pypi',
+      },
+    ],
     join: false,
     cardField: 'scope',
     fields: {
@@ -173,8 +193,60 @@ export const PROJECTS = [
       scope: 'Ferramenta',
       license: 'AGPL-3.0',
       team: 'Guilherme Costa-Ferreira',
-      version: '0.3.0',
+      version: '1.0.1',
     },
+    sections: [
+      {
+        heading: 'O que é?',
+        paragraphs: [
+          'O agorasimulator é um pacote de Python para simular sistemas ' +
+            'complexos como redes de nós que interagem entre si. Permite ' +
+            'descrever as especificações da simulação facilmente e de forma ' +
+            'flexível num ficheiro de configuração YAML. Aqui define-se que ' +
+            'tipos de nós existem (os atores da simulação), que atributos têm ' +
+            'e como se conectam entre si. O simulador permite ainda correr ' +
+            'este âmbiente tantas vezes quantas as necessárias para estudar o ' +
+            'que emerge ao longo das corridas.',
+          'Qualquer sistema que caiba nesta estrutura cabe aqui: cidadãos ' +
+            'sob um governo, colaboradores numa organização, uma rede de ' +
+            'abstecimento de água. Porque cada cenário corre muitas vezes, o ' +
+            'resultado é uma distribuição de desfechos e não uma única run ' +
+            'ajustada à narrativa.',
+        ],
+      },
+      {
+        heading: 'Como funciona',
+        paragraphs: [
+          'Sempre que se quer criar uma nova simulação o ficheiro inicial de ' +
+            'YAML é criado. Após preencher a simulação começa e fica guardada ' +
+            'em formato hdf5.',
+          'Após a simulação terminar fica então possível extrair um relatório ' +
+            'da mesma. Mais uma vez a flexibilidade impera aqui e, defenindo ' +
+            'no código de visualização (no futuro um ficheiro YAML também) os ' +
+            'diferentes gráficos são defenidos e guardados junto dos restantes ' +
+            'dados. Para além de uma análise mais refinada é também possível ' +
+            'analisar cada run da simulação para verificar se a rede ' +
+            'encontra-se bem conectada e observar dinâmicas que possam escapar ' +
+            'à análise já realizada. Esta útlima gera um HTML dinâmico.',
+        ],
+      },
+      {
+        heading: 'Código aberto',
+        paragraphs: [
+          'O simulador está publicado no PyPI como agorasimulator, sob a ' +
+            'licença AGPL-3.0-or-later, disponível para qualquer pessoa usar. ' +
+            'A versão do Python é a 3.13 para a frente, gerido com Poetry e ' +
+            'com cerca de 97% de cobertura entre testes unitários e de ' +
+            'integração.',
+          'A arquitetura separa-se em três camadas (serviço, domínio e ' +
+            'adaptadores), com o domínio independente do I/O e fácil de ' +
+            'acompanhar graças à presença de um completo UML na pasta docs/. ' +
+            'Módulos, efeitos, métricas e regras de ligação estendem-se todos ' +
+            'pelo mesmo padrão, por subclasse, de modo que o motor cresça sem ' +
+            'se reescrever.',
+        ],
+      },
+    ],
   },
   {
     id: 'aguas',
@@ -222,7 +294,7 @@ export const PROJECTS = [
     imageAlt: '',
     cover: '',
     coverAlt: '',
-    status: 'planeado',
+    status: 'desenvolvimento',
     title: 'Portugal Digital',
     description:
       'O quão exata consegue ser a simulação em relação ao panorama nacional? ' +
@@ -264,6 +336,34 @@ export const PROJECTS = [
   })),
 ];
 
+/* --- 5b. Registry order ---
+   The /projetos register draws projects grouped by state — Concluído, then Em
+   desenvolvimento, then Planeado, the order PROJECT_STATUSES declares above —
+   and within a state by each project's optional numeric `order` (ascending,
+   lower sits higher). A project with no `order` keeps its authored position
+   among its equals, so the field is only needed where you want to override
+   that; the placeholders, all `planeado`, sink to the bottom on their own.
+   The home row and the project pages are unaffected — the row resolves
+   HOME_PROJECT_IDS by id and the pages resolve the URL segment, both
+   independent of this order — so only the register reads it. */
+const STATUS_RANK = Object.fromEntries(
+  Object.keys(PROJECT_STATUSES).map((id, rank) => [id, rank]),
+);
+
+/** PROJECTS grouped by state and sorted by `order` within each state. */
+export const registryProjects = () =>
+  PROJECTS.map((project, index) => ({ project, index }))
+    .sort((a, b) => {
+      const byState =
+        (STATUS_RANK[a.project.status] ?? Infinity) -
+        (STATUS_RANK[b.project.status] ?? Infinity);
+      if (byState !== 0) return byState;
+      const byOrder = (a.project.order ?? Infinity) - (b.project.order ?? Infinity);
+      if (byOrder !== 0) return byOrder;
+      return a.index - b.index;
+    })
+    .map(({ project }) => project);
+
 /* --- 6. The home row's selection --- */
 
 /* The four projects the home page shows, by `id`, in the order they appear
@@ -273,9 +373,9 @@ export const PROJECTS = [
    keeps drawing every project either way. */
 export const HOME_PROJECT_IDS = [
   'simulador',
+  'digital-twin',
   'aguas',
   'rendas',
-  'digital-twin',
 ];
 
 /**

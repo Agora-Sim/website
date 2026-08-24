@@ -121,6 +121,80 @@
     22px 1.5px, 1.5px 22px;
 }
 
+/* A finished plate hands its bottom-right corner to the seal, so those two
+   bars drop — the same trade the status pill makes at top-left. Collapsing
+   their size to 0 is enough; the corner then reads as marked by the seal. */
+.plate--complete .plate__frame {
+  background-size:
+    12px 1.5px, 1.5px 12px,
+    12px 1.5px, 1.5px 12px,
+    0 0, 0 0;
+}
+
+.plate-host:hover .plate--complete .plate__frame {
+  background-size:
+    22px 1.5px, 1.5px 22px,
+    22px 1.5px, 1.5px 22px,
+    0 0, 0 0;
+}
+
+/* --- 3b. Completion seal --- */
+
+/* The drawing's approval stamp: the monogram in a double ring, inked in the
+   done mint, tilted like a stamp pressed by hand. It owns the bottom-right
+   corner the frame vacated above. To swap in bespoke seal artwork later,
+   point the `::after` mask at the new file — everything else is the mount. */
+.plate__seal {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  border: 1.5px solid
+    color-mix(in srgb, var(--color-status-done) 60%, transparent);
+  background-color: rgba(9, 38, 86, 0.55);
+  backdrop-filter: blur(2px);
+  transform: rotate(-9deg);
+  transition:
+    transform var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out);
+}
+
+/* The inner ring — a stamp's second circle, fainter than the outer. */
+.plate__seal::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: var(--radius-full);
+  border: 1px solid
+    color-mix(in srgb, var(--color-status-done) 30%, transparent);
+}
+
+/* The monogram, masked so it draws in one ink like every other watermark on
+   the plate rather than in its own colours. */
+.plate__seal::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: var(--color-status-done);
+  mask-image: url('/monogram.svg');
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: 22px;
+  -webkit-mask-image: url('/monogram.svg');
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: 22px;
+}
+
+/* The stamp settles upright a touch on approach — a hand steadying it. */
+.plate-host:hover .plate__seal {
+  transform: rotate(-4deg);
+  border-color: color-mix(in srgb, var(--color-status-done) 85%, transparent);
+}
+
 /* --- 4. Status --- */
 
 /* A badge, colour-coded by state: the hue is what a reader reads, and the
@@ -184,5 +258,11 @@
 @media (prefers-reduced-motion: reduce) {
   .plate-host:hover .plate__image {
     transform: none;
+  }
+
+  /* The seal keeps its tilt — that is its resting pose, not motion — but
+     stops righting itself on hover. */
+  .plate-host:hover .plate__seal {
+    transform: rotate(-9deg);
   }
 }

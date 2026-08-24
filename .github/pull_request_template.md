@@ -1,3 +1,7 @@
+> **MAKE SURE THE SITEMAP IS UP TO DATE** — if this PR adds a route or
+> changes a page's content, `public/sitemap.xml` needs its matching entry
+> and a fresh `<lastmod>` (today's date, YYYY-MM-DD).
+
 Closed 
 
 ## Description
