@@ -197,53 +197,53 @@ export const PROJECTS = [
     },
     sections: [
       {
-        heading: 'O que é',
+        heading: 'O que é?',
         paragraphs: [
           'O agorasimulator é um pacote de Python para simular sistemas ' +
             'complexos como redes de nós que interagem entre si. Permite ' +
-            'descrever as especificações da simulação de forma simples e ' +
-            'flexível num ficheiro de configuração YAML, onde se define que ' +
-            'tipos de nós existem (os atores da simulação), que atributos ' +
-            'têm e como se ligam entre si. O simulador corre depois esse ' +
-            'ambiente tantas vezes quantas as necessárias para estudar o que ' +
-            'emerge ao longo das corridas.',
+            'descrever as especificações da simulação facilmente e de forma ' +
+            'flexível num ficheiro de configuração YAML. Aqui define-se que ' +
+            'tipos de nós existem (os atores da simulação), que atributos têm ' +
+            'e como se conectam entre si. O simulador permite ainda correr ' +
+            'este âmbiente tantas vezes quantas as necessárias para estudar o ' +
+            'que emerge ao longo das corridas.',
           'Qualquer sistema que caiba nesta estrutura cabe aqui: cidadãos ' +
             'sob um governo, colaboradores numa organização, uma rede de ' +
-            'abastecimento de água. Porque cada cenário corre muitas vezes, ' +
-            'o resultado é uma distribuição de desfechos e não uma única ' +
-            'corrida ajustada à narrativa.',
+            'abstecimento de água. Porque cada cenário corre muitas vezes, o ' +
+            'resultado é uma distribuição de desfechos e não uma única run ' +
+            'ajustada à narrativa.',
         ],
       },
       {
         heading: 'Como funciona',
         paragraphs: [
-          'Sempre que se quer criar uma nova simulação, começa-se pelo ' +
-            'ficheiro YAML inicial. Depois de o preencher, a simulação corre ' +
-            'e fica guardada em formato HDF5.',
-          'Terminada a simulação, é possível extrair um relatório da mesma. ' +
-            'Mais uma vez a flexibilidade impera: definindo no código de ' +
-            'visualização (no futuro também um ficheiro YAML) os diferentes ' +
-            'gráficos, estes são gerados e guardados junto dos restantes ' +
-            'dados. Para além de uma análise mais refinada, é ainda possível ' +
-            'analisar cada corrida da simulação para verificar se a rede está ' +
-            'bem ligada e observar dinâmicas que possam escapar à análise já ' +
-            'feita — esta última gera um HTML dinâmico.',
+          'Sempre que se quer criar uma nova simulação o ficheiro inicial de ' +
+            'YAML é criado. Após preencher a simulação começa e fica guardada ' +
+            'em formato hdf5.',
+          'Após a simulação terminar fica então possível extrair um relatório ' +
+            'da mesma. Mais uma vez a flexibilidade impera aqui e, defenindo ' +
+            'no código de visualização (no futuro um ficheiro YAML também) os ' +
+            'diferentes gráficos são defenidos e guardados junto dos restantes ' +
+            'dados. Para além de uma análise mais refinada é também possível ' +
+            'analisar cada run da simulação para verificar se a rede ' +
+            'encontra-se bem conectada e observar dinâmicas que possam escapar ' +
+            'à análise já realizada. Esta útlima gera um HTML dinâmico.',
         ],
       },
       {
         heading: 'Código aberto',
         paragraphs: [
           'O simulador está publicado no PyPI como agorasimulator, sob a ' +
-            'licença AGPL-3.0-or-later, disponível para qualquer pessoa ' +
-            'usar. Corre em Python 3.13 ou superior, é gerido com Poetry e ' +
-            'tem cerca de 97% de cobertura entre testes unitários e de ' +
+            'licença AGPL-3.0-or-later, disponível para qualquer pessoa usar. ' +
+            'A versão do Python é a 3.13 para a frente, gerido com Poetry e ' +
+            'com cerca de 97% de cobertura entre testes unitários e de ' +
             'integração.',
           'A arquitetura separa-se em três camadas (serviço, domínio e ' +
             'adaptadores), com o domínio independente do I/O e fácil de ' +
-            'acompanhar graças a um UML completo na pasta docs/. Módulos, ' +
-            'efeitos, métricas e regras de ligação estendem-se todos pelo ' +
-            'mesmo padrão, por subclasse, de modo que o motor cresce sem se ' +
-            'reescrever.',
+            'acompanhar graças à presença de um completo UML na pasta docs/. ' +
+            'Módulos, efeitos, métricas e regras de ligação estendem-se todos ' +
+            'pelo mesmo padrão, por subclasse, de modo que o motor cresça sem ' +
+            'se reescrever.',
         ],
       },
     ],
