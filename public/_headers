@@ -13,7 +13,7 @@
   # styles as far as CSP is concerned. `script-src` carries no such escape,
   # so the one inline block — index.html's JSON-LD — is allowed by its
   # sha256 hash; recompute it if that block's contents change.
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-F7gHO4ToSptLwC/MVcYgeFFT3813PeQUWzvsqOL6SU4='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://api.web3forms.com; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-jXqi+0tS0joez2c6QcA2vEC+dj4OCSohhzCTT+/xgzI='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://api.web3forms.com; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests
   # Two years, preloadable — set once the custom domain is confirmed serving
   # over https, which Cloudflare does by default.
   Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
